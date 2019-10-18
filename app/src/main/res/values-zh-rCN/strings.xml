@@ -27,7 +27,6 @@
     <string name="min_voc">已经是最小声音了</string>
 
     <!-- device -->
-    <string name="device_msg">媒体内容服务</string>
     <string name="dmr_msg">播放器</string>
     <string name="exit">再按一次退出程序</string>
 

@@ -27,7 +27,6 @@
     <string name="min_voc">already lowest voice</string>
 
     <!-- device -->
-    <string name="device_msg">media content service</string>
     <string name="dmr_msg">player</string>
     <string name="exit">press again to exit application</string>
 
