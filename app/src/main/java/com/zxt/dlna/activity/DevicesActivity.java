@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zxt.dlna.R;
+import com.zxt.dlna.Settings;
 import com.zxt.dlna.application.BaseApplication;
 import com.zxt.dlna.dmp.DeviceItem;
 import com.zxt.dlna.dmr.ZxtMediaRenderer;
@@ -103,7 +104,7 @@ public class DevicesActivity extends Activity {
             Log.v(LOGTAG, "Connected to UPnP Service");
 
             if (mediaServer == null
-                    && SettingActivity.getDmsOn(DevicesActivity.this)) {
+                    && Settings.getDmsOn()) {
                 try {
                     mediaServer = new MediaServer(DevicesActivity.this);
                     upnpService.getRegistry()
@@ -126,7 +127,7 @@ public class DevicesActivity extends Activity {
                 }
             }
 
-            if (SettingActivity.getRenderOn(DevicesActivity.this)) {
+            if (Settings.getRenderOn()) {
                 ZxtMediaRenderer mediaRenderer = new ZxtMediaRenderer(1,
                         DevicesActivity.this);
                 upnpService.getRegistry().addDevice(mediaRenderer.getDevice());

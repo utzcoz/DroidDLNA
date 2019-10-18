@@ -36,23 +36,6 @@
     <string name="player_exit">press again to exit player</string>
 
     <!-- setting -->
-    <string name="about_app">version 2.0.0</string>
-    <string name="share_content">share media content</string>
-    <string name="share_content_on">start sharing content， other devices can check local media files with DLNA/Upnp protocols</string>
-    <string name="share_content_off">stop sharing content， other devices can not check local media files with DLNA/Upnp protocols</string>
-    <string name="dms_name">media server name</string>
-    <string name="dms_name_breif">you can find local media server name on other devices</string>
-    <string name="device_local">DroidDLNA Media Server</string>
-    <string name="player">media player</string>
-    <string name="player_on">start local player service， other devices can push media files to local device</string>
-    <string name="player_off">stop local player service， other devices can not push media files to local device</string>
-    <string name="player_name">player name</string>
-    <string name="player_name_breif">you can find local media player name on other devices</string>
-    <string name="player_name_local">DroidDLNA Local Render</string>
-    <string name="net_setting">network setting</string>
-    <string name="net_setting_breif">set and manage wireless network access points</string>
-    <string name="slideshow">slide</string>
-    <string name="slideshow_breif">set intervals of playing slide</string>
 
     <!-- Menu -->
     <string name="menu_exit">exit</string>

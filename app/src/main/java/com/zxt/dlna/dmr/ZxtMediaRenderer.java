@@ -30,7 +30,7 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 import android.content.Context;
 import android.util.Log;
 
-import com.zxt.dlna.activity.SettingActivity;
+import com.zxt.dlna.Settings;
 import com.zxt.dlna.util.FileUtil;
 import com.zxt.dlna.util.UpnpUtil;
 import com.zxt.dlna.util.Utils;
@@ -127,7 +127,7 @@ public class ZxtMediaRenderer {
                     new DeviceIdentity(udn),
                     new UDADeviceType("MediaRenderer", 1),
                     new DeviceDetails(
-                             SettingActivity.getRenderName(context) + " (" + android.os.Build.MODEL + ")",
+                             Settings.getRenderName() + " (" + android.os.Build.MODEL + ")",
                             new ManufacturerDetails(Utils.MANUFACTURER),
                             new ModelDetails(Utils.DMR_NAME, Utils.DMR_DESC, "1", Utils.DMR_MODEL_URL),
                             new DLNADoc[] {

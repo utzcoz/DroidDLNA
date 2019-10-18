@@ -2,7 +2,6 @@
 package com.zxt.dlna.dms;
 
 import java.io.IOException;
-import java.net.URI;
 
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
@@ -18,7 +17,7 @@ import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 
-import com.zxt.dlna.activity.SettingActivity;
+import com.zxt.dlna.Settings;
 import com.zxt.dlna.application.BaseApplication;
 import com.zxt.dlna.util.FileUtil;
 import com.zxt.dlna.util.UpnpUtil;
@@ -46,7 +45,7 @@ public class MediaServer {
         mContext = context;
         DeviceType type = new UDADeviceType(deviceType, version);
 
-        DeviceDetails details = new DeviceDetails(SettingActivity.getDeviceName(context) + " ("
+        DeviceDetails details = new DeviceDetails(Settings.getDeviceName() + " ("
                 + android.os.Build.MODEL + ")", new ManufacturerDetails(
                 android.os.Build.MANUFACTURER), new ModelDetails(android.os.Build.MODEL,
                 Utils.DMS_DESC, "v1"));

@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -36,7 +35,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.zxt.dlna.activity.SettingActivity;
+import com.zxt.dlna.Settings;
 import com.zxt.dlna.application.BaseApplication;
 import com.zxt.dlna.application.ConfigData;
 import com.zxt.dlna.dmc.DMCControl;
@@ -114,7 +113,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 			switch (msg.what) {
 			case MSG_SLIDE_START: {
 				if (!nextImage()) {
-					int time = SettingActivity.getSlideTime(mContext);
+					int time = Settings.getSlideTime();
 					if (time < 5) {
 						time = 5;
 					}
