@@ -32,11 +32,6 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.zxt.dlna.activity.AboutActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
             android:name="com.zxt.dlna.dmp.GPlayer"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
