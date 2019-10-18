@@ -8,7 +8,6 @@
     <string name="ip_get_fail">获取IP地址失败</string>
 
     <!-- tab -->
-    <string name="device">设备</string>
     <string name="setting">设置</string>
 
     <!-- control -->

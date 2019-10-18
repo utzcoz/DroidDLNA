@@ -22,10 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zxt.dlna.activity.IndexActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
             android:name="com.zxt.dlna.activity.DevicesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"

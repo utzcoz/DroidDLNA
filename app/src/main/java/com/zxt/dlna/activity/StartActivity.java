@@ -220,7 +220,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void jumpToMain() {
-        Intent intent = new Intent(StartActivity.this, IndexActivity.class);
+        Intent intent = new Intent(StartActivity.this, DevicesActivity.class);
         startActivity(intent);
         this.finish();
     }

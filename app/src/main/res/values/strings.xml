@@ -8,7 +8,6 @@
     <string name="ip_get_fail">fail to get IP</string>
 
     <!-- tab -->
-    <string name="device">device</string>
     <string name="setting">setting</string>
 
     <!-- control -->
