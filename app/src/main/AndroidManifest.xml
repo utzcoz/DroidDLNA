@@ -1,19 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.zxt.dlna"
-    android:versionCode="2"
-    android:versionName="2.0">
+    package="com.github.dlna"
+    android:versionCode="1"
+    android:versionName="0.0.1">
 
 
     <application
-        android:name="com.zxt.dlna.application.BaseApplication"
+        android:name="com.github.dlna.application.BaseApplication"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/appName"
         android:theme="@style/Theme.AppCompat">
 
         <activity
-            android:name="com.zxt.dlna.activity.StartActivity"
+            android:name="com.github.dlna.activity.StartActivity"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +22,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zxt.dlna.activity.DevicesActivity"
+            android:name="com.github.dlna.activity.DevicesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.zxt.dlna.dmp.GPlayer"
+            android:name="com.github.dlna.dmp.GPlayer"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
@@ -75,11 +75,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zxt.dlna.dmp.ImageDisplay"
+            android:name="com.github.dlna.dmp.ImageDisplay"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar" />
 
-        <service android:name="com.zxt.dlna.dmr.RenderPlayerService" />
+        <service android:name="com.github.dlna.dmr.RenderPlayerService" />
         <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl" />
     </application>
 
