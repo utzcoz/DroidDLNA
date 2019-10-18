@@ -22,7 +22,6 @@
 
     <!-- tab -->
     <string name="device">device</string>
-    <string name="content">content</string>
     <string name="control">console</string>
     <string name="setting">setting</string>
 

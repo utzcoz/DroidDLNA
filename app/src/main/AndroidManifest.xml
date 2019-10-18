@@ -31,11 +31,6 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.zxt.dlna.activity.ContentActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
             android:name="com.zxt.dlna.activity.ControlActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"

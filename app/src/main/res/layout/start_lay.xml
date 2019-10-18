@@ -4,7 +4,6 @@
     android:layout_height="match_parent" >"
 
     <ImageView
-        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
@@ -13,7 +12,6 @@
         android:src="@drawable/start" />
 
     <ProgressBar
-        android:id="@+id/progressBar1"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

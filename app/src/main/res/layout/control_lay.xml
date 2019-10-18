@@ -117,7 +117,6 @@
         android:thumb="@drawable/thumb" />
 
     <RelativeLayout
-        android:id="@+id/media_lay_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/media_seekBar"
@@ -128,7 +127,6 @@
         android:layout_marginTop="10dip" >
 
         <ImageView
-            android:id="@+id/media_iv_thumb"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

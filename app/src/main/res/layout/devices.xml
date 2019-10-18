@@ -6,14 +6,12 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/renderer_list_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="0.5"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/select_renderer_header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/titlebar"
@@ -32,7 +30,6 @@
             android:listSelector="@drawable/list_view_selector" />
 
         <TextView
-            android:id="@+id/no_linn_ds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?android:textColorPrimary"
@@ -41,14 +38,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/media_server_list_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="0.5"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/select_library_header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/titlebar"
@@ -67,7 +62,6 @@
             android:listSelector="@drawable/list_view_selector" />
 
         <TextView
-            android:id="@+id/no_library"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?android:textColorPrimary"
