@@ -1,7 +1,14 @@
 
 package com.zxt.dlna.dms;
 
-import java.io.IOException;
+import android.content.Context;
+import android.util.Log;
+
+import com.zxt.dlna.Settings;
+import com.zxt.dlna.application.BaseApplication;
+import com.zxt.dlna.util.FileUtil;
+import com.zxt.dlna.util.UpnpUtil;
+import com.zxt.dlna.util.Utils;
 
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
@@ -17,18 +24,11 @@ import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 
-import com.zxt.dlna.Settings;
-import com.zxt.dlna.application.BaseApplication;
-import com.zxt.dlna.util.FileUtil;
-import com.zxt.dlna.util.UpnpUtil;
-import com.zxt.dlna.util.Utils;
-
-import android.content.Context;
-import android.util.Log;
+import java.io.IOException;
 
 public class MediaServer {
 
-    private UDN udn ;
+    private UDN udn;
 
     private LocalDevice localDevice;
 
@@ -41,7 +41,7 @@ public class MediaServer {
     public final static int PORT = 8192;
     private Context mContext;
 
-    public MediaServer(Context context ) throws ValidationException {
+    public MediaServer(Context context) throws ValidationException {
         mContext = context;
         DeviceType type = new UDADeviceType(deviceType, version);
 
@@ -53,7 +53,7 @@ public class MediaServer {
         LocalService service = new AnnotationLocalServiceBinder()
                 .read(ContentDirectoryService.class);
 
-        service.setManager(new DefaultServiceManager<ContentDirectoryService>(service,
+        service.setManager(new DefaultServiceManager<>(service,
                 ContentDirectoryService.class));
 
         udn = UpnpUtil.uniqueSystemIdentifier("msidms");
@@ -84,7 +84,7 @@ public class MediaServer {
         return BaseApplication.getHostAddress() + ":" + PORT;
     }
 
-    protected Icon createDefaultDeviceIcon() {
+    private Icon createDefaultDeviceIcon() {
         try {
             return new Icon("image/png", 48, 48, 32, "msi.png", mContext.getResources().getAssets()
                     .open(FileUtil.LOGO));
@@ -93,5 +93,5 @@ public class MediaServer {
             return null;
         }
     }
-   
+
 }

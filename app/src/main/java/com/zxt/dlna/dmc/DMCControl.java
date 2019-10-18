@@ -1,5 +1,6 @@
 package com.zxt.dlna.dmc;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
@@ -13,7 +14,6 @@ import com.zxt.dlna.util.Action;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
-import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.Service;
 import org.fourthline.cling.model.types.UDAServiceType;
 
@@ -35,10 +35,6 @@ public class DMCControl {
 
     private int controlType = 1;
 
-    int currentPlayPosition;
-
-    private long currentVolume = 0L;
-
     private DeviceItem executeDeviceItem;
 
     public boolean isGetNoMediaPlay = false;
@@ -47,18 +43,13 @@ public class DMCControl {
 
     private String metaData;
 
-    String relTime;
-
     private boolean threadGetState = false;
-
-    int totalPlayTime;
-
-    String trackTime;
 
     private AndroidUpnpService upnpService;
 
     private String uriString;
 
+    @SuppressLint("HandlerLeak")
     private Handler mHandle = new Handler() {
 
         @Override
@@ -67,7 +58,6 @@ public class DMCControl {
             switch (msg.what) {
 
                 case DMCControlMessage.ADDVOLUME: {
-
                     break;
                 }
 
@@ -83,7 +73,7 @@ public class DMCControl {
 
                 case DMCControlMessage.GETMUTE: {
                     DMCControl.this.isMute = msg.getData().getBoolean("mute");
-                    DMCControl.this.setMuteToActivity(isMute);
+                    DMCControl.this.setMuteToActivity();
                     // getMute();
                     break;
                 }
@@ -164,7 +154,7 @@ public class DMCControl {
 
                 case DMCControlMessage.SETMUTESUC: {
                     isMute = msg.getData().getBoolean("mute");
-                    setMuteToActivity(isMute);
+                    setMuteToActivity();
                     break;
                 }
 
@@ -227,63 +217,6 @@ public class DMCControl {
         mHandle.sendMessage(msg);
     }
 
-    public void getCurrentConnectionInfo(int paramInt) {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("ConnectionManager"));
-            if (localService != null) {
-                this.upnpService.getControlPoint().execute(
-                        new CurrentConnectionInfoCallback(localService,
-                                this.upnpService.getControlPoint(), paramInt));
-            } else {
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
-    public void getDeviceCapability() {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("AVTransport"));
-            if (localService != null) {
-                this.upnpService.getControlPoint().execute(
-                        new GetDeviceCapabilitiesCallback(localService));
-            } else {
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
-    public void getMediaInfo() {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("AVTransport"));
-            if (localService != null) {
-                this.upnpService.getControlPoint().execute(
-                        new GetMediaInfoCallback(localService));
-            } else {
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
-    public void getMute() {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("RenderingControl"));
-            if (localService != null) {
-                this.upnpService.getControlPoint().execute(
-                        new GetMuteCallback(localService, mHandle));
-            } else {
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
     public void getPositionInfo() {
         try {
             Service localService = this.executeDeviceItem.getDevice()
@@ -330,39 +263,6 @@ public class DMCControl {
         }
     }
 
-    public void getVolume(int paramInt) {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("RenderingControl"));
-            if (localService != null) {
-                Log.e("get volume", "get volume");
-                this.upnpService.getControlPoint().execute(
-                        new GetVolumeCallback(this.activity, mHandle, paramInt,
-                                localService, this.controlType));
-            } else {
-                Log.e("null", "null");
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
-    public void pause() {
-        try {
-            Service localService = this.executeDeviceItem.getDevice()
-                    .findService(new UDAServiceType("AVTransport"));
-            if (localService != null) {
-                Log.e("pause", "pause");
-                this.upnpService.getControlPoint().execute(
-                        new PauseCallback(localService));
-            } else {
-                Log.e("null", "null");
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
     public void play() {
         try {
             Service localService = this.executeDeviceItem.getDevice()
@@ -371,43 +271,6 @@ public class DMCControl {
                 Log.e("start play", "start play");
                 this.upnpService.getControlPoint().execute(
                         new PlayerCallback(localService, mHandle));
-            } else {
-                Log.e("null", "null");
-            }
-        } catch (Exception localException) {
-            localException.printStackTrace();
-        }
-    }
-
-    public void rePlayControl() {
-        if (this.isGetNoMediaPlay)
-            return;
-        this.isGetNoMediaPlay = true;
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(2000L);
-                    DMCControl.this.setAvURL();
-                    DMCControl.this.isGetNoMediaPlay = false;
-                    return;
-                } catch (Exception localException) {
-                    localException.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    public void seekBarPosition(String paramString) {
-        try {
-            Device localDevice = this.executeDeviceItem.getDevice();
-            Log.e("control action", "seekBarPosition");
-            Service localService = localDevice.findService(new UDAServiceType(
-                    "AVTransport"));
-            if (localService != null) {
-                Log.e("get seekBarPosition info", "get seekBarPosition info");
-                this.upnpService.getControlPoint().execute(
-                        new SeekCallback(activity, localService, paramString,
-                                mHandle));
             } else {
                 Log.e("null", "null");
             }
@@ -434,10 +297,6 @@ public class DMCControl {
         }
     }
 
-    public void setCurrentPlayPath(String paramString) {
-        uriString = paramString;
-    }
-
     public void setCurrentPlayPath(String paramString1, String paramString2) {
         uriString = paramString1;
         metaData = paramString2;
@@ -460,13 +319,13 @@ public class DMCControl {
         }
     }
 
-    public void setMuteToActivity(boolean paramBoolean) {
+    public void setMuteToActivity() {
     }
 
     public void setVolume(long paramLong, int paramInt) {
         if (paramInt == 0) {
         }
-        Service localService = null;
+        Service localService;
         try {
             localService = this.executeDeviceItem.getDevice().findService(
                     new UDAServiceType("RenderingControl"));
@@ -487,31 +346,6 @@ public class DMCControl {
         } catch (Exception localException) {
             localException.printStackTrace();
         }
-    }
-
-    public void startThreadGetMessage() {
-        Log.e("startThreadGetMessage", "startThreadGetMessage"
-                + this.threadGetState);
-        DMCControlMessage.runing = true;
-        if (!threadGetState)
-            return;
-        threadGetState = false;
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    boolean bool = DMCControlMessage.runing;
-                    if (!bool) {
-                        DMCControl.this.threadGetState = true;
-                        return;
-                    }
-                    Thread.sleep(1000L);
-                    DMCControl.this.getPositionInfo();
-                    // DMCControl.this.getTransportInfo(true);
-                } catch (Exception localException) {
-                    localException.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     public void stop(Boolean paramBoolean) {

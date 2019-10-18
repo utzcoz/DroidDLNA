@@ -4,10 +4,10 @@ import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.lastchange.LastChange;
+import org.fourthline.cling.support.model.Channel;
 import org.fourthline.cling.support.renderingcontrol.AbstractAudioRenderingControl;
 import org.fourthline.cling.support.renderingcontrol.RenderingControlErrorCode;
 import org.fourthline.cling.support.renderingcontrol.RenderingControlException;
-import org.fourthline.cling.support.model.Channel;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -21,16 +21,16 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
 
     final private Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> players;
 
-    protected AudioRenderingControl(LastChange lastChange, Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> players) {
+    AudioRenderingControl(LastChange lastChange, Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> players) {
         super(lastChange);
         this.players = players;
     }
 
-    protected Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> getPlayers() {
+    private Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> getPlayers() {
         return players;
     }
 
-    protected ZxtMediaPlayer getInstance(UnsignedIntegerFourBytes instanceId) throws RenderingControlException {
+    private ZxtMediaPlayer getInstance(UnsignedIntegerFourBytes instanceId) throws RenderingControlException {
         ZxtMediaPlayer player = getPlayers().get(instanceId);
         if (player == null) {
             throw new RenderingControlException(RenderingControlErrorCode.INVALID_INSTANCE_ID);
@@ -38,7 +38,7 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
         return player;
     }
 
-    protected void checkChannel(String channelName) throws RenderingControlException {
+    private void checkChannel(String channelName) throws RenderingControlException {
         if (!getChannel(channelName).equals(Channel.Master)) {
             throw new RenderingControlException(ErrorCode.ARGUMENT_VALUE_INVALID, "Unsupported audio channel: " + channelName);
         }
@@ -75,7 +75,7 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
 
     @Override
     protected Channel[] getCurrentChannels() {
-        return new Channel[] {
+        return new Channel[]{
                 Channel.Master
         };
     }

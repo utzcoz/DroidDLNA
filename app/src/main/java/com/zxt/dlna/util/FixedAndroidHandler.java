@@ -126,7 +126,6 @@ public class FixedAndroidHandler extends Handler {
      * Converts a {@link java.util.logging.Logger} logging level into an Android one.
      *
      * @param level The {@link java.util.logging.Logger} logging level.
-     *
      * @return The resulting Android logging level.
      */
     static int getAndroidLevel(Level level) {

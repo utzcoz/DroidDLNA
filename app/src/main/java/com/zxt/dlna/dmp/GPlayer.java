@@ -1,6 +1,7 @@
 
 package com.zxt.dlna.dmp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -19,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -82,8 +82,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     int videoWidth = 0;
 
     int videoHeight = 0;
-
-    boolean readyToPlay = false;
 
     String playURI;
 
@@ -311,8 +309,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     public void onClick(View v) {
-        // if (!mMediaPlayerLoaded)
-        // return;
         int id = v.getId();
         switch (id) {
             case R.id.topBar_back:
@@ -382,15 +378,10 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         }
 
-        // if (mediaController.isShowing()) {
-        // mediaController.hide();
-        // } else {
-        // mediaController.show(10000);
-        // }
         return false;
     }
 
-    public  int getAudioSessionId() {
+    public int getAudioSessionId() {
         return 1;
     }
 
@@ -448,17 +439,11 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 }
             }
         }
-        // surfaceView.setLayoutParams(new FrameLayout.LayoutParams(videoWidth,
-        // videoHeight));
         mp.start();
         if (null != mMediaListener) {
             mMediaListener.start();
         }
 
-        // mediaController.setMediaPlayer(this);
-        // mediaController.setAnchorView(this.findViewById(R.id.gplayer_surfaceview));
-        // mediaController.setEnabled(true);
-        // mediaController.show(5000);
         mHandler.sendEmptyMessage(MEDIA_PLAYER_PREPARED);
 
         mHandler.sendEmptyMessage(MEDIA_PLAYER_PROGRESS_UPDATE);
@@ -598,6 +583,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             Log.d(LOGTAG, "msg=" + msg.what);
@@ -677,7 +663,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     class PlayBrocastReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
             String str1 = intent.getStringExtra("helpAction");
 
             if (str1.equals(Action.PLAY)) {
@@ -700,7 +685,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 }
 
             } else if (str1.equals(Action.SET_VOLUME)) {
-                int volume = (int) (intent.getDoubleExtra("volume", 0) * mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)) ;
+                int volume = (int) (intent.getDoubleExtra("volume", 0) * mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
                 mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
                 mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
             } else if (str1.equals(Action.STOP)) {

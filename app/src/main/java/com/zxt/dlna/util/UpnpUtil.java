@@ -1,119 +1,23 @@
 
 package com.zxt.dlna.util;
 
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.security.MessageDigest;
-import java.util.Enumeration;
-import java.util.UUID;
-
-import org.fourthline.cling.model.meta.Device;
-import org.fourthline.cling.model.types.UDN;
-import org.fourthline.cling.support.model.item.Item;
+import android.util.Log;
 
 import com.zxt.dlna.application.BaseApplication;
 
+import org.fourthline.cling.model.types.UDN;
 
-import android.util.Log;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.UUID;
 
 public class UpnpUtil {
 
-    public static boolean isValidDevice(Device device) {
-        // if (UpnpUtil.isMediaRenderDevice(device)){
-        // return true;
-        // }
-
-        return UpnpUtil.isMediaServerDevice(device) && !UpnpUtil.isLocalIpAddress(device);
-
-    }
-
-    public static boolean isMediaServerDevice(Device device) {
-        return "urn:schemas-upnp-org:device:MediaServer:1"
-                .equalsIgnoreCase(device.getType().getType());
-    }
-
-    public static boolean isMediaRenderDevice(Device device) {
-        return "urn:schemas-upnp-org:device:MediaRenderer:1".equalsIgnoreCase(device.getType()
-                .getType());
-    }
-
-    public final static String DLNA_OBJECTCLASS_MUSICID = "object.item.audioItem";
-
-    public final static String DLNA_OBJECTCLASS_VIDEOID = "object.item.videoItem";
-
-    public final static String DLNA_OBJECTCLASS_PHOTOID = "object.item.imageItem";
-
     private static final String TAG = "UpnpUtil";
-
-    public static boolean isAudioItem(Item item) {
-        // TODO zxt need check?
-        String objectClass = item.getId();
-        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_MUSICID);
-    }
-
-    public static boolean isVideoItem(Item item) {
-        // TODO zxt need check?
-        String objectClass = item.getId();
-        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_VIDEOID);
-    }
-
-    public static boolean isPictureItem(Item item) {
-        // TODO zxt need check?
-        String objectClass = item.getId();
-        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_PHOTOID);
-    }
-
-    public static boolean isLocalIpAddress(Device device) {
-        try {
-            String addrip = device.getDetails().getBaseURL().toString();
-            addrip = addrip.substring("http://".length());
-            addrip = addrip.substring(0, addrip.indexOf(":"));
-            boolean ret = isLocalIpAddress(addrip);
-            ret = false;
-            return ret;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public static boolean isLocalIpAddress(String checkip) {
-
-        boolean ret = false;
-        if (checkip != null) {
-            try {
-                for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en
-                        .hasMoreElements();) {
-                    NetworkInterface intf = en.nextElement();
-                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
-                            .hasMoreElements();) {
-                        InetAddress inetAddress = enumIpAddr.nextElement();
-                        if (!inetAddress.isLoopbackAddress()) {
-                            String ip = inetAddress.getHostAddress();
-
-                            if (ip == null) {
-                                continue;
-                            }
-                            if (checkip.equals(ip)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            } catch (SocketException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        return ret;
-    }
 
     public static UDN uniqueSystemIdentifier(String salt) {
         StringBuilder systemSalt = new StringBuilder();
-        Log.d(TAG,  "host:" + BaseApplication.getHostName() + " ip:" +   BaseApplication.getHostAddress());
+        Log.d(TAG, "host:" + BaseApplication.getHostName() + " ip:" + BaseApplication.getHostAddress());
         if (null != BaseApplication.getHostName()
                 && null != BaseApplication.getHostAddress()) {
             systemSalt.append(BaseApplication.getHostName()).append(
@@ -128,30 +32,5 @@ public class UpnpUtil {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    public static String getIP() throws SocketException {
-        String ipaddress = "";
-        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en
-                .hasMoreElements();) {
-            NetworkInterface intf = en.nextElement();
-            if (intf.getName().toLowerCase().equals("eth0")
-                    || intf.getName().toLowerCase().equals("wlan0")) {
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
-                        .hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
-                        ipaddress = inetAddress.getHostAddress();
-                        if (!ipaddress.contains("::")) {// ipV6的地址
-                            Log.e(TAG, ipaddress);
-                            return ipaddress;
-                        }
-                    }
-                }
-            } else {
-                continue;
-            }
-        }
-        return ipaddress;
     }
 }

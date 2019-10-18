@@ -331,7 +331,7 @@ public class DevicesActivity extends Activity {
                             + device.getType().getType());
         }
 
-        public void dmrAdded(final DeviceItem di) {
+        void dmrAdded(final DeviceItem di) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (!mDmrList.contains(di)) {
@@ -342,7 +342,7 @@ public class DevicesActivity extends Activity {
             });
         }
 
-        public void dmrRemoved(final DeviceItem di) {
+        void dmrRemoved(final DeviceItem di) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     mDmrList.remove(di);
@@ -696,12 +696,6 @@ public class DevicesActivity extends Activity {
                     }
                 }
 
-                // imageContainer.addItem(imageItem);
-                // imageContainer
-                // .setChildCount(imageContainer.getChildCount() + 1);
-                // ContentTree.addNode(id,
-                // new ContentNode(id, imageItem, filePath));
-
                 Log.v(LOGTAG, "added image item " + title + "from " + filePath);
             } while (cursor.moveToNext());
         }
@@ -714,8 +708,8 @@ public class DevicesActivity extends Activity {
 
         private List<DeviceItem> deviceItems;
 
-        public DevAdapter(Context context, int textViewResourceId,
-                          List<DeviceItem> objects) {
+        DevAdapter(Context context, int textViewResourceId,
+                   List<DeviceItem> objects) {
             super(context, textViewResourceId, objects);
             this.mInflater = ((LayoutInflater) context
                     .getSystemService("layout_inflater"));

@@ -1,98 +1,73 @@
 package com.zxt.dlna.application;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.fourthline.cling.android.AndroidUpnpService;
-import org.fourthline.cling.support.model.DIDLContent;
+import android.app.Application;
+import android.content.Context;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.zxt.dlna.dmp.ContentItem;
 import com.zxt.dlna.dmp.DeviceItem;
 
-import android.app.Application;
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import org.fourthline.cling.android.AndroidUpnpService;
+
+import java.net.InetAddress;
 
 public class BaseApplication extends Application {
 
-	public static DeviceItem deviceItem;
+    public static DeviceItem deviceItem;
 
-	public DIDLContent didl;
+    public static DeviceItem dmrDeviceItem;
 
-	public static DeviceItem dmrDeviceItem;
-	
-	public static boolean isLocalDmr = true;
+    public static boolean isLocalDmr = true;
 
-	public ArrayList<ContentItem> listMusic;
+    public static AndroidUpnpService upnpService;
 
-	public ArrayList<ContentItem> listPhoto;
+    public static Context mContext;
 
-	public ArrayList<ContentItem> listPlayMusic = new ArrayList();
+    private static InetAddress inetAddress;
 
-	public ArrayList<ContentItem> listVideo;
+    private static String hostAddress;
 
-	public ArrayList<ContentItem> listcontent;
+    private static String hostName;
 
-	public HashMap<String, ArrayList<ContentItem>> map;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mContext = getApplicationContext();
+        initImageLoader(getApplicationContext());
+    }
 
-	// public MediaUtils mediaUtils;
+    public static Context getContext() {
+        return mContext;
+    }
 
-	public int position;
+    public static void setLocalIpAddress(InetAddress inetAddr) {
+        inetAddress = inetAddr;
 
-	public static AndroidUpnpService upnpService;
+    }
 
-	public static Context mContext;
+    public static InetAddress getLocalIpAddress() {
+        return inetAddress;
+    }
 
-	private static InetAddress inetAddress;
+    public static String getHostAddress() {
+        return hostAddress;
+    }
 
-	private static String hostAddress;
+    public static void setHostAddress(String hostAddress) {
+        BaseApplication.hostAddress = hostAddress;
+    }
 
-	private static String hostName;
+    public static String getHostName() {
+        return hostName;
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		mContext = getApplicationContext();
-	    initImageLoader(getApplicationContext());
-	}
+    public static void setHostName(String hostName) {
+        BaseApplication.hostName = hostName;
+    }
 
-	public static Context getContext() {
-		return mContext;
-	}
-
-	public static void setLocalIpAddress(InetAddress inetAddr) {
-		inetAddress = inetAddr;
-
-	}
-
-	public static InetAddress getLocalIpAddress() {
-		return inetAddress;
-	}
-
-	public static String getHostAddress() {
-		return hostAddress;
-	}
-
-	public static void setHostAddress(String hostAddress) {
-		BaseApplication.hostAddress = hostAddress;
-	}
-
-	public static String getHostName() {
-		return hostName;
-	}
-
-	public static void setHostName(String hostName) {
-		BaseApplication.hostName = hostName;
-	}
-	
-	public static void initImageLoader(Context context) {
+    public static void initImageLoader(Context context) {
         // This configuration tuning is custom. You can tune every option, you may tune some of them, 
         // or you can create default configuration by
         //  ImageLoaderConfiguration.createDefault(this);

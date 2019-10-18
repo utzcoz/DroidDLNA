@@ -17,10 +17,10 @@
 
 package com.zxt.dlna.dmp;
 
+import android.graphics.drawable.Drawable;
+
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.types.UDN;
-
-import android.graphics.drawable.Drawable;
 
 /**
  * Wraps a <tt>Device</tt> for display with icon and label. Equality is
@@ -32,11 +32,6 @@ public class DeviceItem {
 
     private Device device;
 
-    // TODO do we need label ?
-    private String[] label;
-
-    private Drawable icon;
-
     public DeviceItem(Device device) {
         this.udn = device.getIdentity().getUdn();
         this.device = device;
@@ -45,34 +40,11 @@ public class DeviceItem {
     public DeviceItem(Device device, String... label) {
         this.udn = device.getIdentity().getUdn();
         this.device = device;
-        this.label = label;
-    }
-
-    public DeviceItem() {
-    }
-
-    public UDN getUdn() {
-        return udn;
+        // TODO do we need label ?
     }
 
     public Device getDevice() {
         return device;
-    }
-
-    public String[] getLabel() {
-        return label;
-    }
-
-    public void setLabel(String[] label) {
-        this.label = label;
-    }
-
-    public Drawable getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
     }
 
     @Override

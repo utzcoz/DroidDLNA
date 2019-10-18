@@ -114,7 +114,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void createFolder() {
-        FileUtil.createSDCardDir(true);
+        FileUtil.createSDCardDir();
     }
 
     private void getIp() {
