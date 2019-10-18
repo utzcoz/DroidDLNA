@@ -8,7 +8,6 @@
     <string name="ip_get_fail">获取IP地址失败</string>
 
     <!-- tab -->
-    <string name="setting">设置</string>
 
     <!-- control -->
     <string name="min_voc">已经是最小声音了</string>
