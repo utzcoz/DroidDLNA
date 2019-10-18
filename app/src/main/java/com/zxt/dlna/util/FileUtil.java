@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import com.zxt.dlna.util.DevMountInfo.DevInfo;
 
-import java.io.File;
-
 public class FileUtil {
 
     public static final String LOGO = "ic_launcher.png";
@@ -23,18 +21,6 @@ public class FileUtil {
 
     }
 
-    public static void createSDCardDir() {
-        if (Environment.MEDIA_MOUNTED.equals(Environment
-                .getExternalStorageState())) {
-            File sdcardDir = Environment.getExternalStorageDirectory();
-            String path = sdcardDir.getPath() + VIDEO_THUMB_PATH;
-            File path1 = new File(path);
-            if (!path1.exists()) {
-                path1.mkdirs();
-            }
-        }
-    }
-
     public static String getFileSuffix(String pathName) {
         String suffix = "";
 
@@ -46,11 +32,6 @@ public class FileUtil {
         }
 
         return suffix;
-    }
-
-    public static String getFileName(String path) {
-        File file = new File(path);
-        return file.getName();
     }
 
     public static String getFoldName(String path) {

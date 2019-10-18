@@ -1,5 +1,6 @@
 package com.zxt.dlna.application;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
@@ -11,8 +12,6 @@ import com.zxt.dlna.dmp.DeviceItem;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 
-import java.net.InetAddress;
-
 public class BaseApplication extends Application {
 
     public static DeviceItem deviceItem;
@@ -23,9 +22,8 @@ public class BaseApplication extends Application {
 
     public static AndroidUpnpService upnpService;
 
+    @SuppressLint("StaticFieldLeak")
     public static Context mContext;
-
-    private static InetAddress inetAddress;
 
     private static String hostAddress;
 
@@ -40,15 +38,6 @@ public class BaseApplication extends Application {
 
     public static Context getContext() {
         return mContext;
-    }
-
-    public static void setLocalIpAddress(InetAddress inetAddr) {
-        inetAddress = inetAddr;
-
-    }
-
-    public static InetAddress getLocalIpAddress() {
-        return inetAddress;
     }
 
     public static String getHostAddress() {

@@ -1,44 +1,24 @@
 
 package com.zxt.dlna.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zxt.dlna.R;
 import com.zxt.dlna.application.BaseApplication;
-import com.zxt.dlna.dms.ContentTree;
-import com.zxt.dlna.util.FileUtil;
-import com.zxt.dlna.util.ImageUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class StartActivity extends AppCompatActivity {
-
-    private static final int REQUEST_PERMISSION_STORAGE = 1;
 
     public static final int GET_IP_FAIL = 0;
 
@@ -49,8 +29,6 @@ public class StartActivity extends AppCompatActivity {
     private String hostName;
 
     private String hostAddress;
-
-    private List<Map<String, String>> mVideoFilePaths;
 
     private Handler mHandle = new Handler() {
 
@@ -65,7 +43,6 @@ public class StartActivity extends AppCompatActivity {
                     if (null != msg.obj) {
                         InetAddress inetAddress = (InetAddress) msg.obj;
                         if (null != inetAddress) {
-                            setIp(inetAddress);
                             setIpInfo();
                             jumpToMain();
                         }
@@ -87,34 +64,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_lay);
         mContext = this;
-        requestPermissions();
-        createFolder();
-        getVideoFilePaths();
-        createVideoThumb();
         getIp();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @AfterPermissionGranted(REQUEST_PERMISSION_STORAGE)
-    private void requestPermissions() {
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            // Already have permission, do the thing
-            // ...
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, "Need storage permission",
-                    REQUEST_PERMISSION_STORAGE, perms);
-        }
-    }
-
-    private void createFolder() {
-        FileUtil.createSDCardDir();
     }
 
     private void getIp() {
@@ -144,74 +94,6 @@ public class StartActivity extends AppCompatActivity {
             }
         }).start();
 
-    }
-
-    private void getVideoFilePaths() {
-        mVideoFilePaths = new ArrayList<Map<String, String>>();
-        Cursor cursor;
-        String[] videoColumns = {
-                MediaStore.Video.Media._ID, MediaStore.Video.Media.TITLE,
-                MediaStore.Video.Media.DATA, MediaStore.Video.Media.ARTIST,
-                MediaStore.Video.Media.MIME_TYPE, MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media.DURATION, MediaStore.Video.Media.RESOLUTION
-        };
-        cursor = mContext.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                videoColumns, null, null, null);
-        if (null != cursor && cursor.moveToFirst()) {
-            do {
-                String id = ContentTree.VIDEO_PREFIX
-                        + cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-                String filePath = cursor.getString(cursor
-                        .getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-                Map<String, String> fileInfoMap = new HashMap<String, String>();
-                fileInfoMap.put(id, filePath);
-                mVideoFilePaths.add(fileInfoMap);
-                // Log.v(LOGTAG, "added video item " + title + "from " +
-                // filePath);
-            } while (cursor.moveToNext());
-        }
-        if (null != cursor) {
-            cursor.close();
-        }
-
-    }
-
-    private void createVideoThumb() {
-        if (null != mVideoFilePaths && mVideoFilePaths.size() > 0) {
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    for (int i = 0; i < mVideoFilePaths.size(); i++) {
-                        Set entries = mVideoFilePaths.get(i).entrySet();
-                        if (entries != null) {
-                            Iterator iterator = entries.iterator();
-                            while (iterator.hasNext()) {
-                                Map.Entry entry = (Entry) iterator.next();
-                                Object id = entry.getKey();
-                                Object filePath = entry.getValue();
-
-                                Bitmap videoThumb = ImageUtil.getThumbnailForVideo(filePath
-                                        .toString());
-                                String videoSavePath = ImageUtil.getSaveVideoFilePath(
-                                        filePath.toString(), id.toString());
-                                try {
-                                    ImageUtil.saveBitmapWithFilePathSuffix(videoThumb,
-                                            videoSavePath);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }).start();
-        }
-    }
-
-    private void setIp(InetAddress inetAddress) {
-        BaseApplication.setLocalIpAddress(inetAddress);
     }
 
     private void setIpInfo() {

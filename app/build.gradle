@@ -28,7 +28,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'org.fourthline.cling:cling-core:2.1.2-SNAPSHOT'
     implementation 'org.fourthline.cling:cling-support:2.1.2-SNAPSHOT'
-    implementation 'pub.devrel:easypermissions:3.0.0'
     implementation files('libs/cdi-api.jar')
     implementation files('libs/http-2.2.1.jar')
     implementation files('libs/httpclient-4.2.2.jar')
