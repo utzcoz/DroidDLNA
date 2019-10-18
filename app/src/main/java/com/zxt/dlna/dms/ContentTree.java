@@ -21,9 +21,9 @@ public class ContentTree {
 
 	private static ContentNode rootNode = createRootNode();
 
-	public ContentTree() {};
+	public ContentTree() {}
 
-	protected static ContentNode createRootNode() {
+    protected static ContentNode createRootNode() {
 		// create root container
 		Container root = new Container();
 		root.setId(ROOT_ID);

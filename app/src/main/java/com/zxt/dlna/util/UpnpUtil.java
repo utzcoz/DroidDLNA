@@ -25,28 +25,18 @@ public class UpnpUtil {
         // return true;
         // }
 
-        if (UpnpUtil.isMediaServerDevice(device) && !UpnpUtil.isLocalIpAddress(device)) {
-            return true;
-        }
-
-        return false;
+        return UpnpUtil.isMediaServerDevice(device) && !UpnpUtil.isLocalIpAddress(device);
 
     }
 
     public static boolean isMediaServerDevice(Device device) {
-        if ("urn:schemas-upnp-org:device:MediaServer:1"
-                .equalsIgnoreCase(device.getType().getType())) {
-            return true;
-        }
-        return false;
+        return "urn:schemas-upnp-org:device:MediaServer:1"
+                .equalsIgnoreCase(device.getType().getType());
     }
 
     public static boolean isMediaRenderDevice(Device device) {
-        if ("urn:schemas-upnp-org:device:MediaRenderer:1".equalsIgnoreCase(device.getType()
-                .getType())) {
-            return true;
-        }
-        return false;
+        return "urn:schemas-upnp-org:device:MediaRenderer:1".equalsIgnoreCase(device.getType()
+                .getType());
     }
 
     public final static String DLNA_OBJECTCLASS_MUSICID = "object.item.audioItem";
@@ -60,34 +50,25 @@ public class UpnpUtil {
     public static boolean isAudioItem(Item item) {
         // TODO zxt need check?
         String objectClass = item.getId();
-        if (objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_MUSICID)) {
-            return true;
-        }
-        return false;
+        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_MUSICID);
     }
 
     public static boolean isVideoItem(Item item) {
         // TODO zxt need check?
         String objectClass = item.getId();
-        if (objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_VIDEOID)) {
-            return true;
-        }
-        return false;
+        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_VIDEOID);
     }
 
     public static boolean isPictureItem(Item item) {
         // TODO zxt need check?
         String objectClass = item.getId();
-        if (objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_PHOTOID)) {
-            return true;
-        }
-        return false;
+        return objectClass != null && objectClass.contains(DLNA_OBJECTCLASS_PHOTOID);
     }
 
     public static boolean isLocalIpAddress(Device device) {
         try {
             String addrip = device.getDetails().getBaseURL().toString();
-            addrip = addrip.substring("http://".length(), addrip.length());
+            addrip = addrip.substring("http://".length());
             addrip = addrip.substring(0, addrip.indexOf(":"));
             boolean ret = isLocalIpAddress(addrip);
             ret = false;
@@ -111,7 +92,7 @@ public class UpnpUtil {
                             .hasMoreElements();) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
                         if (!inetAddress.isLoopbackAddress()) {
-                            String ip = inetAddress.getHostAddress().toString();
+                            String ip = inetAddress.getHostAddress();
 
                             if (ip == null) {
                                 continue;
@@ -160,7 +141,7 @@ public class UpnpUtil {
                         .hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
-                        ipaddress = inetAddress.getHostAddress().toString();
+                        ipaddress = inetAddress.getHostAddress();
                         if (!ipaddress.contains("::")) {// ipV6的地址
                             Log.e(TAG, ipaddress);
                             return ipaddress;

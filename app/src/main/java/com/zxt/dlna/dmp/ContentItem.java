@@ -78,11 +78,8 @@ public class ContentItem {
 
 		ContentItem that = (ContentItem) o;
 
-		if (!id.equals(that.id))
-			return false;
-
-		return true;
-	}
+        return id.equals(that.id);
+    }
 
 	@Override
 	public int hashCode() {

@@ -49,7 +49,7 @@ public class IndexActivity extends TabActivity {
         mTabHost.addTab(spec);
         mTabHost.setCurrentTab(0);
 
-        RadioGroup radioGroup = (RadioGroup) this
+        RadioGroup radioGroup = this
                 .findViewById(R.id.main_tab_group);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 

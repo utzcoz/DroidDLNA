@@ -39,11 +39,8 @@ public class CommonUtil {
 
     public static boolean hasSDCard() {
         String status = Environment.getExternalStorageState();
-        if (!status.equals(Environment.MEDIA_MOUNTED)) {
-            // log.e("No sdcard");
-            return false;
-        }
-        return true;
+        // log.e("No sdcard");
+        return status.equals(Environment.MEDIA_MOUNTED);
     }
 
     public static String getRootFilePath() {

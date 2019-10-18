@@ -128,7 +128,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 				break;
 			}
 
-		};
+		}
 	};
 
 	public static void playImage(String url) {
@@ -160,22 +160,22 @@ public class ImageDisplay extends Activity implements OnClickListener,
 	}
 
 	private void initView() {
-		mImageView = (SuperImageView) this.findViewById(R.id.imageView);
-		mPreBtn = (Button) this.findViewById(R.id.preButton);
-		mNextBtn = (Button) this.findViewById(R.id.nextButton);
-		mButtonLayout = (LinearLayout) this.findViewById(R.id.buttonLayout);
+		mImageView = this.findViewById(R.id.imageView);
+		mPreBtn = this.findViewById(R.id.preButton);
+		mNextBtn = this.findViewById(R.id.nextButton);
+		mButtonLayout = this.findViewById(R.id.buttonLayout);
 		mPreBtn.setOnClickListener(this);
 		mNextBtn.setOnClickListener(this);
 		mImageView.setOnTouchListener(this);
-		mSpinner = (ProgressBar) findViewById(R.id.loading);
+		mSpinner = findViewById(R.id.loading);
 
-		mDownloadBtn = (Button) this.findViewById(R.id.downloadButton);
+		mDownloadBtn = this.findViewById(R.id.downloadButton);
 		mDownloadBtn.setOnClickListener(this);
-		mSharedBtn = (Button) this.findViewById(R.id.sharedButton);
+		mSharedBtn = this.findViewById(R.id.sharedButton);
 		mSharedBtn.setOnClickListener(this);
-		mSlideBtn = (Button) this.findViewById(R.id.slideButton);
+		mSlideBtn = this.findViewById(R.id.slideButton);
 		mSlideBtn.setOnClickListener(this);
-		mRotateBtn = (Button) this.findViewById(R.id.rotateButton);
+		mRotateBtn = this.findViewById(R.id.rotateButton);
 		mRotateBtn.setOnClickListener(this);
 	}
 
@@ -263,7 +263,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 		} else {
 			isLast = false;
 			mCurrentPosition = mCurrentPosition + 1;
-			String uri = ((ContentItem) mListPhotos.get(mCurrentPosition))
+			String uri = mListPhotos.get(mCurrentPosition)
 					.getItem().getFirstResource().getValue();
 			if (!TextUtils.isEmpty(uri)) {
 				mPlayUri = uri;
@@ -274,7 +274,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 					try {
 						dmcControl.setCurrentPlayPath(mPlayUri,
 								new GenerateXml()
-										.generate((ContentItem) mListPhotos
+										.generate(mListPhotos
 												.get(mCurrentPosition)));
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -296,7 +296,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 		} else {
 			isFirst = false;
 			mCurrentPosition = mCurrentPosition - 1;
-			String uri = ((ContentItem) mListPhotos.get(mCurrentPosition))
+			String uri = mListPhotos.get(mCurrentPosition)
 					.getItem().getFirstResource().getValue();
 			if (!TextUtils.isEmpty(uri)) {
 				mPlayUri = uri;
@@ -306,7 +306,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 					try {
 						dmcControl.setCurrentPlayPath(mPlayUri,
 								new GenerateXml()
-										.generate((ContentItem) mListPhotos
+										.generate(mListPhotos
 												.get(mCurrentPosition)));
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -403,7 +403,7 @@ public class ImageDisplay extends Activity implements OnClickListener,
 		if (!isLocalDmr) {
 			try {
 				dmcControl.setCurrentPlayPath(mPlayUri, new GenerateXml()
-						.generate((ContentItem) mListPhotos
+						.generate(mListPhotos
 								.get(mCurrentPosition)));
 			} catch (Exception e) {
 				e.printStackTrace();

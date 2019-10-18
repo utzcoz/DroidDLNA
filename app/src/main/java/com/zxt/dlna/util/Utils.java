@@ -119,7 +119,7 @@ public class Utils {
 	public static String unitFormat(int i) {
 		String retStr = null;
 		if (i >= 0 && i < 10)
-			retStr = "0" + Integer.toString(i);
+			retStr = "0" + i;
 		else
 			retStr = "" + i;
 		return retStr;
@@ -133,11 +133,11 @@ public class Utils {
 		// i = paramContentItem.getItem().getResources().size();
 		// if (str1.equals(""))
 		// return str1;
-		if (((Res) paramContentItem.getItem().getResources().get(i)).getValue() != null) {
-			String str2 = ((Res) paramContentItem.getItem().getResources()
-					.get(i)).getResolution();
+		if (paramContentItem.getItem().getResources().get(i).getValue() != null) {
+			String str2 = paramContentItem.getItem().getResources()
+					.get(i).getResolution();
 			if (str2 != null) {
-				str1 = ((Res) paramContentItem.getItem().getResources().get(i))
+				str1 = paramContentItem.getItem().getResources().get(i)
 						.getValue();
 				String[] arrayOfString = str2.split("x");
 				arrayOfInt[i] = (Integer.parseInt(arrayOfString[0]) * Integer

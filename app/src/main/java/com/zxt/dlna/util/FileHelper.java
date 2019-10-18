@@ -37,11 +37,8 @@ public class FileHelper {
 		}
 
 		File f = new File(filePath);
-		if (!f.exists()) {
-			return false;
-		}
-		return true;
-	}
+        return f.exists();
+    }
 	
 	public static InputStream readFile(String filePath) {
 		if (null == filePath) {
@@ -310,11 +307,11 @@ public class FileHelper {
 			Log.i(TAG,"Exception, ex: " + ex.toString());
 		} finally {
 			if(null != is) {
-				try{is.close();} catch(Exception ex) {};
-			}
+				try{is.close();} catch(Exception ex) {}
+            }
 			if(null != os) {
-				try{os.close();} catch(Exception ex) {};
-			}
+				try{os.close();} catch(Exception ex) {}
+            }
 		}
 		return false;
 	}
@@ -360,8 +357,8 @@ public class FileHelper {
 			Log.i(TAG,"Exception, ex: " + ex.toString());
 		} finally {
 			if (null != is) {
-				try {is.close();} catch(Exception ex) {};
-			}
+				try {is.close();} catch(Exception ex) {}
+            }
 		}
 		return null;
 	}
@@ -405,8 +402,8 @@ public class FileHelper {
 			Log.i(TAG,"Exception, ex: " + ex.toString());
 		} finally {
 			if(null != fos) {
-				try { fos.close(); } catch(Exception ex) {};
-			}
+				try { fos.close(); } catch(Exception ex) {}
+            }
 		}
 		return false;
 	}
@@ -482,7 +479,7 @@ public class FileHelper {
 		ZipEntry entry;
 		ZipFile zipfile = new ZipFile(fileName);
 		Enumeration<?> enumeration = zipfile.entries();
-		byte data[] = new byte[FILE_BUFFER_SIZE];
+        byte[] data = new byte[FILE_BUFFER_SIZE];
 		Log.i(TAG,"unZipDir: " + unZipDir);
 
 		while (enumeration.hasMoreElements()) {

@@ -25,7 +25,7 @@ public class GetMuteCallback extends GetMute {
 
 	public void received(ActionInvocation paramActionInvocation,
 			boolean paramBoolean) {
-		Log.i("DMC", "get mute status:" + Boolean.toString(paramBoolean));
+		Log.i("DMC", "get mute status:" + paramBoolean);
 		Message localMessage = new Message();
 		localMessage.what = DMCControlMessage.SETMUTE;
 		Bundle localBundle = new Bundle();

@@ -160,7 +160,7 @@ public class AVTransportService extends AbstractAVTransportService {
             }
 
 //            final ClockTime ct = ClockTime.fromSeconds(ModelUtil.fromTimeString(target));
-            int pos = (int) (Utils.getRealTime(target) * 1000);
+            int pos = Utils.getRealTime(target) * 1000;
             Log.i(TAG,"### " + unit + " target: "+ target +"  pos: " + pos);
 
 //            if (getInstance(instanceId).getCurrentTransportInfo().getCurrentTransportState()

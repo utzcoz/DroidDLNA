@@ -112,12 +112,12 @@ public class SuperImageView extends ImageView {
 	}
 
 	private void fixScale() {
-		float p[] = new float[9];
+		float[] p = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
 
-		float minScale = Math.min((float) viewW / (float) rotatedImageW,
-				(float) viewH / (float) rotatedImageH);
+		float minScale = Math.min(viewW / rotatedImageW,
+				viewH / rotatedImageH);
 		if (curScale < minScale) {
 			if (curScale > 0) {
 				double scale = minScale / curScale;
@@ -133,12 +133,12 @@ public class SuperImageView extends ImageView {
 	}
 
 	private float maxPostScale() {
-		float p[] = new float[9];
+		float[] p = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
 
-		float minScale = Math.min((float) viewW / (float) rotatedImageW,
-				(float) viewH / (float) rotatedImageH);
+		float minScale = Math.min(viewW / rotatedImageW,
+				viewH / rotatedImageH);
 		float maxScale = Math.max(minScale, MAX_SCALE);
 		return maxScale / curScale;
 	}
@@ -305,12 +305,12 @@ public class SuperImageView extends ImageView {
 	}
 
 	private void doubleClick(float x, float y) {
-		float p[] = new float[9];
+		float[] p = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
 
-		float minScale = Math.min((float) viewW / (float) rotatedImageW,
-				(float) viewH / (float) rotatedImageH);
+		float minScale = Math.min(viewW / rotatedImageW,
+				viewH / rotatedImageH);
 		if (curScale <= minScale + 0.01) { // 放大
 			float toScale = Math.max(minScale, MAX_SCALE) / curScale;
 			matrix.postScale(toScale, toScale, x, y);

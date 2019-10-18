@@ -84,10 +84,7 @@ public class DeviceItem {
 
         DeviceItem that = (DeviceItem) o;
 
-        if (!udn.equals(that.udn))
-            return false;
-
-        return true;
+        return udn.equals(that.udn);
     }
 
     @Override

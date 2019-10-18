@@ -2,18 +2,6 @@
 <resources>
 
     <string name="appName">Droid DLNA</string>
-    <string name="deviceDetails">device details</string>
-    <string name="searchLAN">search network</string>
-    <string name="switchRouter">switch network route</string>
-    <string name="toggleDebugLogging">switch debug logging</string>
-    <string name="OK">OK</string>
-    <string name="searchingLAN">searching Upnp devices on network&#8230;</string>
-    <string name="enablingRouter">Enabling network router&#8230;</string>
-    <string name="disablingRouter">Disabling network router&#8230;</string>
-    <string name="errorSwitchingRouter">Error switching router: </string>
-    <string name="enablingDebugLogging">Enabling debug logging&#8230;</string>
-    <string name="disablingDebugLogging">Disabling debug logging&#8230;</string>
-    <string name="deviceDetailsNotYetAvailable">Device details are being discovered, please wait.</string>
     <string name="search_lan">search devices</string>
     <string name="searching_lan">searching Upnp devices on network&#8230;</string>
     <string name="create_demo_failed">Creating of device failed, check the log!</string>

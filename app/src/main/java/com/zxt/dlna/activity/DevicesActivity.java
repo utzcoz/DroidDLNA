@@ -187,7 +187,7 @@ public class DevicesActivity extends Activity {
 
                 if (null != mDmrList && mDmrList.size() > 0) {
 
-                    if (null != mDmrList.get(arg2).getDevice()
+                    BaseApplication.isLocalDmr = null != mDmrList.get(arg2).getDevice()
                             && null != BaseApplication.deviceItem
                             && null != mDmrList.get(arg2).getDevice()
                             .getDetails().getModelDetails()
@@ -199,11 +199,7 @@ public class DevicesActivity extends Activity {
                                     .getFriendlyName()).equals(
                             Utils.getDevName(BaseApplication.deviceItem
                                     .getDevice().getDetails()
-                                    .getFriendlyName()))) {
-                        BaseApplication.isLocalDmr = true;
-                    } else {
-                        BaseApplication.isLocalDmr = false;
-                    }
+                                    .getFriendlyName()));
                     BaseApplication.dmrDeviceItem = mDmrList.get(arg2);
                     mDmrDevAdapter.notifyDataSetChanged();
                 }

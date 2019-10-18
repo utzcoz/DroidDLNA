@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -122,14 +123,7 @@ public class HttpServer
 		{
 			this.status = status;
 			this.mimeType = mimeType;
-			try
-			{
-				this.data = new ByteArrayInputStream( txt.getBytes("UTF-8"));
-			}
-			catch ( java.io.UnsupportedEncodingException uee )
-			{
-				uee.printStackTrace();
-			}
+			this.data = new ByteArrayInputStream( txt.getBytes(StandardCharsets.UTF_8));
 		}
 
 		/**
@@ -354,7 +348,7 @@ public class HttpServer
 					{
 						// Handle application/x-www-form-urlencoded
 						String postLine = "";
-						char pbuf[] = new char[512];
+						char[] pbuf = new char[512];
 						int read = in.read(pbuf);
 						while ( read >= 0 && !postLine.endsWith("\r\n") )
 						{

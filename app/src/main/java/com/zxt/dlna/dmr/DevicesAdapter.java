@@ -59,13 +59,13 @@ public class DevicesAdapter extends BaseAdapter {
         if (paramView == null) {
             paramView = this.mInflater.inflate(R.layout.dmr_item, null);
             localHolder = new Holder();
-            localHolder.filename = ((TextView) paramView.findViewById(R.id.dmr_name_tv));
+            localHolder.filename = paramView.findViewById(R.id.dmr_name_tv);
             paramView.setTag(localHolder);
         } else {
             localHolder = (Holder) paramView.getTag();
         }
 
-        DeviceItem localDeviceItem = (DeviceItem) this.deviceItems.get(paramInt);
+        DeviceItem localDeviceItem = this.deviceItems.get(paramInt);
         localHolder.filename.setText(localDeviceItem.toString());
         localHolder.filename.setTextColor(Color.WHITE);
         return paramView;

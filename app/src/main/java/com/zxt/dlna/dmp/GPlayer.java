@@ -137,7 +137,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         setContentView(R.layout.gplayer);
         mAudioManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
-        surfaceView = (SurfaceView) findViewById(R.id.gplayer_surfaceview);
+        surfaceView = findViewById(R.id.gplayer_surfaceview);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -175,27 +175,27 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private void initControl() {
         mediaController = new MediaController(this);
 
-        mBufferLayout = (RelativeLayout) findViewById(R.id.buffer_info);
-        mProgressBarPreparing = (ProgressBar) findViewById(R.id.player_prepairing);
-        mTextProgress = (TextView) findViewById(R.id.prepare_progress);
-        mTextInfo = (TextView) findViewById(R.id.info);
+        mBufferLayout = findViewById(R.id.buffer_info);
+        mProgressBarPreparing = findViewById(R.id.player_prepairing);
+        mTextProgress = findViewById(R.id.prepare_progress);
+        mTextInfo = findViewById(R.id.info);
 
-        mLayoutTop = (RelativeLayout) findViewById(R.id.layout_top);
-        mVideoTitle = (TextView) findViewById(R.id.video_title);
-        mLeftButton = (Button) findViewById(R.id.topBar_back);
-        mRightButton = (Button) findViewById(R.id.topBar_list_switch);
+        mLayoutTop = findViewById(R.id.layout_top);
+        mVideoTitle = findViewById(R.id.video_title);
+        mLeftButton = findViewById(R.id.topBar_back);
+        mRightButton = findViewById(R.id.topBar_list_switch);
         mLeftButton.setOnClickListener(this);
         mRightButton.setOnClickListener(this);
 
-        mTextViewTime = (TextView) findViewById(R.id.current_time);
-        mTextViewLength = (TextView) findViewById(R.id.totle_time);
-        mPauseButton = (ImageButton) findViewById(R.id.play);
+        mTextViewTime = findViewById(R.id.current_time);
+        mTextViewLength = findViewById(R.id.totle_time);
+        mPauseButton = findViewById(R.id.play);
         mPauseButton.setOnClickListener(this);
-        mLayoutBottom = (LinearLayout) findViewById(R.id.layout_control);
-        mTextProgress = (TextView) findViewById(R.id.prepare_progress);
-        mTextInfo = (TextView) findViewById(R.id.info);
+        mLayoutBottom = findViewById(R.id.layout_control);
+        mTextProgress = findViewById(R.id.prepare_progress);
+        mTextInfo = findViewById(R.id.info);
 
-        mSeekBarProgress = (SeekBar) findViewById(R.id.seekBar_progress);
+        mSeekBarProgress = findViewById(R.id.seekBar_progress);
         mSeekBarProgress.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
@@ -228,9 +228,9 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         });
 
-        mSound = (ImageView) findViewById(R.id.sound);
+        mSound = findViewById(R.id.sound);
         mSound.setOnClickListener(this);
-        mSeekBarSound = (SeekBar) findViewById(R.id.seekBar_sound);
+        mSeekBarSound = findViewById(R.id.seekBar_sound);
         mSeekBarSound.setMax(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         mSeekBarSound.setProgress(mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
         mSeekBarSound.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -440,11 +440,11 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
             float widthRatio = (float) videoWidth / (float) currentDisplay.getWidth();
             if (heightRatio > 1 || widthRatio > 1) {
                 if (heightRatio > widthRatio) {
-                    videoHeight = (int) Math.ceil((float) videoHeight / (float) heightRatio);
-                    videoWidth = (int) Math.ceil((float) videoWidth / (float) heightRatio);
+                    videoHeight = (int) Math.ceil((float) videoHeight / heightRatio);
+                    videoWidth = (int) Math.ceil((float) videoWidth / heightRatio);
                 } else {
-                    videoHeight = (int) Math.ceil((float) videoHeight / (float) widthRatio);
-                    videoWidth = (int) Math.ceil((float) videoWidth / (float) widthRatio);
+                    videoHeight = (int) Math.ceil((float) videoHeight / widthRatio);
+                    videoWidth = (int) Math.ceil((float) videoWidth / widthRatio);
                 }
             }
         }

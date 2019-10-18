@@ -98,7 +98,7 @@ public class ShakeListener implements SensorEventListener {
 
 	// 摇晃监听接口
 	public interface OnShakeListener {
-		public void onShake();
+		void onShake();
 	}
 
 	// 设置重力感应监听器
