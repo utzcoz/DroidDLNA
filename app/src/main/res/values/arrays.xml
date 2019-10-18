@@ -15,16 +15,5 @@
         <item>15</item>
         <item>30</item>   
     </string-array>
-    
-    <string-array name="entries_media">
-        <item>Image</item>
-        <item>Video</item>
-        <item>Music</item> 
-    </string-array>
-    <string-array name="entryvalues_media">
-        <item>image</item>
-        <item>video</item>
-        <item>music</item> 
-    </string-array>
-  
+
 </resources>

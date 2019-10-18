@@ -15,16 +15,9 @@
     <string name="disablingDebugLogging">Disabling debug logging&#8230;</string>
     <string name="deviceDetailsNotYetAvailable">Device details are being discovered, please wait.</string>
     <string name="search_lan">search devices</string>
-    <string name="toggle_debug_logging">Toggle debug logging</string>
     <string name="searching_lan">searching Upnp devices on network&#8230;</string>
-    <string name="enabling_debug_logging">Enabling debug logging&#8230;</string>
-    <string name="disabling_debug_logging">Disabling debug logging&#8230;</string>
-    <string name="registering_demo_device">Registering UPnP device&#8230;</string>
     <string name="create_demo_failed">Creating of device failed, check the log!</string>
-    <string name="sear_dmr">Find DMR</string>
     <string name="dialog_wait_msg">Loading&#8230;</string>
-    <string name="player_play_msg">play</string>
-    <string name="player_pause_msg">pause</string>
     <string name="ip_get_fail">fail to get IP</string>
 
     <!-- tab -->
@@ -36,7 +29,6 @@
     <!-- control -->
     <string name="not_select_dev">choose device</string>
     <string name="get_data_err">fail to get data，try again</string>
-    <string name="conn_err">fail to get connection</string>
     <string name="min_voc">already lowest voice</string>
     <string name="media_name_def">media name</string>
     <string name="media_name_brief">media introduction</string>
@@ -68,14 +60,9 @@
 
     <!-- setting -->
     <string name="about_app">version 2.0.0</string>
-    <string name="open_msg">on</string>
-    <string name="off_msg">off</string>
     <string name="share_content">share media content</string>
     <string name="share_content_on">start sharing content， other devices can check local media files with DLNA/Upnp protocols</string>
     <string name="share_content_off">stop sharing content， other devices can not check local media files with DLNA/Upnp protocols</string>
-    <string name="share_content_setting">set media content sharing</string>
-    <string name="share_content_setting_breif">share content you prefer with families and friends</string>
-    <string name="device_name">device name</string>
     <string name="dms_name">media server name</string>
     <string name="dms_name_breif">you can find local media server name on other devices</string>
     <string name="device_local">DroidDLNA Media Server</string>
@@ -89,9 +76,6 @@
     <string name="net_setting_breif">set and manage wireless network access points</string>
     <string name="slideshow">slide</string>
     <string name="slideshow_breif">set intervals of playing slide</string>
-    <string name="thumbnails">zoom icon</string>
-    <string name="thumbnails_breif">hide zooming icon</string>
-    <string name="setting_msg">setting</string>
     <string name="about_brief">DroidDLNA is a full featured UPnP/DLNA Control Point, UPnP Media Renderer and UPnP Media Server. This app is based on Cling 2.0, Cling is a UPnP-compatible software stack for Java environments.\n Play easily your music, videos and images on your phone and devices on your network (DLNA TVs, XBMC, WMP, ...), from your external UPnP Media Servers. Play your phone/tablet media to those devices.</string>
 
     <!-- Menu -->
