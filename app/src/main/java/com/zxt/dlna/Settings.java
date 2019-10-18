@@ -1,6 +1,7 @@
 package com.zxt.dlna;
 
 public class Settings {
+    private static String UUID = "";
 
     public static boolean getRenderOn() {
         return true;
@@ -20,5 +21,13 @@ public class Settings {
 
     public static int getSlideTime() {
         return 5;
+    }
+
+    public static void setUUID(String uuid) {
+        UUID = uuid;
+    }
+
+    public static String getUUID() {
+        return UUID;
     }
 }

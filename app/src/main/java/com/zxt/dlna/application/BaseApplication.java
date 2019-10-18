@@ -1,6 +1,5 @@
 package com.zxt.dlna.application;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
@@ -22,38 +21,10 @@ public class BaseApplication extends Application {
 
     public static AndroidUpnpService upnpService;
 
-    @SuppressLint("StaticFieldLeak")
-    public static Context mContext;
-
-    private static String hostAddress;
-
-    private static String hostName;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
         initImageLoader(getApplicationContext());
-    }
-
-    public static Context getContext() {
-        return mContext;
-    }
-
-    public static String getHostAddress() {
-        return hostAddress;
-    }
-
-    public static void setHostAddress(String hostAddress) {
-        BaseApplication.hostAddress = hostAddress;
-    }
-
-    public static String getHostName() {
-        return hostName;
-    }
-
-    public static void setHostName(String hostName) {
-        BaseApplication.hostName = hostName;
     }
 
     public static void initImageLoader(Context context) {

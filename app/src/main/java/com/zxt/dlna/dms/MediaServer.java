@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.zxt.dlna.Settings;
-import com.zxt.dlna.application.BaseApplication;
 import com.zxt.dlna.util.FileUtil;
 import com.zxt.dlna.util.UpnpUtil;
 import com.zxt.dlna.util.Utils;
@@ -38,7 +37,7 @@ public class MediaServer {
 
     private final static String LOGTAG = "MediaServer";
 
-    public final static int PORT = 8192;
+    private final static int PORT = 8192;
     private Context mContext;
 
     public MediaServer(Context context) throws ValidationException {
@@ -78,10 +77,6 @@ public class MediaServer {
 
     public LocalDevice getDevice() {
         return localDevice;
-    }
-
-    public String getAddress() {
-        return BaseApplication.getHostAddress() + ":" + PORT;
     }
 
     private Icon createDefaultDeviceIcon() {

@@ -1,9 +1,10 @@
 
 package com.zxt.dlna.util;
 
+import android.os.Build;
 import android.util.Log;
 
-import com.zxt.dlna.application.BaseApplication;
+import com.zxt.dlna.Settings;
 
 import org.fourthline.cling.model.types.UDN;
 
@@ -17,14 +18,10 @@ public class UpnpUtil {
 
     public static UDN uniqueSystemIdentifier(String salt) {
         StringBuilder systemSalt = new StringBuilder();
-        Log.d(TAG, "host:" + BaseApplication.getHostName() + " ip:" + BaseApplication.getHostAddress());
-        if (null != BaseApplication.getHostName()
-                && null != BaseApplication.getHostAddress()) {
-            systemSalt.append(BaseApplication.getHostName()).append(
-                    BaseApplication.getHostAddress());
-        }
-        systemSalt.append(android.os.Build.MODEL);
-        systemSalt.append(android.os.Build.MANUFACTURER);
+        systemSalt.append(Settings.getUUID());
+        systemSalt.append(Build.MODEL);
+        systemSalt.append(Build.MANUFACTURER);
+        Log.i(TAG, "uniqueSystemIdentifier " + systemSalt.toString());
 
         try {
             byte[] hash = MessageDigest.getInstance("MD5").digest(systemSalt.toString().getBytes());
