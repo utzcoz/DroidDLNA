@@ -1,23 +1,7 @@
 
 package com.zxt.dlna.activity;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import com.zxt.dlna.application.BaseApplication;
-import com.zxt.dlna.dms.ContentTree;
-import com.zxt.dlna.util.FileUtil;
-import com.zxt.dlna.util.ImageUtil;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,17 +13,38 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.widget.Toast;
-import com.zxt.dlna.R;
 
-public class StartActivity extends Activity {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.zxt.dlna.R;
+import com.zxt.dlna.application.BaseApplication;
+import com.zxt.dlna.dms.ContentTree;
+import com.zxt.dlna.util.FileUtil;
+import com.zxt.dlna.util.ImageUtil;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class StartActivity extends AppCompatActivity {
+
+    private static final int REQUEST_PERMISSION_STORAGE = 1;
 
     public static final int GET_IP_FAIL = 0;
 
     public static final int GET_IP_SUC = 1;
 
     private Context mContext;
-
-//    private ProgressDialog progDialog = null;
 
     private String hostName;
 
@@ -82,12 +87,31 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_lay);
         mContext = this;
+        requestPermissions();
         createFolder();
         getVideoFilePaths();
         createVideoThumb();
         getIp();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(REQUEST_PERMISSION_STORAGE)
+    private void requestPermissions() {
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // Already have permission, do the thing
+            // ...
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "Need storage permission",
+                    REQUEST_PERMISSION_STORAGE, perms);
+        }
+    }
 
     private void createFolder() {
         FileUtil.createSDCardDir(true);

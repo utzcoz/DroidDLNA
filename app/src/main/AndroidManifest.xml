@@ -1,32 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.zxt.dlna"
     android:versionCode="2"
-    android:versionName="2.0" >
+    android:versionName="2.0">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
-    </uses-permission>
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="21" />
 
     <application
         android:name="com.zxt.dlna.application.BaseApplication"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/appName"
-        android:allowBackup="false"
-        android:theme="@style/Theme.Design">
+        android:theme="@style/Theme.AppCompat">
 
         <activity
             android:name="com.zxt.dlna.activity.StartActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,44 +24,38 @@
         <activity
             android:name="com.zxt.dlna.activity.IndexActivity"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.zxt.dlna.activity.DevicesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.zxt.dlna.activity.ContentActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.zxt.dlna.activity.ControlActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.zxt.dlna.activity.SettingActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.zxt.dlna.activity.AboutActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.zxt.dlna.dmp.GPlayer"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
             <!-- This filter captures protocols without type info -->
             <intent-filter>
@@ -119,16 +101,23 @@
         <activity
             android:name="com.zxt.dlna.dmp.ImageDisplay"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.zxt.dlna.dmc.RemoteVideoPlay"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
 
         <service android:name="com.zxt.dlna.dmr.RenderPlayerService" />
         <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl" />
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

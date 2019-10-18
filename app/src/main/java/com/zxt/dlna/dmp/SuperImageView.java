@@ -301,7 +301,7 @@ public class SuperImageView extends ImageView {
 	private float spacing(float x1, float y1, float x2, float y2) {
 		float x = x1 - x2;
 		float y = y1 - y2;
-		return FloatMath.sqrt(x * x + y * y);
+		return (float) Math.sqrt(x * x + y * y);
 	}
 
 	private void doubleClick(float x, float y) {
@@ -327,7 +327,7 @@ public class SuperImageView extends ImageView {
                 Config.ARGB_8888); // 背景图片
         Canvas canvas = new Canvas(bitmap); // 新建画布
         canvas.drawBitmap(this.getDrawingCache(), matrix, null); // 画图片
-        canvas.save(Canvas.ALL_SAVE_FLAG); // 保存画布
+        canvas.save(); // 保存画布
         canvas.restore();
         File saveFile = new File(path);
         if (!saveFile.exists()) {
