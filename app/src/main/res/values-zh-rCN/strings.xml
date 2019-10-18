@@ -17,23 +17,15 @@
     <string name="search_lan">搜索设备</string>
     <string name="searching_lan">正在搜索网络中的Upnp设备&#8230;</string>
     <string name="create_demo_failed">Creating of device failed, check the log!</string>
-    <string name="dialog_wait_msg">正在加载中&#8230;</string>
     <string name="ip_get_fail">获取IP地址失败</string>
 
     <!-- tab -->
     <string name="device">设备</string>
-    <string name="control">控制台</string>
     <string name="setting">设置</string>
 
     <!-- control -->
-    <string name="not_select_dev">请选择设备</string>
-    <string name="get_data_err">获取数据失败，请重新选择文件</string>
     <string name="min_voc">已经是最小声音了</string>
-    <string name="media_name_def">媒体名称</string>
-    <string name="media_name_brief">媒体简介</string>
-    <string name="media_init_time">00:00:00</string>
-    <string name="media_play_err">播放失败</string>
-    
+
     <!-- device -->
     <string name="device_msg">媒体内容服务</string>
     <string name="dmr_msg">播放器</string>

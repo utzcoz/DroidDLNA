@@ -17,22 +17,14 @@
     <string name="search_lan">search devices</string>
     <string name="searching_lan">searching Upnp devices on network&#8230;</string>
     <string name="create_demo_failed">Creating of device failed, check the log!</string>
-    <string name="dialog_wait_msg">Loading&#8230;</string>
     <string name="ip_get_fail">fail to get IP</string>
 
     <!-- tab -->
     <string name="device">device</string>
-    <string name="control">console</string>
     <string name="setting">setting</string>
 
     <!-- control -->
-    <string name="not_select_dev">choose device</string>
-    <string name="get_data_err">fail to get data，try again</string>
     <string name="min_voc">already lowest voice</string>
-    <string name="media_name_def">media name</string>
-    <string name="media_name_brief">media introduction</string>
-    <string name="media_init_time">00:00:00</string>
-    <string name="media_play_err">fail to play</string>
 
     <!-- device -->
     <string name="device_msg">media content service</string>

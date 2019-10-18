@@ -19,8 +19,6 @@ public class IndexActivity extends TabActivity {
 
     private static RadioButton mDeviceRb;
 
-    private static RadioButton mControlRb;
-
     private static RadioButton mSettingsRb;
 
     @Override
@@ -33,7 +31,6 @@ public class IndexActivity extends TabActivity {
     private void findViews() {
 
         mDeviceRb = findViewById(R.id.main_tab_devices);
-        mControlRb = findViewById(R.id.main_tab_control);
         mSettingsRb = findViewById(R.id.main_tab_settings);
 
         mTabHost = this.getTabHost();
@@ -44,11 +41,6 @@ public class IndexActivity extends TabActivity {
         intent = new Intent().setClass(this, DevicesActivity.class);
         spec = mTabHost.newTabSpec(getString(R.string.device))
                 .setIndicator(getString(R.string.device)).setContent(intent);
-        mTabHost.addTab(spec);
-
-        intent = new Intent().setClass(this, ControlActivity.class);
-        spec = mTabHost.newTabSpec(getString(R.string.control))
-                .setIndicator(getString(R.string.control)).setContent(intent);
         mTabHost.addTab(spec);
 
         intent = new Intent().setClass(this, SettingActivity.class);
@@ -67,9 +59,6 @@ public class IndexActivity extends TabActivity {
                 switch (checkedId) {
                     case R.id.main_tab_devices:
                         mTabHost.setCurrentTabByTag(getString(R.string.device));
-                        break;
-                    case R.id.main_tab_control:
-                        mTabHost.setCurrentTabByTag(getString(R.string.control));
                         break;
                     case R.id.main_tab_settings:
                         mTabHost.setCurrentTabByTag(getString(R.string.setting));
@@ -97,9 +86,5 @@ public class IndexActivity extends TabActivity {
                 break;
         }
         return false;
-    }
-
-    public static void setSelect() {
-        mControlRb.setChecked(true);
     }
 }
