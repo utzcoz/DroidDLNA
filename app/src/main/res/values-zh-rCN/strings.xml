@@ -5,7 +5,6 @@
     <string name="search_lan">搜索设备</string>
     <string name="searching_lan">正在搜索网络中的Upnp设备&#8230;</string>
     <string name="create_demo_failed">Creating of device failed, check the log!</string>
-    <string name="ip_get_fail">获取IP地址失败</string>
 
     <!-- tab -->
 
