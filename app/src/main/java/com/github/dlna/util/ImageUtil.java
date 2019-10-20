@@ -1,9 +1,6 @@
 package com.github.dlna.util;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore.Video.Thumbnails;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -25,18 +22,6 @@ public class ImageUtil {
      * jpeg后缀
      */
     public static final String JPEG_SUFFIX = ".jpeg";
-
-    public static final String VIDEO_THUMBNAIL_PREFIX = "video_thumb_";
-
-    /**
-     * 拼装保存的videoThumb的路径
-     *
-     * @return
-     */
-    public static String getSaveVideoFilePath(String path, String id) {
-        return FileUtil.getSDPath() + FileUtil.VIDEO_THUMB_PATH
-                + File.separator + VIDEO_THUMBNAIL_PREFIX + id + PNG_SUFFIX;
-    }
 
     /**
      * 将Bitmap转化成图片存在本地，图片格式由文件路径的后缀名获得，支持png和jpg
@@ -72,20 +57,4 @@ public class ImageUtil {
             out.close();
         }
     }
-
-    @SuppressLint("NewApi")
-    public static Bitmap getThumbnailForVideo(String videoAbsPath) {
-        Bitmap bitmap = null;
-
-        try {
-            bitmap = ThumbnailUtils.createVideoThumbnail(videoAbsPath,
-                    Thumbnails.MINI_KIND);
-        } catch (Exception e) {
-            // It will not get here.
-        }
-        return bitmap;
-    }
-
-    // 用于生成缩略图。
-
 }

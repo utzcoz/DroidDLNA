@@ -2,9 +2,6 @@
 <resources>
 
     <string name="appName">Droid DLNA</string>
-    <string name="search_lan">search devices</string>
-    <string name="searching_lan">searching Upnp devices on network&#8230;</string>
-    <string name="create_demo_failed">Creating of device failed, check the log!</string>
 
     <!-- tab -->
 
@@ -12,7 +9,6 @@
     <string name="min_voc">already lowest voice</string>
 
     <!-- device -->
-    <string name="dmr_msg">player</string>
     <string name="exit">press again to exit application</string>
 
     <!-- imageDispaly -->
@@ -36,7 +32,6 @@
     <!-- setting -->
 
     <!-- Menu -->
-    <string name="menu_exit">exit</string>
     <string name="listening">Listening</string>
 
 </resources>

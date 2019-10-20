@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.dlna.application.BaseApplication;
 import com.github.dlna.dmp.DeviceItem;
 import com.github.dlna.dmr.ZxtMediaRenderer;
-import com.github.dlna.dms.MediaServer;
 import com.github.dlna.util.FixedAndroidHandler;
 
 import org.fourthline.cling.android.AndroidUpnpService;
@@ -31,8 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DevicesActivity extends AppCompatActivity {
-    private static final Logger log = Logger.getLogger(DevicesActivity.class.getName());
-
     private final static String TAG = "DevicesActivity";
 
     private ArrayList<DeviceItem> mDmrList = new ArrayList<>();
@@ -42,8 +39,6 @@ public class DevicesActivity extends AppCompatActivity {
     private AndroidUpnpService upnpService;
 
     private DeviceListRegistryListener deviceListRegistryListener;
-
-    private MediaServer mediaServer;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -55,26 +50,11 @@ public class DevicesActivity extends AppCompatActivity {
 
             Log.v(TAG, "Connected to UPnP Service");
 
-            if (mediaServer == null && Settings.getDmsOn()) {
-                try {
-                    mediaServer = new MediaServer(DevicesActivity.this);
-                    upnpService.getRegistry().addDevice(mediaServer.getDevice());
-                } catch (Exception ex) {
-                    // TODO: handle exception
-                    log.log(Level.SEVERE, "Creating demo device failed", ex);
-                    Toast.makeText(DevicesActivity.this,
-                            R.string.create_demo_failed, Toast.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
-            }
-
             if (Settings.getRenderOn()) {
-                ZxtMediaRenderer mediaRenderer = new ZxtMediaRenderer(1,
-                        DevicesActivity.this);
+                ZxtMediaRenderer mediaRenderer =
+                        new ZxtMediaRenderer(1, DevicesActivity.this);
                 upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
-                deviceListRegistryListener.dmrAdded(new DeviceItem(
-                        mediaRenderer.getDevice()));
+                deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
             }
 
             // Getting ready for future device advertisements
@@ -143,15 +123,6 @@ public class DevicesActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    protected void searchNetwork() {
-        if (upnpService == null) {
-            return;
-        }
-        Toast.makeText(this, R.string.searching_lan, Toast.LENGTH_SHORT).show();
-        upnpService.getRegistry().removeAllRemoteDevices();
-        upnpService.getControlPoint().search();
     }
 
     public class DeviceListRegistryListener extends DefaultRegistryListener {

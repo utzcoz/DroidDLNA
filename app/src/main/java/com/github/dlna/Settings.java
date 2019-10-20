@@ -11,10 +11,6 @@ public class Settings {
         return "DroidDLNA Local Render";
     }
 
-    public static boolean getDmsOn() {
-        return true;
-    }
-
     public static String getDeviceName() {
         return "DroidDLNA Media Server";
     }

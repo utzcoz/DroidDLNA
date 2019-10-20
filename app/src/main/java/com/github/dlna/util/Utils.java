@@ -55,14 +55,4 @@ public class Utils {
             retStr = "" + i;
         return retStr;
     }
-
-    public static String getDevName(String friendlyName) {
-        String name = "";
-        if (friendlyName.contains("(") && friendlyName.contains(")")) {
-            int beginIndex = friendlyName.indexOf("(") + 1;
-            int lastIndex = friendlyName.indexOf(")");
-            name = friendlyName.substring(beginIndex, lastIndex);
-        }
-        return name;
-    }
 }

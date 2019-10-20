@@ -18,8 +18,6 @@ public class BaseApplication extends Application {
     private static final String SP_NAME_UUID = "sp_name_uuid";
     private static final String SP_KEY_UUID = "uuid";
 
-    public static DeviceItem deviceItem;
-
     public static DeviceItem dmrDeviceItem;
 
     public static boolean isLocalDmr = true;

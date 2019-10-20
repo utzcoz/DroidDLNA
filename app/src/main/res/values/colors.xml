@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
-    <color name="bg_white">#f1f1f1</color>
-    <color name="list_select">#e7e4e2</color>
-    <color name="bg_wx_middle">#f8f8f8</color>
-
     <!-- listview -->
-    <color name="listview_bottom_line">#BCBCBC</color>
 
 </resources>

@@ -28,8 +28,7 @@ import static org.fourthline.cling.model.XMLUtil.appendNewElementIfNotNull;
 
 
 public class GenerateXml {
-    final private static Logger log = Logger.getLogger(GenerateXml.class
-            .getName());
+    final private static Logger log = Logger.getLogger(GenerateXml.class.getName());
 
     public static final String UNKNOWN_TITLE = "Unknown Title";
 
