@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dlna.dmp.DeviceItem;
 import com.github.dlna.dmr.ZxtMediaRenderer;
-import com.github.dlna.util.FixedAndroidHandler;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
@@ -22,11 +21,8 @@ import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
-import org.seamless.util.logging.LoggingUtil;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DevicesActivity extends AppCompatActivity {
     private final static String TAG = "DevicesActivity";
@@ -72,11 +68,6 @@ public class DevicesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Fix the logging integration between java.util.logging and Android
-        // internal logging
-        LoggingUtil.resetRootHandler(new FixedAndroidHandler());
-        Logger.getLogger("org.teleal.cling").setLevel(Level.INFO);
 
         setContentView(R.layout.devices);
         init();
