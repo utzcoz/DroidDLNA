@@ -37,5 +37,6 @@
 
     <!-- Menu -->
     <string name="menu_exit">exit</string>
+    <string name="listening">Listening</string>
 
 </resources>
