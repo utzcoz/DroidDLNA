@@ -1,5 +1,5 @@
 
-package com.github.dlna.application;
+package com.github.dlna;
 
 import com.github.dlna.dmp.ContentItem;
 

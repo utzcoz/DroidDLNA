@@ -32,10 +32,10 @@ public class RenderService extends Service {
     }
 
     @Override
-    public void onStart(Intent paramIntent, int paramInt) {
-        super.onStart(paramIntent, paramInt);
+    public int onStartCommand(Intent intent, int flags, int startId) {
         if (!this.isopen) {
             this.isopen = true;
         }
+        return super.onStartCommand(intent, flags, startId);
     }
 }

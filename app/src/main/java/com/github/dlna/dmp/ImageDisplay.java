@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.github.dlna.R;
 import com.github.dlna.Settings;
-import com.github.dlna.application.BaseApplication;
-import com.github.dlna.application.ConfigData;
+import com.github.dlna.BaseApplication;
+import com.github.dlna.ConfigData;
 import com.github.dlna.dmc.DMCControl;
 import com.github.dlna.dmc.GenerateXml;
 import com.github.dlna.util.FileUtil;

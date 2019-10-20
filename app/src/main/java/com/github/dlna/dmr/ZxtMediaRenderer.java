@@ -40,19 +40,18 @@ public class ZxtMediaRenderer {
 
     private static final String TAG = "GstMediaRenderer";
 
-    private final LocalServiceBinder binder = new AnnotationLocalServiceBinder();
-
     // These are shared between all "logical" player instances of a single service
-    private final LastChange avTransportLastChange = new LastChange(new AVTransportLastChangeParser());
-    private final LastChange renderingControlLastChange = new LastChange(new RenderingControlLastChangeParser());
+    private final LastChange avTransportLastChange =
+            new LastChange(new AVTransportLastChangeParser());
+    private final LastChange renderingControlLastChange =
+            new LastChange(new RenderingControlLastChangeParser());
 
     private final Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> mediaPlayers;
 
-    private final ServiceManager<ZxtConnectionManagerService> connectionManager;
     private final LastChangeAwareServiceManager<AVTransportService> avTransport;
     private final LastChangeAwareServiceManager<AudioRenderingControl> renderingControl;
 
-    final protected LocalDevice device;
+    private final LocalDevice device;
 
     private Context mContext;
 
@@ -77,8 +76,9 @@ public class ZxtMediaRenderer {
         };
 
         // The connection manager doesn't have to do much, HTTP is stateless
+        LocalServiceBinder binder = new AnnotationLocalServiceBinder();
         LocalService connectionManagerService = binder.read(ZxtConnectionManagerService.class);
-        connectionManager =
+        ServiceManager<ZxtConnectionManagerService> connectionManager =
                 new DefaultServiceManager(connectionManagerService) {
                     @Override
                     protected Object createServiceInstance() throws Exception {
@@ -102,14 +102,15 @@ public class ZxtMediaRenderer {
         avTransportService.setManager(avTransport);
 
         // The Rendering Control just passes the calls on to the backend players
-        LocalService<AudioRenderingControl> renderingControlService = binder.read(AudioRenderingControl.class);
+        LocalService<AudioRenderingControl> renderingControlService =
+                binder.read(AudioRenderingControl.class);
         renderingControl =
                 new LastChangeAwareServiceManager<AudioRenderingControl>(
                         renderingControlService,
                         new RenderingControlLastChangeParser()
                 ) {
                     @Override
-                    protected AudioRenderingControl createServiceInstance() throws Exception {
+                    protected AudioRenderingControl createServiceInstance() {
                         return new AudioRenderingControl(renderingControlLastChange, mediaPlayers);
                     }
                 };
@@ -119,8 +120,6 @@ public class ZxtMediaRenderer {
             UDN udn = UpnpUtil.uniqueSystemIdentifier("msidmr");
 
             device = new LocalDevice(
-                    //TODO zxt
-
                     new DeviceIdentity(udn),
                     new UDADeviceType("MediaRenderer", 1),
                     new DeviceDetails(

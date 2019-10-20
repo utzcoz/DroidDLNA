@@ -1,9 +1,8 @@
-package com.github.dlna.application;
+package com.github.dlna;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.github.dlna.Settings;
 import com.github.dlna.dmp.DeviceItem;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;

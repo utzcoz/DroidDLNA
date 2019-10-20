@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.dlna.application.BaseApplication;
 import com.github.dlna.dmp.DeviceItem;
 import com.github.dlna.dmr.ZxtMediaRenderer;
 import com.github.dlna.util.FixedAndroidHandler;

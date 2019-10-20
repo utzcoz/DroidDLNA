@@ -14,10 +14,7 @@ public class ZxtMediaPlayers extends ConcurrentHashMap<UnsignedIntegerFourBytes,
 
     final private static Logger log = Logger.getLogger(ZxtMediaPlayers.class.getName());
 
-    private final LastChange avTransportLastChange;
-    private final LastChange renderingControlLastChange;
     private Context mContext;
-
 
     ZxtMediaPlayers(int numberOfPlayers,
                     Context context,
@@ -25,8 +22,6 @@ public class ZxtMediaPlayers extends ConcurrentHashMap<UnsignedIntegerFourBytes,
                     LastChange renderingControlLastChange) {
         super(numberOfPlayers);
         this.mContext = context;
-        this.avTransportLastChange = avTransportLastChange;
-        this.renderingControlLastChange = renderingControlLastChange;
 
         for (int i = 0; i < numberOfPlayers; i++) {
             ZxtMediaPlayer player =
