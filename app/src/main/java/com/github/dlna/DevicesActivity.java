@@ -49,12 +49,10 @@ public class DevicesActivity extends AppCompatActivity {
 
             Log.v(TAG, "Connected to UPnP Service");
 
-            if (Settings.getRenderOn()) {
-                ZxtMediaRenderer mediaRenderer =
-                        new ZxtMediaRenderer(1, DevicesActivity.this);
-                upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
-                deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
-            }
+            ZxtMediaRenderer mediaRenderer =
+                    new ZxtMediaRenderer(1, DevicesActivity.this);
+            upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
+            deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
 
             // Getting ready for future device advertisements
             upnpService.getRegistry().addListener(deviceListRegistryListener);
