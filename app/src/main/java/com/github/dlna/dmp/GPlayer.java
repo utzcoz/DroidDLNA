@@ -160,7 +160,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         setTitle(intent);
         currentDisplay = getWindowManager().getDefaultDisplay();
 
-        registerBrocast();
+        registerBroadcast();
     }
 
     private void setTitle(Intent intent) {
@@ -276,7 +276,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     protected void onDestroy() {
         exit();
-        unregisterBrocast();
+        unregisterBroadcast();
         super.onDestroy();
     }
 
@@ -648,20 +648,20 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
     };
 
-    private PlayBrocastReceiver playRecevieBrocast = new PlayBrocastReceiver();
+    private PlayBroadcastReceiver playReceiverBroadcast = new PlayBroadcastReceiver();
 
-    public void registerBrocast() {
+    public void registerBroadcast() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Action.DMR);
         intentFilter.addAction(Action.VIDEO_PLAY);
-        registerReceiver(this.playRecevieBrocast, intentFilter);
+        registerReceiver(this.playReceiverBroadcast, intentFilter);
     }
 
-    public void unregisterBrocast() {
-        unregisterReceiver(this.playRecevieBrocast);
+    public void unregisterBroadcast() {
+        unregisterReceiver(this.playReceiverBroadcast);
     }
 
-    class PlayBrocastReceiver extends BroadcastReceiver {
+    class PlayBroadcastReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             String str1 = intent.getStringExtra("helpAction");
 
