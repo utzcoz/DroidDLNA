@@ -3,15 +3,20 @@ package com.github.dlna.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.github.dlna.Settings;
+import com.github.dlna.dmp.DeviceItem;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.github.dlna.dmp.DeviceItem;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 
+import java.util.UUID;
+
 public class BaseApplication extends Application {
+    private static final String SP_NAME_UUID = "sp_name_uuid";
+    private static final String SP_KEY_UUID = "uuid";
 
     public static DeviceItem deviceItem;
 
@@ -24,6 +29,16 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        String uuid =
+                getApplicationContext()
+                        .getSharedPreferences(SP_NAME_UUID, Context.MODE_PRIVATE)
+                        .getString(SP_KEY_UUID, UUID.randomUUID().toString());
+        Settings.setUUID(uuid);
+        getApplicationContext()
+                .getSharedPreferences(SP_NAME_UUID, Context.MODE_PRIVATE)
+                .edit()
+                .putString(SP_KEY_UUID, uuid).apply();
+
         initImageLoader(getApplicationContext());
     }
 

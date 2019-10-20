@@ -1,4 +1,4 @@
-package com.github.dlna.activity;
+package com.github.dlna;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,8 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.dlna.R;
-import com.github.dlna.Settings;
 import com.github.dlna.application.BaseApplication;
 import com.github.dlna.dmp.DeviceItem;
 import com.github.dlna.dmr.ZxtMediaRenderer;

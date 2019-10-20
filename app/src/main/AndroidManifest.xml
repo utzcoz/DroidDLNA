@@ -13,7 +13,9 @@
         android:theme="@style/Theme.AppCompat">
 
         <activity
-            android:name="com.github.dlna.activity.StartActivity"
+            android:name="com.github.dlna.DevicesActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.github.dlna.activity.DevicesActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.github.dlna.dmp.GPlayer"
             android:configChanges="orientation|keyboardHidden"
