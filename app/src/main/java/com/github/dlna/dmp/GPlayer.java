@@ -33,7 +33,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -49,23 +48,19 @@ import java.io.IOException;
 public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
         OnInfoListener, OnPreparedListener, OnSeekCompleteListener, OnVideoSizeChangedListener,
         SurfaceHolder.Callback, MediaController.MediaPlayerControl, OnClickListener {
+    private final static String TAG = "GPlayer";
+
     private static final int MEDIA_PLAYER_BUFFERING_UPDATE = 4001;
-
     private static final int MEDIA_PLAYER_COMPLETION = 4002;
-
     private static final int MEDIA_PLAYER_ERROR = 4003;
-
     private static final int MEDIA_PLAYER_INFO = 4004;
-
     private static final int MEDIA_PLAYER_PREPARED = 4005;
-
     private static final int MEDIA_PLAYER_PROGRESS_UPDATE = 4006;
-
     private static final int MEDIA_PLAYER_VIDEO_SIZE_CHANGED = 4007;
-
     private static final int MEDIA_PLAYER_VOLUME_CHANGED = 4008;
-
     private static final int MEDIA_PLAYER_HIDDEN_CONTROL = 4009;
+
+    private static MediaListener mediaListener;
 
     Display currentDisplay;
 
@@ -73,11 +68,9 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     SurfaceHolder surfaceHolder;
 
-    MediaPlayer mMediaPlayer;
+    MediaPlayer mediaPlayer;
 
     MediaController mediaController;
-
-    public static MediaListener mMediaListener;
 
     int videoWidth = 0;
 
@@ -85,69 +78,59 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     String playURI;
 
-    private AudioManager mAudioManager;
+    private AudioManager audioManager;
 
-    public final static String LOGTAG = "GPlayer";
+    private TextView textViewTime;
 
-    private TextView mTextViewTime;
+    private SeekBar seekBarProgress;
 
-    private SeekBar mSeekBarProgress;
+    private TextView textViewLength;
 
-    private TextView mTextViewLength;
+    private ImageButton pauseButton;
 
-    private ImageButton mPauseButton;
+    private RelativeLayout bufferLayout;
 
-    private ProgressBar mProgressBarPreparing;
+    private LinearLayout layoutBottom;
 
-    private TextView mTextProgress;
+    private RelativeLayout layoutTop;
 
-    private TextView mTextInfo;
+    private TextView videoTitle;
 
-    private RelativeLayout mBufferLayout;
+    private ImageView soundIV;
 
-    private LinearLayout mLayoutBottom;
+    private SeekBar soundSB;
 
-    private RelativeLayout mLayoutTop;
-
-    private TextView mVideoTitle;
-
-    private Button mLeftButton;
-
-    private Button mRightButton;
-
-    private ImageView mSound;
-
-    private SeekBar mSeekBarSound;
-
-    private volatile boolean mCanSeek = true;
+    private volatile boolean canSeek = true;
 
     private boolean isMute;
 
-    private int mBackCount;
+    private int backCount;
+
+    private PlayBroadcastReceiver playReceiverBroadcast = new PlayBroadcastReceiver();
 
     public static void setMediaListener(MediaListener mediaListener) {
-        mMediaListener = mediaListener;
+        GPlayer.mediaListener = mediaListener;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gplayer);
-        mAudioManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
         surfaceView = findViewById(R.id.gplayer_surfaceview);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        mMediaPlayer = new MediaPlayer();
+        mediaPlayer = new MediaPlayer();
 
-        mMediaPlayer.setOnCompletionListener(this);
-        mMediaPlayer.setOnErrorListener(this);
-        mMediaPlayer.setOnInfoListener(this);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnSeekCompleteListener(this);
-        mMediaPlayer.setOnVideoSizeChangedListener(this);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnErrorListener(this);
+        mediaPlayer.setOnInfoListener(this);
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnSeekCompleteListener(this);
+        mediaPlayer.setOnVideoSizeChangedListener(this);
 
         initControl();
 
@@ -166,35 +149,30 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private void setTitle(Intent intent) {
         String name = intent.getStringExtra("name");
         if (!TextUtils.isEmpty(name)) {
-            mVideoTitle.setText(name);
+            videoTitle.setText(name);
         }
     }
 
     private void initControl() {
         mediaController = new MediaController(this);
 
-        mBufferLayout = findViewById(R.id.buffer_info);
-        mProgressBarPreparing = findViewById(R.id.player_prepairing);
-        mTextProgress = findViewById(R.id.prepare_progress);
-        mTextInfo = findViewById(R.id.info);
+        bufferLayout = findViewById(R.id.buffer_info);
 
-        mLayoutTop = findViewById(R.id.layout_top);
-        mVideoTitle = findViewById(R.id.video_title);
-        mLeftButton = findViewById(R.id.topBar_back);
-        mRightButton = findViewById(R.id.topBar_list_switch);
-        mLeftButton.setOnClickListener(this);
-        mRightButton.setOnClickListener(this);
+        layoutTop = findViewById(R.id.layout_top);
+        videoTitle = findViewById(R.id.video_title);
+        Button leftButton = findViewById(R.id.topBar_back);
+        Button rightButton = findViewById(R.id.topBar_list_switch);
+        leftButton.setOnClickListener(this);
+        rightButton.setOnClickListener(this);
 
-        mTextViewTime = findViewById(R.id.current_time);
-        mTextViewLength = findViewById(R.id.totle_time);
-        mPauseButton = findViewById(R.id.play);
-        mPauseButton.setOnClickListener(this);
-        mLayoutBottom = findViewById(R.id.layout_control);
-        mTextProgress = findViewById(R.id.prepare_progress);
-        mTextInfo = findViewById(R.id.info);
+        textViewTime = findViewById(R.id.current_time);
+        textViewLength = findViewById(R.id.totle_time);
+        pauseButton = findViewById(R.id.play);
+        pauseButton.setOnClickListener(this);
+        layoutBottom = findViewById(R.id.layout_control);
 
-        mSeekBarProgress = findViewById(R.id.seekBar_progress);
-        mSeekBarProgress.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        seekBarProgress = findViewById(R.id.seekBar_progress);
+        seekBarProgress.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -208,34 +186,26 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int id = seekBar.getId();
-                switch (id) {
-                    case R.id.seekBar_progress:
-                        if (mCanSeek) {
-                            int position = seekBar.getProgress();
-                            if (mMediaPlayer != null) {
-                                mMediaPlayer.seekTo(position);
-                            }
-                        }
-                        break;
-                    default:
-                        break;
+                if (seekBar.getId() == R.id.seekBar_progress && canSeek) {
+                    int position = seekBar.getProgress();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.seekTo(position);
+                    }
                 }
-
             }
 
         });
 
-        mSound = findViewById(R.id.sound);
-        mSound.setOnClickListener(this);
-        mSeekBarSound = findViewById(R.id.seekBar_sound);
-        mSeekBarSound.setMax(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        mSeekBarSound.setProgress(mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        mSeekBarSound.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        soundIV = findViewById(R.id.sound);
+        soundIV.setOnClickListener(this);
+        soundSB = findViewById(R.id.seekBar_sound);
+        soundSB.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        soundSB.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+        soundSB.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
             }
 
             @Override
@@ -267,8 +237,8 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     protected void onStop() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.pause();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
         }
         super.onStop();
     }
@@ -283,10 +253,10 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mBackCount > 0) {
+            if (backCount > 0) {
                 exit();
             } else {
-                mBackCount++;
+                backCount++;
                 Toast.makeText(this, R.string.player_exit, Toast.LENGTH_SHORT).show();
             }
             return true;
@@ -299,11 +269,11 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     }
 
     private void exit() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
-        mMediaListener = null;
+        mediaListener = null;
         finish();
     }
 
@@ -313,15 +283,14 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         switch (id) {
             case R.id.topBar_back:
                 exit();
-
                 break;
             case R.id.sound:
                 isMute = !isMute;
-                mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, isMute);
+                audioManager.setStreamMute(AudioManager.STREAM_MUSIC, isMute);
                 if (isMute) {
-                    mSound.setImageResource(R.drawable.phone_480_sound_mute);
+                    soundIV.setImageResource(R.drawable.phone_480_sound_mute);
                 } else {
-                    mSound.setImageResource(R.drawable.phone_480_sound_on);
+                    soundIV.setImageResource(R.drawable.phone_480_sound_on);
                 }
                 break;
             case R.id.play: {
@@ -334,30 +303,31 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     }
 
     private void updatePausePlay() {
-        if (mMediaPlayer == null || mPauseButton == null) {
+        if (mediaPlayer == null || pauseButton == null) {
             return;
         }
 
-        int resource = mMediaPlayer.isPlaying() ? R.drawable.button_pause
-                : R.drawable.button_play;
-        mPauseButton.setBackgroundResource(resource);
+        int resource =
+                mediaPlayer.isPlaying() ?
+                        R.drawable.button_pause : R.drawable.button_play;
+        pauseButton.setBackgroundResource(resource);
     }
 
     private void doPauseResume() {
-        if (mMediaPlayer == null) {
+        if (mediaPlayer == null) {
             return;
         }
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
-            if (null != mMediaListener) {
-                mMediaListener.pause();
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            if (null != mediaListener) {
+                mediaListener.pause();
             }
         } else {
-            mMediaPlayer.start();
+            mediaPlayer.start();
             mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 200);
 
-            if (null != mMediaListener) {
-                mMediaListener.start();
+            if (null != mediaListener) {
+                mediaListener.start();
             }
         }
         updatePausePlay();
@@ -365,17 +335,15 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if (action == MotionEvent.ACTION_DOWN) {
-            int visibility = mLayoutTop.getVisibility();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int visibility = layoutTop.getVisibility();
             if (visibility != View.VISIBLE) {
-                mLayoutTop.setVisibility(View.VISIBLE);
-                mLayoutBottom.setVisibility(View.VISIBLE);
+                layoutTop.setVisibility(View.VISIBLE);
+                layoutBottom.setVisibility(View.VISIBLE);
             } else {
-                mLayoutTop.setVisibility(View.GONE);
-                mLayoutBottom.setVisibility(View.GONE);
+                layoutTop.setVisibility(View.GONE);
+                layoutBottom.setVisibility(View.GONE);
             }
-
         }
 
         return false;
@@ -387,43 +355,43 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.v(LOGTAG, "surfaceChanged Called");
+        Log.v(TAG, "surfaceChanged Called");
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.v(LOGTAG, "surfaceCreated Called");
-        mMediaPlayer.setDisplay(holder);
+        Log.v(TAG, "surfaceCreated Called");
+        mediaPlayer.setDisplay(holder);
         try {
-            mMediaPlayer.prepare();
+            mediaPlayer.prepare();
         } catch (IllegalStateException e) {
-            Log.v(LOGTAG, "IllegalStateException", e);
+            Log.v(TAG, "IllegalStateException", e);
         } catch (IOException e) {
-            Log.v(LOGTAG, "IOException", e);
+            Log.v(TAG, "IOException", e);
         }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.v(LOGTAG, "surfaceDestroyed Called");
+        Log.v(TAG, "surfaceDestroyed Called");
     }
 
     @Override
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-        Log.v(LOGTAG, "onVideoSizeChanged Called");
+        Log.v(TAG, "onVideoSizeChanged Called");
     }
 
     @Override
     public void onSeekComplete(MediaPlayer mp) {
-        Log.v(LOGTAG, "onSeekComplete Called");
-        if (null != mMediaListener) {
-            mMediaListener.endOfMedia();
+        Log.v(TAG, "onSeekComplete Called");
+        if (null != mediaListener) {
+            mediaListener.endOfMedia();
         }
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        Log.v(LOGTAG, "onPrepared Called");
+        Log.v(TAG, "onPrepared Called");
         videoWidth = mp.getVideoWidth();
         videoHeight = mp.getVideoHeight();
         if (videoWidth > currentDisplay.getWidth() || videoHeight > currentDisplay.getHeight()) {
@@ -440,8 +408,8 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
             }
         }
         mp.start();
-        if (null != mMediaListener) {
-            mMediaListener.start();
+        if (null != mediaListener) {
+            mediaListener.start();
         }
 
         mHandler.sendEmptyMessage(MEDIA_PLAYER_PREPARED);
@@ -453,24 +421,24 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     public boolean onInfo(MediaPlayer mp, int whatInfo, int extra) {
         if (whatInfo == MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING) {
-            Log.v(LOGTAG, "Media Info, Media Info Bad Interleaving " + extra);
+            Log.v(TAG, "Media Info, Media Info Bad Interleaving " + extra);
         } else if (whatInfo == MediaPlayer.MEDIA_INFO_NOT_SEEKABLE) {
-            Log.v(LOGTAG, "Media Info, Media Info Not Seekable " + extra);
+            Log.v(TAG, "Media Info, Media Info Not Seekable " + extra);
         } else if (whatInfo == MediaPlayer.MEDIA_INFO_UNKNOWN) {
-            Log.v(LOGTAG, "Media Info, Media Info Unknown " + extra);
+            Log.v(TAG, "Media Info, Media Info Unknown " + extra);
         } else if (whatInfo == MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING) {
-            Log.v(LOGTAG, "MediaInfo, Media Info Video Track Lagging " + extra);
+            Log.v(TAG, "MediaInfo, Media Info Video Track Lagging " + extra);
         } else if (whatInfo == MediaPlayer.MEDIA_INFO_METADATA_UPDATE) {
-            Log.v(LOGTAG, "MediaInfo, Media Info Metadata Update " + extra);
+            Log.v(TAG, "MediaInfo, Media Info Metadata Update " + extra);
         }
         return false;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Log.v(LOGTAG, "onCompletion Called");
-        if (null != mMediaListener) {
-            mMediaListener.endOfMedia();
+        Log.v(TAG, "onCompletion Called");
+        if (null != mediaListener) {
+            mediaListener.endOfMedia();
         }
 
         exit();
@@ -478,11 +446,11 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     public boolean onError(MediaPlayer mp, int whatError, int extra) {
-        Log.d(LOGTAG, "onError Called" + whatError + "  " + extra);
+        Log.d(TAG, "onError Called" + whatError + "  " + extra);
         if (whatError == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-            Log.v(LOGTAG, "Media Error, Server Died " + extra);
+            Log.v(TAG, "Media Error, Server Died " + extra);
         } else if (whatError == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
-            Log.v(LOGTAG, "Media Error, Error Unknown " + extra);
+            Log.v(TAG, "Media Error, Error Unknown " + extra);
         }
 
         return false;
@@ -510,75 +478,69 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     @Override
     public int getCurrentPosition() {
-        return mMediaPlayer.getCurrentPosition();
+        return mediaPlayer.getCurrentPosition();
     }
 
     @Override
     public int getDuration() {
-        return mMediaPlayer.getDuration();
+        return mediaPlayer.getDuration();
     }
 
     @Override
     public boolean isPlaying() {
-        return mMediaPlayer.isPlaying();
+        return mediaPlayer.isPlaying();
     }
 
     public void setUri(String uri) {
         try {
-            mMediaPlayer.reset();
+            mediaPlayer.reset();
             playURI = uri;
-            mMediaPlayer.setDataSource(playURI);
-        } catch (IllegalArgumentException e) {
-            Log.v(LOGTAG, e.getMessage());
-        } catch (IllegalStateException e) {
-            Log.v(LOGTAG, e.getMessage());
-        } catch (IOException e) {
-            Log.v(LOGTAG, e.getMessage());
+            mediaPlayer.setDataSource(playURI);
+        } catch (IllegalArgumentException | IllegalStateException | IOException e) {
+            Log.v(TAG, "Catch exception when setUri " + uri, e);
         }
     }
 
     @Override
     public void pause() {
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
-            if (null != mMediaListener) {
-                mMediaListener.pause();
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            if (null != mediaListener) {
+                mediaListener.pause();
             }
         }
     }
 
     @Override
     public void seekTo(int pos) {
-        mMediaPlayer.seekTo(pos);
-        if (null != mMediaListener) {
-            mMediaListener.positionChanged(pos);
+        mediaPlayer.seekTo(pos);
+        if (null != mediaListener) {
+            mediaListener.positionChanged(pos);
         }
     }
 
     @Override
     public void start() {
-
         try {
-            mMediaPlayer.start();
+            mediaPlayer.start();
             mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 200);
 
-            if (null != mMediaListener) {
-                mMediaListener.start();
+            if (null != mediaListener) {
+                mediaListener.start();
             }
         } catch (Exception e) {
-            Log.e(LOGTAG, "start()", e);
+            Log.e(TAG, "start()", e);
         }
     }
 
     public void stop() {
-
         try {
-            mMediaPlayer.stop();
-            if (null != mMediaListener) {
-                mMediaListener.stop();
+            mediaPlayer.stop();
+            if (null != mediaListener) {
+                mediaListener.stop();
             }
         } catch (Exception e) {
-            Log.e(LOGTAG, "stop()", e);
+            Log.e(TAG, "stop()", e);
         }
 
     }
@@ -586,60 +548,45 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            Log.d(LOGTAG, "msg=" + msg.what);
+            Log.d(TAG, "msg=" + msg.what);
             switch (msg.what) {
-                case MEDIA_PLAYER_BUFFERING_UPDATE: {
-
-                    break;
-                }
-                case MEDIA_PLAYER_COMPLETION: {
-
-                    break;
-                }
-                case MEDIA_PLAYER_ERROR: {
-
-                    break;
-                }
-                case MEDIA_PLAYER_INFO: {
-
+                case MEDIA_PLAYER_BUFFERING_UPDATE:
+                case MEDIA_PLAYER_INFO:
+                case MEDIA_PLAYER_ERROR:
+                case MEDIA_PLAYER_COMPLETION:
+                case MEDIA_PLAYER_VIDEO_SIZE_CHANGED: {
                     break;
                 }
                 case MEDIA_PLAYER_PREPARED: {
-                    mBufferLayout.setVisibility(View.GONE);
+                    bufferLayout.setVisibility(View.GONE);
                     break;
                 }
                 case MEDIA_PLAYER_PROGRESS_UPDATE: {
-                    if (null == mMediaPlayer || !mMediaPlayer.isPlaying()) {
+                    if (null == mediaPlayer || !mediaPlayer.isPlaying()) {
                         break;
                     }
 
-                    int position = mMediaPlayer.getCurrentPosition();
-                    int duration = mMediaPlayer.getDuration();
-                    if (null != mMediaListener) {
-                        mMediaListener.positionChanged(position);
-                        mMediaListener.durationChanged(duration);
+                    int position = mediaPlayer.getCurrentPosition();
+                    int duration = mediaPlayer.getDuration();
+                    if (null != mediaListener) {
+                        mediaListener.positionChanged(position);
+                        mediaListener.durationChanged(duration);
                     }
 
-                    mTextViewLength.setText(Utils.secToTime(duration / 1000));
-                    mSeekBarProgress.setMax(duration);
-                    mTextViewTime.setText(Utils.secToTime(position / 1000));
-                    mSeekBarProgress.setProgress(position);
+                    textViewLength.setText(Utils.secToTime(duration / 1000));
+                    seekBarProgress.setMax(duration);
+                    textViewTime.setText(Utils.secToTime(position / 1000));
+                    seekBarProgress.setProgress(position);
                     mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 500);
-
-                    break;
-                }
-                case MEDIA_PLAYER_VIDEO_SIZE_CHANGED: {
-
                     break;
                 }
                 case MEDIA_PLAYER_VOLUME_CHANGED: {
-                    mSeekBarSound.setProgress(mAudioManager
-                            .getStreamVolume(AudioManager.STREAM_MUSIC));
+                    soundSB.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
                     break;
                 }
                 case MEDIA_PLAYER_HIDDEN_CONTROL: {
-                    mLayoutTop.setVisibility(View.GONE);
-                    mLayoutBottom.setVisibility(View.GONE);
+                    layoutTop.setVisibility(View.GONE);
+                    layoutBottom.setVisibility(View.GONE);
                     break;
                 }
                 default:
@@ -648,7 +595,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
     };
 
-    private PlayBroadcastReceiver playReceiverBroadcast = new PlayBroadcastReceiver();
 
     public void registerBroadcast() {
         IntentFilter intentFilter = new IntentFilter();
@@ -663,33 +609,42 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     class PlayBroadcastReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
-            String str1 = intent.getStringExtra("helpAction");
-
-            if (str1.equals(Action.PLAY)) {
-                start();
-                updatePausePlay();
-            } else if (str1.equals(Action.PAUSE)) {
-                pause();
-                updatePausePlay();
-            } else if (str1.equals(Action.SEEK)) {
-                boolean isPaused = false;
-                if (!mMediaPlayer.isPlaying()) {
-                    isPaused = true;
-                }
-                int position = intent.getIntExtra("position", 0);
-                mMediaPlayer.seekTo(position);
-                if (isPaused) {
-                    pause();
-                } else {
+            String helpAction = intent.getStringExtra("helpAction");
+            if (helpAction == null) {
+                return;
+            }
+            switch (helpAction) {
+                case Action.PLAY:
                     start();
-                }
-
-            } else if (str1.equals(Action.SET_VOLUME)) {
-                int volume = (int) (intent.getDoubleExtra("volume", 0) * mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-                mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
-            } else if (str1.equals(Action.STOP)) {
-                stop();
+                    updatePausePlay();
+                    break;
+                case Action.PAUSE:
+                    pause();
+                    updatePausePlay();
+                    break;
+                case Action.SEEK:
+                    boolean isPaused = false;
+                    if (!mediaPlayer.isPlaying()) {
+                        isPaused = true;
+                    }
+                    int position = intent.getIntExtra("position", 0);
+                    mediaPlayer.seekTo(position);
+                    if (isPaused) {
+                        pause();
+                    } else {
+                        start();
+                    }
+                    break;
+                case Action.SET_VOLUME:
+                    int volume =
+                            (int) (intent.getDoubleExtra("volume", 0)
+                                    * audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+                    mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
+                    break;
+                case Action.STOP:
+                    stop();
+                    break;
             }
 
         }

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class DevicesActivity extends AppCompatActivity {
     private final static String TAG = "DevicesActivity";
 
-    private ArrayList<DeviceItem> mDmrList = new ArrayList<>();
+    private ArrayList<DeviceItem> dmrList = new ArrayList<>();
 
     private long exitTime = 0;
 
@@ -38,7 +38,7 @@ public class DevicesActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
-            mDmrList.clear();
+            dmrList.clear();
 
             upnpService = (AndroidUpnpService) service;
             BaseApplication.upnpService = upnpService;
@@ -55,8 +55,8 @@ public class DevicesActivity extends AppCompatActivity {
             // Refresh device list
             upnpService.getControlPoint().search();
 
-            if (null != mDmrList && mDmrList.size() > 0 && null == BaseApplication.dmrDeviceItem) {
-                BaseApplication.dmrDeviceItem = mDmrList.get(0);
+            if (dmrList.size() > 0 && null == BaseApplication.dmrDeviceItem) {
+                BaseApplication.dmrDeviceItem = dmrList.get(0);
             }
         }
 
@@ -70,21 +70,15 @@ public class DevicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.devices);
-        init();
 
         deviceListRegistryListener = new DeviceListRegistryListener();
 
         getApplicationContext()
                 .bindService(
                         new Intent(this, AndroidUpnpServiceImpl.class),
-                        serviceConnection, Context.BIND_AUTO_CREATE
+                        serviceConnection,
+                        Context.BIND_AUTO_CREATE
                 );
-    }
-
-    private void init() {
-        if (null != mDmrList && mDmrList.size() > 0) {
-            BaseApplication.dmrDeviceItem = mDmrList.get(0);
-        }
     }
 
     @Override
@@ -115,8 +109,6 @@ public class DevicesActivity extends AppCompatActivity {
 
     public class DeviceListRegistryListener extends DefaultRegistryListener {
 
-        /* Discovery performance optimization for very slow Android devices! */
-
         @Override
         public void remoteDeviceDiscoveryStarted(Registry registry,
                                                  RemoteDevice device) {
@@ -138,14 +130,7 @@ public class DevicesActivity extends AppCompatActivity {
 
             if (device.getType().getNamespace().equals("schemas-upnp-org")
                     && device.getType().getType().equals("MediaRenderer")) {
-                final DeviceItem dmrDisplay =
-                        new DeviceItem(
-                                device,
-                                device.getDetails().getFriendlyName(),
-                                device.getDisplayString(),
-                                "(REMOTE) " + device.getType().getDisplayString()
-                        );
-                dmrAdded(dmrDisplay);
+                dmrAdded(new DeviceItem(device));
             }
         }
 
@@ -153,14 +138,7 @@ public class DevicesActivity extends AppCompatActivity {
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             if (device.getType().getNamespace().equals("schemas-upnp-org")
                     && device.getType().getType().equals("MediaRenderer")) {
-                final DeviceItem dmrDisplay =
-                        new DeviceItem(
-                                device,
-                                device.getDetails().getFriendlyName(),
-                                device.getDisplayString(),
-                                "(REMOTE) " + device.getType().getDisplayString()
-                        );
-                dmrRemoved(dmrDisplay);
+                dmrRemoved(new DeviceItem(device));
             }
         }
 
@@ -177,8 +155,8 @@ public class DevicesActivity extends AppCompatActivity {
         void dmrAdded(final DeviceItem di) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    if (!mDmrList.contains(di)) {
-                        mDmrList.add(di);
+                    if (!dmrList.contains(di)) {
+                        dmrList.add(di);
                     }
                 }
             });
@@ -187,7 +165,7 @@ public class DevicesActivity extends AppCompatActivity {
         void dmrRemoved(final DeviceItem di) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    mDmrList.remove(di);
+                    dmrList.remove(di);
                 }
             });
         }

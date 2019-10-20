@@ -35,12 +35,6 @@ public class DeviceItem {
         this.device = device;
     }
 
-    public DeviceItem(Device device, String... label) {
-        this.udn = device.getIdentity().getUdn();
-        this.device = device;
-        // TODO do we need label ?
-    }
-
     public Device getDevice() {
         return device;
     }

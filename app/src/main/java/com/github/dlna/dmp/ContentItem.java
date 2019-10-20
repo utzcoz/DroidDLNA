@@ -7,8 +7,6 @@ import org.fourthline.cling.support.model.container.Container;
 import org.fourthline.cling.support.model.item.Item;
 
 public class ContentItem {
-    private Device device;
-
     private Service service;
 
     private DIDLObject content;
@@ -19,7 +17,6 @@ public class ContentItem {
 
     public ContentItem(Container container, Service service, Device device) {
         // TODO Auto-generated constructor stub
-        this.device = device;
         this.service = service;
         this.content = container;
         this.id = container.getId();
@@ -43,18 +40,19 @@ public class ContentItem {
     }
 
     public Container getContainer() {
-        if (isContainer)
+        if (isContainer) {
             return (Container) content;
-        else {
+        } else {
             return null;
         }
     }
 
     public Item getItem() {
-        if (isContainer)
+        if (isContainer) {
             return null;
-        else
+        } else {
             return (Item) content;
+        }
     }
 
     public Service getService() {
@@ -63,10 +61,12 @@ public class ContentItem {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         ContentItem that = (ContentItem) o;
 
