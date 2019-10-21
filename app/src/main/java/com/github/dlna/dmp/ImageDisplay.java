@@ -22,10 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.github.dlna.R;
-import com.github.dlna.Settings;
 import com.github.dlna.BaseApplication;
 import com.github.dlna.ConfigData;
+import com.github.dlna.R;
+import com.github.dlna.Settings;
 import com.github.dlna.dmc.DMCControl;
 import com.github.dlna.dmc.GenerateXml;
 import com.github.dlna.util.FileUtil;
@@ -39,13 +39,11 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-import org.fourthline.cling.android.AndroidUpnpService;
-
 import java.io.File;
 import java.util.ArrayList;
 
-public class ImageDisplay extends Activity implements OnClickListener,
-        OnTouchListener {
+public class ImageDisplay extends Activity implements OnClickListener, OnTouchListener {
+    private static final String TAG = "ImageDisplay";
 
     private static final int NONE = 0;
 
@@ -53,28 +51,17 @@ public class ImageDisplay extends Activity implements OnClickListener,
 
     private static final int ZOOM = 2;
 
-    private static final String TAG = "ImageDisplay";
-
     protected static final int MSG_SLIDE_START = 1000;
 
     private int mode = NONE;
-
-    private float oldDist;
 
     private PointF start = new PointF();
 
     private PointF mid = new PointF();
 
-    private SuperImageView mImageView;
+    private SuperImageView superIV;
 
-    private Button mPreBtn;
-
-    private Button mNextBtn;
-    private Button mDownloadBtn;
-    private Button mSharedBtn;
-    private Button mSlideBtn;
-
-    private Button mRotateBtn;
+    private Button slideBtn;
 
     private LinearLayout mButtonLayout;
 
@@ -82,15 +69,9 @@ public class ImageDisplay extends Activity implements OnClickListener,
 
     private String currentContentFormatMimeType = "";
 
-    private String metaData = "";
-
-    private DeviceItem dmrDeviceItem = null;
-
     private boolean isLocalDmr = true;
 
     private DMCControl dmcControl = null;
-
-    private AndroidUpnpService upnpService = null;
 
     private ArrayList<ContentItem> mListPhotos = new ArrayList<ContentItem>();
 
@@ -106,23 +87,13 @@ public class ImageDisplay extends Activity implements OnClickListener,
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_SLIDE_START: {
-                    if (!nextImage()) {
-                        int time = Settings.getSlideTime();
-                        if (time < 5) {
-                            time = 5;
-                        }
-                        mHandler.sendEmptyMessageDelayed(MSG_SLIDE_START,
-                                time * 1000);
-                    }
-                    break;
+            if (msg.what == MSG_SLIDE_START && !nextImage()) {
+                int time = Settings.getSlideTime();
+                if (time < 5) {
+                    time = 5;
                 }
-
-                default:
-                    break;
+                mHandler.sendEmptyMessageDelayed(MSG_SLIDE_START, time * 1000);
             }
-
         }
     };
 
@@ -132,13 +103,15 @@ public class ImageDisplay extends Activity implements OnClickListener,
         setContentView(R.layout.image_display);
 
         mContext = this;
-        options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.ic_error).resetViewBeforeLoading()
-                .cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .displayer(new FadeInBitmapDisplayer(300)).build();
-
+        options =
+                new DisplayImageOptions
+                        .Builder()
+                        .showImageForEmptyUri(R.drawable.ic_empty)
+                        .showImageOnFail(R.drawable.ic_error).resetViewBeforeLoading()
+                        .cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY)
+                        .bitmapConfig(Bitmap.Config.RGB_565)
+                        .displayer(new FadeInBitmapDisplayer(300))
+                        .build();
         initView();
         initData();
         showImage(mPlayUri);
@@ -147,23 +120,23 @@ public class ImageDisplay extends Activity implements OnClickListener,
     }
 
     private void initView() {
-        mImageView = this.findViewById(R.id.imageView);
-        mPreBtn = this.findViewById(R.id.preButton);
-        mNextBtn = this.findViewById(R.id.nextButton);
+        superIV = this.findViewById(R.id.imageView);
+        Button previousBtn = this.findViewById(R.id.preButton);
+        Button nextBtn = this.findViewById(R.id.nextButton);
         mButtonLayout = this.findViewById(R.id.buttonLayout);
-        mPreBtn.setOnClickListener(this);
-        mNextBtn.setOnClickListener(this);
-        mImageView.setOnTouchListener(this);
+        previousBtn.setOnClickListener(this);
+        nextBtn.setOnClickListener(this);
+        superIV.setOnTouchListener(this);
         mSpinner = findViewById(R.id.loading);
 
-        mDownloadBtn = this.findViewById(R.id.downloadButton);
-        mDownloadBtn.setOnClickListener(this);
-        mSharedBtn = this.findViewById(R.id.sharedButton);
-        mSharedBtn.setOnClickListener(this);
-        mSlideBtn = this.findViewById(R.id.slideButton);
-        mSlideBtn.setOnClickListener(this);
-        mRotateBtn = this.findViewById(R.id.rotateButton);
-        mRotateBtn.setOnClickListener(this);
+        Button downloadBtn = this.findViewById(R.id.downloadButton);
+        downloadBtn.setOnClickListener(this);
+        Button sharedBtn = this.findViewById(R.id.sharedButton);
+        sharedBtn.setOnClickListener(this);
+        slideBtn = this.findViewById(R.id.slideButton);
+        slideBtn.setOnClickListener(this);
+        Button rotateBtn = this.findViewById(R.id.rotateButton);
+        rotateBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -173,16 +146,18 @@ public class ImageDisplay extends Activity implements OnClickListener,
         mCurrentPosition = ConfigData.photoPosition;
         mListPhotos = ConfigData.listPhotos;
 
-        dmrDeviceItem = BaseApplication.dmrDeviceItem;
-        upnpService = BaseApplication.upnpService;
-
         isLocalDmr = BaseApplication.isLocalDmr;
         if (!isLocalDmr) {
-            currentContentFormatMimeType = localIntent
-                    .getStringExtra("currentContentFormatMimeType");
-            metaData = localIntent.getStringExtra("metaData");
-            dmcControl = new DMCControl(this, 1, dmrDeviceItem, upnpService,
-                    mPlayUri, metaData);
+            currentContentFormatMimeType = localIntent.getStringExtra("currentContentFormatMimeType");
+            String metaData = localIntent.getStringExtra("metaData");
+            dmcControl = new DMCControl(
+                    this,
+                    1,
+                    BaseApplication.dmrDeviceItem,
+                    BaseApplication.upnpService,
+                    mPlayUri,
+                    metaData
+            );
         }
     }
 
@@ -192,27 +167,23 @@ public class ImageDisplay extends Activity implements OnClickListener,
         switch (id) {
             case R.id.preButton: {
                 prevImage();
-
                 break;
             }
             case R.id.nextButton: {
                 nextImage();
-
                 break;
             }
             case R.id.slideButton: {
                 if (!isSlidePlaying) {
                     isSlidePlaying = true;
-                    mSlideBtn.setBackgroundResource(R.drawable.ic_slide_pause);
+                    slideBtn.setBackgroundResource(R.drawable.ic_slide_pause);
                     mHandler.sendEmptyMessageDelayed(MSG_SLIDE_START, 5000);
-                    Toast.makeText(mContext, R.string.info_image_slide_start,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.info_image_slide_start, Toast.LENGTH_SHORT).show();
                 } else {
                     isSlidePlaying = false;
-                    mSlideBtn.setBackgroundResource(R.drawable.ic_slide_start);
+                    slideBtn.setBackgroundResource(R.drawable.ic_slide_start);
                     mHandler.removeMessages(MSG_SLIDE_START);
-                    Toast.makeText(mContext, R.string.info_image_slide_pause,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.info_image_slide_pause, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
@@ -222,10 +193,10 @@ public class ImageDisplay extends Activity implements OnClickListener,
                     Toast.makeText(
                             mContext,
                             mContext.getString(R.string.info_download_image) + path,
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else {
-                    Toast.makeText(mContext, R.string.info_download_image_error,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.info_download_image_error, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
@@ -245,13 +216,11 @@ public class ImageDisplay extends Activity implements OnClickListener,
         boolean isLast;
         if (mCurrentPosition >= mListPhotos.size() - 1) {
             isLast = true;
-            Toast.makeText(ImageDisplay.this, R.string.info_last_image,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(ImageDisplay.this, R.string.info_last_image, Toast.LENGTH_SHORT).show();
         } else {
             isLast = false;
             mCurrentPosition = mCurrentPosition + 1;
-            String uri = mListPhotos.get(mCurrentPosition)
-                    .getItem().getFirstResource().getValue();
+            String uri = mListPhotos.get(mCurrentPosition).getItem().getFirstResource().getValue();
             if (!TextUtils.isEmpty(uri)) {
                 mPlayUri = uri;
                 showImage(mPlayUri);
@@ -259,14 +228,13 @@ public class ImageDisplay extends Activity implements OnClickListener,
                 if (!isLocalDmr) {
                     dmcControl.stop(true);
                     try {
-                        dmcControl.setCurrentPlayPath(mPlayUri,
-                                new GenerateXml()
-                                        .generate(mListPhotos
-                                                .get(mCurrentPosition)));
+                        dmcControl.setCurrentPlayPath(
+                                mPlayUri,
+                                new GenerateXml().generate(mListPhotos.get(mCurrentPosition))
+                        );
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     dmcControl.getProtocolInfos(currentContentFormatMimeType);
                 }
             }
@@ -274,36 +242,29 @@ public class ImageDisplay extends Activity implements OnClickListener,
         return isLast;
     }
 
-    private boolean prevImage() {
-        boolean isFirst;
+    private void prevImage() {
         if (mCurrentPosition == 0) {
-            isFirst = true;
-            Toast.makeText(ImageDisplay.this, R.string.info_first_image,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(ImageDisplay.this, R.string.info_first_image, Toast.LENGTH_SHORT).show();
         } else {
-            isFirst = false;
             mCurrentPosition = mCurrentPosition - 1;
-            String uri = mListPhotos.get(mCurrentPosition)
-                    .getItem().getFirstResource().getValue();
+            String uri = mListPhotos.get(mCurrentPosition).getItem().getFirstResource().getValue();
             if (!TextUtils.isEmpty(uri)) {
                 mPlayUri = uri;
                 showImage(mPlayUri);
                 if (!isLocalDmr) {
                     dmcControl.stop(true);
                     try {
-                        dmcControl.setCurrentPlayPath(mPlayUri,
-                                new GenerateXml()
-                                        .generate(mListPhotos
-                                                .get(mCurrentPosition)));
+                        dmcControl.setCurrentPlayPath(
+                                mPlayUri,
+                                new GenerateXml().generate(mListPhotos.get(mCurrentPosition))
+                        );
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     dmcControl.getProtocolInfos(currentContentFormatMimeType);
                 }
             }
         }
-        return isFirst;
     }
 
     @Override
@@ -357,14 +318,13 @@ public class ImageDisplay extends Activity implements OnClickListener,
                 mode = NONE;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
-                oldDist = spacing(event);
+                float oldDist = spacing(event);
                 if (oldDist > 10f) {
                     midPoint(mid, event);
                     mode = ZOOM;
                 }
                 break;
-            case MotionEvent.ACTION_MOVE:
-
+            default:
                 break;
         }
 
@@ -387,83 +347,82 @@ public class ImageDisplay extends Activity implements OnClickListener,
         fetchBitmap2(url);
         if (!isLocalDmr) {
             try {
-                dmcControl.setCurrentPlayPath(mPlayUri, new GenerateXml()
-                        .generate(mListPhotos
-                                .get(mCurrentPosition)));
+                dmcControl.setCurrentPlayPath(
+                        mPlayUri,
+                        new GenerateXml().generate(mListPhotos.get(mCurrentPosition))
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             dmcControl.getProtocolInfos(currentContentFormatMimeType);
         }
     }
 
     private void fetchBitmap2(String url) {
-        ImageLoader.getInstance().displayImage(url, mImageView, options,
-                new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                        mSpinner.setVisibility(View.VISIBLE);
-                    }
+        SimpleImageLoadingListener imageLoadingListener = new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                mSpinner.setVisibility(View.VISIBLE);
+            }
 
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view,
-                                                FailReason failReason) {
-                        int message = R.string.network_denied;
-                        switch (failReason.getType()) {
-                            case IO_ERROR:
-                                message = R.string.io_error;
-                                break;
-                            case DECODING_ERROR:
-                                message = R.string.decoding_error;
-                                break;
-                            case NETWORK_DENIED:
-                                message = R.string.network_denied;
-                                break;
-                            case OUT_OF_MEMORY:
-                                message = R.string.oom_error;
-                                break;
-                            case UNKNOWN:
-                                message = R.string.unknown_error;
-                                break;
-                        }
-                        Toast.makeText(ImageDisplay.this, message,
-                                Toast.LENGTH_SHORT).show();
-                        mSpinner.setVisibility(View.GONE);
-                    }
+            @Override
+            public void onLoadingFailed(String imageUri,
+                                        View view,
+                                        FailReason failReason) {
+                int message = R.string.network_denied;
+                switch (failReason.getType()) {
+                    case IO_ERROR:
+                        message = R.string.io_error;
+                        break;
+                    case DECODING_ERROR:
+                        message = R.string.decoding_error;
+                        break;
+                    case OUT_OF_MEMORY:
+                        message = R.string.oom_error;
+                        break;
+                    case UNKNOWN:
+                        message = R.string.unknown_error;
+                        break;
+                }
+                Toast.makeText(
+                        ImageDisplay.this,
+                        message,
+                        Toast.LENGTH_SHORT
+                ).show();
+                mSpinner.setVisibility(View.GONE);
+            }
 
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view,
-                                                  Bitmap loadedImage) {
-                        mSpinner.setVisibility(View.GONE);
-                        mCurrentBitmap = loadedImage;
-                    }
-                });
+            @Override
+            public void onLoadingComplete(String imageUri,
+                                          View view,
+                                          Bitmap loadedImage) {
+                mSpinner.setVisibility(View.GONE);
+                mCurrentBitmap = loadedImage;
+            }
+        };
+        ImageLoader.getInstance().displayImage(url, superIV, options, imageLoadingListener);
     }
 
     private String saveCurrentBitmap() {
         String path = "";
         if (null != mCurrentBitmap && !mCurrentBitmap.isRecycled()) {
-            if (null != FileUtil.getSDPath()) {
-                String filename = mPlayUri.substring(mPlayUri.lastIndexOf("/"));
-                if (FileUtil.getFileSuffix(filename).equals("")) {
-                    filename = filename + ".jpg";
-                }
+            String sdPath = FileUtil.getSDPath();
+            String filename = mPlayUri.substring(mPlayUri.lastIndexOf("/"));
+            if (FileUtil.getFileSuffix(filename).equals("")) {
+                filename = filename + ".jpg";
+            }
 
-                path = FileUtil.getSDPath() + FileUtil.IMAGE_DOWNLOAD_PATH;
-                File path1 = new File(path);
-                if (!path1.exists()) {
-                    path1.mkdirs();
-                }
-                path = path + filename;
-                try {
-                    ImageUtil
-                            .saveBitmapWithFilePathSuffix(mCurrentBitmap, path);
-
-                } catch (Exception e) {
-                    path = "";
-                    Log.w(TAG, "saveCurrentBitmap", e);
-                }
+            path = sdPath + FileUtil.IMAGE_DOWNLOAD_PATH;
+            File path1 = new File(path);
+            if (!path1.exists()) {
+                path1.mkdirs();
+            }
+            path = path + filename;
+            try {
+                ImageUtil.saveBitmapWithFilePathSuffix(mCurrentBitmap, path);
+            } catch (Exception e) {
+                path = "";
+                Log.w(TAG, "saveCurrentBitmap", e);
             }
         }
         return path;
@@ -474,15 +433,13 @@ public class ImageDisplay extends Activity implements OnClickListener,
         if (uri != null) {
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
             shareIntent.setType("image/*");
-            startActivity(Intent.createChooser(shareIntent,
-                    getText(R.string.info_share_image)));
+            startActivity(Intent.createChooser(shareIntent, getText(R.string.info_share_image)));
         }
     }
 
     private void addShake() {
         ShakeListener shakeListener = new ShakeListener(this);
         shakeListener.setOnShakeListener(new OnShakeListener() {
-
             @Override
             public void onShake() {
                 nextImage();

@@ -95,7 +95,7 @@ public class ZxtMediaRenderer {
                         new AVTransportLastChangeParser()
                 ) {
                     @Override
-                    protected AVTransportService createServiceInstance() throws Exception {
+                    protected AVTransportService createServiceInstance() {
                         return new AVTransportService(avTransportLastChange, mediaPlayers);
                     }
                 };
@@ -125,18 +125,20 @@ public class ZxtMediaRenderer {
                     new DeviceDetails(
                             Settings.getRenderName() + " (" + android.os.Build.MODEL + ")",
                             new ManufacturerDetails(Utils.MANUFACTURER),
-                            new ModelDetails(Utils.DMR_NAME, Utils.DMR_DESC, "1", Utils.DMR_MODEL_URL),
+                            new ModelDetails(
+                                    Utils.DMR_NAME,
+                                    Utils.DMR_DESC,
+                                    "1",
+                                    Utils.DMR_MODEL_URL
+                            ),
                             new DLNADoc[]{
                                     new DLNADoc("DMR", DLNADoc.Version.V1_5)
-                            }, new DLNACaps(new String[]{
-                            "av-upload", "image-upload", "audio-upload"
-                    })
+                            },
+                            new DLNACaps(new String[]{"av-upload", "image-upload", "audio-upload"})
                     ),
                     new Icon[]{createDefaultDeviceIcon()},
                     new LocalService[]{
-                            avTransportService,
-                            renderingControlService,
-                            connectionManagerService
+                            avTransportService, renderingControlService, connectionManagerService
                     }
             );
             Log.i(TAG, "getType: " + device.getType().toString());
@@ -176,8 +178,14 @@ public class ZxtMediaRenderer {
 
     private Icon createDefaultDeviceIcon() {
         try {
-            return new Icon("image/png", 48, 48, 32, "msi.png", mContext.getResources().getAssets()
-                    .open(FileUtil.LOGO));
+            return new Icon(
+                    "image/png",
+                    48,
+                    48,
+                    32,
+                    "msi.png",
+                    mContext.getResources().getAssets().open(FileUtil.LOGO)
+            );
         } catch (IOException e) {
             Log.w(TAG, "createDefaultDeviceIcon IOException");
             return null;

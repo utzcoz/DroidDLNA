@@ -26,18 +26,16 @@ import javax.xml.transform.stream.StreamResult;
 import static org.fourthline.cling.model.XMLUtil.appendNewElement;
 import static org.fourthline.cling.model.XMLUtil.appendNewElementIfNotNull;
 
-
 public class GenerateXml {
     final private static Logger log = Logger.getLogger(GenerateXml.class.getName());
 
-    public static final String UNKNOWN_TITLE = "Unknown Title";
+    private static final String UNKNOWN_TITLE = "Unknown Title";
 
     public String generate(ContentItem content) throws Exception {
         return generate(content, false);
     }
 
-    public String generate(ContentItem content, boolean nestedItems)
-            throws Exception {
+    private String generate(ContentItem content, boolean nestedItems) throws Exception {
         return documentToString(buildDOM(content, nestedItems), true);
     }
 
@@ -101,8 +99,7 @@ public class GenerateXml {
                 "xmlns:sec", DIDLObject.Property.SEC.NAMESPACE.URI);
 
         if (null != content.getContainer()) {
-            generateContainer(content.getContainer(), descriptor, rootElement,
-                    nestedItems);
+            generateContainer(content.getContainer(), descriptor, rootElement, nestedItems);
         }
         if (null != content.getItem()) {
             generateItem(content.getItem(), descriptor, rootElement);
@@ -116,8 +113,9 @@ public class GenerateXml {
             NodeList nl = doc.getDocumentElement().getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);
-                if (n.getNodeType() != Node.ELEMENT_NODE)
+                if (n.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
+                }
 
                 Node clone = descElement.getOwnerDocument().importNode(n, true);
                 descElement.appendChild(clone);
@@ -129,90 +127,133 @@ public class GenerateXml {
         }
     }
 
-    private void generateContainer(Container container, Document descriptor,
-                                   Element parent, boolean nestedItems) {
+    private void generateContainer(Container container,
+                                   Document descriptor,
+                                   Element parent,
+                                   boolean nestedItems) {
 
         if (container.getClazz() == null) {
             throw new RuntimeException(
-                    "Missing 'upnp:class' element for container: "
-                            + container.getId());
+                    "Missing 'upnp:class' element for container: " + container.getId()
+            );
         }
 
-        Element containerElement = appendNewElement(descriptor, parent,
-                "container");
+        Element containerElement = appendNewElement(descriptor, parent, "container");
 
-        if (container.getId() == null)
-            throw new NullPointerException("Missing id on container: "
-                    + container);
+        if (container.getId() == null) {
+            throw new NullPointerException("Missing id on container: " + container);
+        }
         containerElement.setAttribute("id", container.getId());
 
-        if (container.getParentID() == null)
-            throw new NullPointerException("Missing parent id on container: "
-                    + container);
+        if (container.getParentID() == null) {
+            throw new NullPointerException("Missing parent id on container: " + container);
+        }
         containerElement.setAttribute("parentID", container.getParentID());
 
         if (container.getChildCount() != null) {
-            containerElement.setAttribute("childCount",
-                    Integer.toString(container.getChildCount()));
+            containerElement.setAttribute(
+                    "childCount",
+                    Integer.toString(container.getChildCount())
+            );
         }
 
-        containerElement.setAttribute("restricted",
-                booleanToInt(container.isRestricted()));
-        containerElement.setAttribute("searchable",
-                booleanToInt(container.isSearchable()));
+        containerElement.setAttribute("restricted", booleanToInt(container.isRestricted()));
+        containerElement.setAttribute("searchable", booleanToInt(container.isSearchable()));
 
         String title = container.getTitle();
         if (title == null) {
             title = UNKNOWN_TITLE;
         }
 
-        appendNewElementIfNotNull(descriptor, containerElement, "dc:title",
-                title, DIDLObject.Property.DC.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                containerElement,
+                "dc:title",
+                title,
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
 
-        appendNewElementIfNotNull(descriptor, containerElement, "dc:creator",
-                container.getCreator(), DIDLObject.Property.DC.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                containerElement,
+                "dc:creator",
+                container.getCreator(),
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
 
-        appendNewElementIfNotNull(descriptor, containerElement,
-                "upnp:writeStatus", container.getWriteStatus(),
-                DIDLObject.Property.UPNP.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                containerElement,
+                "upnp:writeStatus",
+                container.getWriteStatus(),
+                DIDLObject.Property.UPNP.NAMESPACE.URI
+        );
 
-        appendClass(descriptor, containerElement, container.getClazz(),
-                "upnp:class", false);
+        appendClass(
+                descriptor,
+                containerElement,
+                container.getClazz(),
+                "upnp:class",
+                false
+        );
 
         for (DIDLObject.Class searchClass : container.getSearchClasses()) {
-            appendClass(descriptor, containerElement, searchClass,
-                    "upnp:searchClass", true);
+            appendClass(
+                    descriptor,
+                    containerElement,
+                    searchClass,
+                    "upnp:searchClass",
+                    true
+            );
         }
 
         for (DIDLObject.Class createClass : container.getCreateClasses()) {
-            appendClass(descriptor, containerElement, createClass,
-                    "upnp:createClass", true);
+            appendClass(
+                    descriptor,
+                    containerElement,
+                    createClass,
+                    "upnp:createClass",
+                    true
+            );
         }
 
-        appendProperties(descriptor, containerElement, container, "upnp",
+        appendProperties(
+                descriptor,
+                containerElement,
+                container,
+                "upnp",
                 DIDLObject.Property.UPNP.NAMESPACE.class,
-                DIDLObject.Property.UPNP.NAMESPACE.URI);
-        appendProperties(descriptor, containerElement, container, "dc",
+                DIDLObject.Property.UPNP.NAMESPACE.URI
+        );
+        appendProperties(
+                descriptor,
+                containerElement,
+                container,
+                "dc",
                 DIDLObject.Property.DC.NAMESPACE.class,
-                DIDLObject.Property.DC.NAMESPACE.URI);
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
 
         if (nestedItems) {
             for (Item item : container.getItems()) {
-                if (item == null)
+                if (item == null) {
                     continue;
+                }
                 generateItem(item, descriptor, containerElement);
             }
         }
 
         for (Res resource : container.getResources()) {
-            if (resource == null)
+            if (resource == null) {
                 continue;
+            }
             generateResource(resource, descriptor, containerElement);
         }
 
         for (DescMeta descMeta : container.getDescMetadata()) {
-            if (descMeta == null)
+            if (descMeta == null) {
                 continue;
+            }
             generateDescMetadata(descMeta, descriptor, containerElement);
         }
     }
@@ -220,24 +261,25 @@ public class GenerateXml {
     private void generateItem(Item item, Document descriptor, Element parent) {
 
         if (item.getClazz() == null) {
-            throw new RuntimeException(
-                    "Missing 'upnp:class' element for item: " + item.getId());
+            throw new RuntimeException("Missing 'upnp:class' element for item: " + item.getId());
         }
 
         Element itemElement = appendNewElement(descriptor, parent, "item");
 
-        if (item.getId() == null)
+        if (item.getId() == null) {
             throw new NullPointerException("Missing id on item: " + item);
+        }
         itemElement.setAttribute("id", item.getId());
 
-        if (item.getParentID() == null)
+        if (item.getParentID() == null) {
             throw new NullPointerException("Missing parent id on item: " + item);
+        }
         itemElement.setAttribute("parentID", item.getParentID());
 
-        if (item.getRefID() != null)
+        if (item.getRefID() != null) {
             itemElement.setAttribute("refID", item.getRefID());
-        itemElement.setAttribute("restricted",
-                booleanToInt(item.isRestricted()));
+        }
+        itemElement.setAttribute("restricted", booleanToInt(item.isRestricted()));
 
         String title = item.getTitle();
         if (title == null) {
@@ -245,104 +287,136 @@ public class GenerateXml {
             title = UNKNOWN_TITLE;
         }
 
-        appendNewElementIfNotNull(descriptor, itemElement, "dc:title", title,
-                DIDLObject.Property.DC.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                itemElement,
+                "dc:title",
+                title,
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
 
-        appendNewElementIfNotNull(descriptor, itemElement, "dc:creator",
-                item.getCreator(), DIDLObject.Property.DC.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                itemElement,
+                "dc:creator",
+                item.getCreator(),
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
 
-        appendNewElementIfNotNull(descriptor, itemElement, "upnp:writeStatus",
-                item.getWriteStatus(), DIDLObject.Property.UPNP.NAMESPACE.URI);
+        appendNewElementIfNotNull(
+                descriptor,
+                itemElement,
+                "upnp:writeStatus",
+                item.getWriteStatus(),
+                DIDLObject.Property.UPNP.NAMESPACE.URI
+        );
 
-        appendClass(descriptor, itemElement, item.getClazz(), "upnp:class",
-                false);
+        appendClass(descriptor, itemElement, item.getClazz(), "upnp:class", false);
 
-        appendProperties(descriptor, itemElement, item, "upnp",
+        appendProperties(
+                descriptor,
+                itemElement,
+                item,
+                "upnp",
                 DIDLObject.Property.UPNP.NAMESPACE.class,
-                DIDLObject.Property.UPNP.NAMESPACE.URI);
-        appendProperties(descriptor, itemElement, item, "dc",
+                DIDLObject.Property.UPNP.NAMESPACE.URI
+        );
+        appendProperties(
+                descriptor,
+                itemElement,
+                item,
+                "dc",
                 DIDLObject.Property.DC.NAMESPACE.class,
-                DIDLObject.Property.DC.NAMESPACE.URI);
-        appendProperties(descriptor, itemElement, item, "sec",
+                DIDLObject.Property.DC.NAMESPACE.URI
+        );
+        appendProperties(
+                descriptor,
+                itemElement,
+                item,
+                "sec",
                 DIDLObject.Property.SEC.NAMESPACE.class,
-                DIDLObject.Property.SEC.NAMESPACE.URI);
+                DIDLObject.Property.SEC.NAMESPACE.URI
+        );
 
         for (Res resource : item.getResources()) {
-            if (resource == null)
+            if (resource == null) {
                 continue;
+            }
             generateResource(resource, descriptor, itemElement);
         }
 
         for (DescMeta descMeta : item.getDescMetadata()) {
-            if (descMeta == null)
+            if (descMeta == null) {
                 continue;
+            }
             generateDescMetadata(descMeta, descriptor, itemElement);
         }
     }
 
-    private void generateResource(Res resource, Document descriptor,
+    private void generateResource(Res resource,
+                                  Document descriptor,
                                   Element parent) {
 
         if (resource.getValue() == null) {
             throw new RuntimeException("Missing resource URI value" + resource);
         }
         if (resource.getProtocolInfo() == null) {
-            throw new RuntimeException("Missing resource protocol info: "
-                    + resource);
+            throw new RuntimeException("Missing resource protocol info: " + resource);
         }
 
-        Element resourceElement = appendNewElement(descriptor, parent, "res",
-                resource.getValue());
-        resourceElement.setAttribute("protocolInfo", resource.getProtocolInfo()
-                .toString());
-        if (resource.getImportUri() != null)
-            resourceElement.setAttribute("importUri", resource.getImportUri()
-                    .toString());
-        if (resource.getSize() != null)
+        Element resourceElement = appendNewElement(descriptor, parent, "res", resource.getValue());
+        resourceElement.setAttribute("protocolInfo", resource.getProtocolInfo().toString());
+        if (resource.getImportUri() != null) {
+            resourceElement.setAttribute("importUri", resource.getImportUri().toString());
+        }
+        if (resource.getSize() != null) {
             resourceElement.setAttribute("size", resource.getSize().toString());
-        if (resource.getDuration() != null)
+        }
+        if (resource.getDuration() != null) {
             resourceElement.setAttribute("duration", resource.getDuration());
-        if (resource.getBitrate() != null)
-            resourceElement.setAttribute("bitrate", resource.getBitrate()
-                    .toString());
-        if (resource.getSampleFrequency() != null)
+        }
+        if (resource.getBitrate() != null) {
+            resourceElement.setAttribute("bitrate", resource.getBitrate().toString());
+        }
+        if (resource.getSampleFrequency() != null) {
             resourceElement.setAttribute("sampleFrequency", resource
                     .getSampleFrequency().toString());
-        if (resource.getBitsPerSample() != null)
+        }
+        if (resource.getBitsPerSample() != null) {
             resourceElement.setAttribute("bitsPerSample", resource
                     .getBitsPerSample().toString());
-        if (resource.getNrAudioChannels() != null)
-            resourceElement.setAttribute("nrAudioChannels", resource
-                    .getNrAudioChannels().toString());
-        if (resource.getColorDepth() != null)
-            resourceElement.setAttribute("colorDepth", resource.getColorDepth()
-                    .toString());
-        if (resource.getProtection() != null)
-            resourceElement
-                    .setAttribute("protection", resource.getProtection());
-        if (resource.getResolution() != null)
-            resourceElement
-                    .setAttribute("resolution", resource.getResolution());
+        }
+        if (resource.getNrAudioChannels() != null) {
+            resourceElement.setAttribute("nrAudioChannels", resource.getNrAudioChannels().toString());
+        }
+        if (resource.getColorDepth() != null) {
+            resourceElement.setAttribute("colorDepth", resource.getColorDepth().toString());
+        }
+        if (resource.getProtection() != null) {
+            resourceElement.setAttribute("protection", resource.getProtection());
+        }
+        if (resource.getResolution() != null) {
+            resourceElement.setAttribute("resolution", resource.getResolution());
+        }
     }
 
-    private void generateDescMetadata(DescMeta descMeta, Document descriptor,
+    private void generateDescMetadata(DescMeta descMeta,
+                                      Document descriptor,
                                       Element parent) {
 
         if (descMeta.getId() == null) {
-            throw new RuntimeException("Missing id of description metadata: "
-                    + descMeta);
+            throw new RuntimeException("Missing id of description metadata: " + descMeta);
         }
         if (descMeta.getNameSpace() == null) {
-            throw new RuntimeException(
-                    "Missing namespace of description metadata: " + descMeta);
+            throw new RuntimeException("Missing namespace of description metadata: " + descMeta);
         }
 
         Element descElement = appendNewElement(descriptor, parent, "desc");
         descElement.setAttribute("id", descMeta.getId());
-        descElement.setAttribute("nameSpace", descMeta.getNameSpace()
-                .toString());
-        if (descMeta.getType() != null)
+        descElement.setAttribute("nameSpace", descMeta.getNameSpace().toString());
+        if (descMeta.getType() != null) {
             descElement.setAttribute("type", descMeta.getType());
+        }
         populateDescMetadata(descElement, descMeta);
     }
 
@@ -350,27 +424,41 @@ public class GenerateXml {
         return b ? "1" : "0";
     }
 
-    private void appendClass(Document descriptor, Element parent,
-                             DIDLObject.Class clazz, String element, boolean appendDerivation) {
-        Element classElement = appendNewElementIfNotNull(descriptor, parent,
-                element, clazz.getValue(),
-                DIDLObject.Property.UPNP.NAMESPACE.URI);
+    private void appendClass(Document descriptor,
+                             Element parent,
+                             DIDLObject.Class clazz,
+                             String element,
+                             boolean appendDerivation) {
+        Element classElement =
+                appendNewElementIfNotNull(
+                        descriptor,
+                        parent,
+                        element,
+                        clazz.getValue(),
+                        DIDLObject.Property.UPNP.NAMESPACE.URI
+                );
         if (clazz.getFriendlyName() != null
-                && clazz.getFriendlyName().length() > 0)
+                && clazz.getFriendlyName().length() > 0) {
             classElement.setAttribute("name", clazz.getFriendlyName());
-        if (appendDerivation)
-            classElement.setAttribute("includeDerived",
-                    Boolean.toString(clazz.isIncludeDerived()));
+        }
+        if (appendDerivation) {
+            classElement.setAttribute("includeDerived", Boolean.toString(clazz.isIncludeDerived()));
+        }
     }
 
-    private void appendProperties(Document descriptor, Element parent,
-                                  DIDLObject object, String prefix,
+    private void appendProperties(Document descriptor,
+                                  Element parent,
+                                  DIDLObject object,
+                                  String prefix,
                                   Class<? extends DIDLObject.Property.NAMESPACE> namespace,
                                   String namespaceURI) {
-        for (DIDLObject.Property<Object> property : object
-                .getPropertiesByNamespace(namespace)) {
-            Element el = descriptor.createElementNS(namespaceURI, prefix + ":"
-                    + property.getDescriptorName());
+        for (DIDLObject.Property<Object> property : object.getPropertiesByNamespace(namespace)) {
+            Element el =
+                    descriptor
+                            .createElementNS(
+                                    namespaceURI,
+                                    prefix + ":" + property.getDescriptorName()
+                            );
             parent.appendChild(el);
             property.setOnElement(el);
         }
