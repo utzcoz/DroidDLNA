@@ -6,24 +6,11 @@
     <!-- tab -->
 
     <!-- control -->
-    <string name="min_voc">already lowest voice</string>
 
     <!-- device -->
     <string name="exit">press again to exit application</string>
 
     <!-- imageDispaly -->
-    <string name="io_error">IO error</string>
-    <string name="decoding_error">error with decoding pictures</string>
-    <string name="network_denied">poor network</string>
-    <string name="oom_error">fail to load picture for it is too big</string>
-    <string name="unknown_error">unknown error</string>
-    <string name="info_first_image">already the first picture</string>
-    <string name="info_last_image">already the last picture</string>
-    <string name="info_image_slide_start">begin playing picture slides</string>
-    <string name="info_image_slide_pause">pause playing picture slides</string>
-    <string name="info_download_image">already download picture to</string>
-    <string name="info_download_image_error">fail to save picture</string>
-    <string name="info_share_image">share picture</string>
 
     <!-- player -->
     <string name="player_bt_return">return</string>

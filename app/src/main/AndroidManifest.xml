@@ -71,10 +71,6 @@
                 <data android:mimeType="application/vnd.3gp*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.github.dlna.dmp.ImageDisplay"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar" />
 
         <service android:name="com.github.dlna.dmr.RenderPlayerService" />
         <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl" />

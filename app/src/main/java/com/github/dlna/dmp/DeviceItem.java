@@ -35,10 +35,6 @@ public class DeviceItem {
         this.device = device;
     }
 
-    public Device getDevice() {
-        return device;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

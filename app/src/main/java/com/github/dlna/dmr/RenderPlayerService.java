@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.github.dlna.dmp.GPlayer;
-import com.github.dlna.dmp.ImageDisplay;
 import com.github.dlna.util.Action;
 
 public class RenderPlayerService extends Service {
@@ -37,15 +36,6 @@ public class RenderPlayerService extends Service {
                 playerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 playerIntent.putExtra("name", intent.getStringExtra("name"));
                 playerIntent.putExtra("playURI", intent.getStringExtra("playURI"));
-                startActivity(playerIntent);
-                break;
-            }
-            case "image": {
-                Intent playerIntent = new Intent(this, ImageDisplay.class);
-                playerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                playerIntent.putExtra("name", intent.getStringExtra("name"));
-                playerIntent.putExtra("playURI", intent.getStringExtra("playURI"));
-                playerIntent.putExtra("isRender", true);
                 startActivity(playerIntent);
                 break;
             }
