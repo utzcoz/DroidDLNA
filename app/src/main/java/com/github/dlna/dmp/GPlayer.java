@@ -27,7 +27,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -45,7 +44,7 @@ import java.io.IOException;
 
 public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
         OnInfoListener, OnPreparedListener, OnSeekCompleteListener, OnVideoSizeChangedListener,
-        SurfaceHolder.Callback, MediaController.MediaPlayerControl, OnClickListener {
+        SurfaceHolder.Callback, MediaController.MediaPlayerControl {
     private final static String TAG = "GPlayer";
 
     private static final int MEDIA_PLAYER_BUFFERING_UPDATE = 4001;
@@ -155,7 +154,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         textViewTime = findViewById(R.id.current_time);
         textViewLength = findViewById(R.id.total_time);
         pauseButton = findViewById(R.id.play);
-        pauseButton.setOnClickListener(this);
         layoutBottom = findViewById(R.id.layout_control);
 
         seekBarProgress = findViewById(R.id.seekBar_progress);
@@ -237,14 +235,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         finish();
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.play) {
-            doPauseResume();
-        }
-    }
-
     private void updatePausePlay() {
         if (mediaPlayer == null || pauseButton == null) {
             return;
@@ -254,26 +244,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 mediaPlayer.isPlaying() ?
                         R.drawable.button_pause : R.drawable.button_play;
         pauseButton.setBackgroundResource(resource);
-    }
-
-    private void doPauseResume() {
-        if (mediaPlayer == null) {
-            return;
-        }
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            if (null != mediaListener) {
-                mediaListener.pause();
-            }
-        } else {
-            mediaPlayer.start();
-            mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 200);
-
-            if (null != mediaListener) {
-                mediaListener.start();
-            }
-        }
-        updatePausePlay();
     }
 
     @Override
