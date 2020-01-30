@@ -28,7 +28,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -160,10 +159,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         layoutTop = findViewById(R.id.layout_top);
         videoTitle = findViewById(R.id.video_title);
-        Button leftButton = findViewById(R.id.topBar_back);
-        Button rightButton = findViewById(R.id.topBar_list_switch);
-        leftButton.setOnClickListener(this);
-        rightButton.setOnClickListener(this);
+        findViewById(R.id.topBar_back).setOnClickListener(this);
 
         textViewTime = findViewById(R.id.current_time);
         textViewLength = findViewById(R.id.totle_time);
