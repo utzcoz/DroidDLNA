@@ -32,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,8 +90,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private RelativeLayout layoutTop;
 
     private TextView videoTitle;
-
-    private volatile boolean canSeek = true;
 
     private int backCount;
 
@@ -157,29 +154,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         layoutBottom = findViewById(R.id.layout_control);
 
         seekBarProgress = findViewById(R.id.seekBar_progress);
-        seekBarProgress.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (seekBar.getId() == R.id.seekBar_progress && canSeek) {
-                    int position = seekBar.getProgress();
-                    if (mediaPlayer != null) {
-                        mediaPlayer.seekTo(position);
-                    }
-                }
-            }
-
-        });
     }
 
     @Override
