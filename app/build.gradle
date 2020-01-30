@@ -10,6 +10,12 @@ android {
         targetSdkVersion 29
     }
 
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
