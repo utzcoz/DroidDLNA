@@ -22,7 +22,6 @@
         android:textSize="12.0sp" />
 
     <Button
-        android:id="@+id/topBar_list_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -32,7 +31,8 @@
         android:textColor="#ffffffff"
         android:textSize="12.0sp"
         android:visibility="invisible" />
-
+
+
     <TextView
         android:id="@+id/video_title"
         android:layout_width="wrap_content"

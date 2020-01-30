@@ -29,7 +29,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
@@ -95,13 +94,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     private TextView videoTitle;
 
-    private ImageView soundIV;
-
-    private SeekBar soundSB;
-
     private volatile boolean canSeek = true;
-
-    private boolean isMute;
 
     private int backCount;
 
@@ -162,7 +155,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         findViewById(R.id.topBar_back).setOnClickListener(this);
 
         textViewTime = findViewById(R.id.current_time);
-        textViewLength = findViewById(R.id.totle_time);
+        textViewLength = findViewById(R.id.total_time);
         pauseButton = findViewById(R.id.play);
         pauseButton.setOnClickListener(this);
         layoutBottom = findViewById(R.id.layout_control);
@@ -190,29 +183,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 }
             }
 
-        });
-
-        soundIV = findViewById(R.id.sound);
-        soundIV.setOnClickListener(this);
-        soundSB = findViewById(R.id.seekBar_sound);
-        soundSB.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        soundSB.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        soundSB.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
         });
     }
 
@@ -279,15 +249,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         switch (id) {
             case R.id.topBar_back:
                 exit();
-                break;
-            case R.id.sound:
-                isMute = !isMute;
-                audioManager.setStreamMute(AudioManager.STREAM_MUSIC, isMute);
-                if (isMute) {
-                    soundIV.setImageResource(R.drawable.phone_480_sound_mute);
-                } else {
-                    soundIV.setImageResource(R.drawable.phone_480_sound_on);
-                }
                 break;
             case R.id.play: {
                 doPauseResume();
@@ -574,10 +535,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                     textViewTime.setText(Utils.secToTime(position / 1000));
                     seekBarProgress.setProgress(position);
                     mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 500);
-                    break;
-                }
-                case MEDIA_PLAYER_VOLUME_CHANGED: {
-                    soundSB.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
                     break;
                 }
                 case MEDIA_PLAYER_HIDDEN_CONTROL: {
