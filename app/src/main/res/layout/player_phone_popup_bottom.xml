@@ -9,40 +9,6 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="32.0dip"
-        android:background="#33000000"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/head_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="19.0dip"
-            android:text="已经为您跳过片头"
-            android:textColor="#ffffffff"
-            android:textSize="16.0sp" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="19.0dip"
-            android:layout_toRightOf="@+id/head_text"
-            android:background="@drawable/player_pad_notice_bottom_setting" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="19.0dip"
-            android:background="@drawable/player_pad_poptop_close"
-            android:scaleType="fitXY" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#a52f2f2f">
 
