@@ -43,13 +43,8 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         OnInfoListener, OnPreparedListener, SurfaceHolder.Callback {
     private final static String TAG = "GPlayer";
 
-    private static final int MEDIA_PLAYER_BUFFERING_UPDATE = 4001;
-    private static final int MEDIA_PLAYER_COMPLETION = 4002;
-    private static final int MEDIA_PLAYER_ERROR = 4003;
-    private static final int MEDIA_PLAYER_INFO = 4004;
     private static final int MEDIA_PLAYER_PREPARED = 4005;
     private static final int MEDIA_PLAYER_PROGRESS_UPDATE = 4006;
-    private static final int MEDIA_PLAYER_VIDEO_SIZE_CHANGED = 4007;
     private static final int MEDIA_PLAYER_HIDDEN_CONTROL = 4009;
 
     private static MediaListener mediaListener;
@@ -202,7 +197,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         if (mediaPlayer == null || pauseButton == null) {
             return;
         }
-
         int resource =
                 mediaPlayer.isPlaying() ?
                         R.drawable.button_pause : R.drawable.button_play;
@@ -363,13 +357,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         public void handleMessage(Message msg) {
             Log.d(TAG, "msg=" + msg.what);
             switch (msg.what) {
-                case MEDIA_PLAYER_BUFFERING_UPDATE:
-                case MEDIA_PLAYER_INFO:
-                case MEDIA_PLAYER_ERROR:
-                case MEDIA_PLAYER_COMPLETION:
-                case MEDIA_PLAYER_VIDEO_SIZE_CHANGED: {
-                    break;
-                }
                 case MEDIA_PLAYER_PREPARED: {
                     bufferLayout.setVisibility(View.GONE);
                     break;
