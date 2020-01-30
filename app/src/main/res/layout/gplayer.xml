@@ -13,8 +13,6 @@
             android:layout_height="fill_parent" />
     </FrameLayout>
 
-    <include layout="@layout/player_buffer" />
-
     <include layout="@layout/player_phone_popup_top" />
 
     <include layout="@layout/player_phone_popup_bottom" />

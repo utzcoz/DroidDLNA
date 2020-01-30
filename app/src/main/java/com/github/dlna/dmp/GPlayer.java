@@ -59,10 +59,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     MediaController mediaController;
 
-    int videoWidth = 0;
-
-    int videoHeight = 0;
-
     String playURI;
 
     private AudioManager audioManager;
@@ -74,8 +70,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private TextView textViewLength;
 
     private ImageButton pauseButton;
-
-    private RelativeLayout bufferLayout;
 
     private LinearLayout layoutBottom;
 
@@ -131,8 +125,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
     private void initControl() {
         mediaController = new MediaController(this);
-
-        bufferLayout = findViewById(R.id.buffer_info);
 
         layoutTop = findViewById(R.id.layout_top);
         videoTitle = findViewById(R.id.video_title);
@@ -245,8 +237,8 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     public void onPrepared(MediaPlayer mp) {
         Log.v(TAG, "onPrepared Called");
-        videoWidth = mp.getVideoWidth();
-        videoHeight = mp.getVideoHeight();
+        int videoWidth = mp.getVideoWidth();
+        int videoHeight = mp.getVideoHeight();
         if (videoWidth > currentDisplay.getWidth() || videoHeight > currentDisplay.getHeight()) {
             float heightRatio = (float) videoHeight / (float) currentDisplay.getHeight();
             float widthRatio = (float) videoWidth / (float) currentDisplay.getWidth();
@@ -260,6 +252,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 }
             }
         }
+        surfaceView.getHolder().setFixedSize(videoWidth, videoHeight);
         mp.start();
         if (null != mediaListener) {
             mediaListener.start();
@@ -357,10 +350,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         public void handleMessage(Message msg) {
             Log.d(TAG, "msg=" + msg.what);
             switch (msg.what) {
-                case MEDIA_PLAYER_PREPARED: {
-                    bufferLayout.setVisibility(View.GONE);
-                    break;
-                }
                 case MEDIA_PLAYER_PROGRESS_UPDATE: {
                     if (null == mediaPlayer || !mediaPlayer.isPlaying()) {
                         break;
@@ -441,7 +430,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                     stop();
                     break;
             }
-
         }
     }
 
