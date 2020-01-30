@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="right|top"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/player_prepairing"
@@ -20,8 +20,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:textSize="10sp"
-        android:textStyle="bold" >
-    </TextView>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/info"
@@ -31,7 +30,6 @@
         android:layout_toRightOf="@id/player_prepairing"
         android:gravity="center"
         android:textSize="10sp"
-        android:textStyle="bold" >
-    </TextView>
+        android:textStyle="bold" />
 
 </RelativeLayout>

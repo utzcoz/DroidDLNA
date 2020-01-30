@@ -152,7 +152,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         layoutTop = findViewById(R.id.layout_top);
         videoTitle = findViewById(R.id.video_title);
-        findViewById(R.id.topBar_back).setOnClickListener(this);
 
         textViewTime = findViewById(R.id.current_time);
         textViewLength = findViewById(R.id.total_time);
@@ -246,16 +245,8 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id) {
-            case R.id.topBar_back:
-                exit();
-                break;
-            case R.id.play: {
-                doPauseResume();
-                break;
-            }
-            default:
-                break;
+        if (id == R.id.play) {
+            doPauseResume();
         }
     }
 
