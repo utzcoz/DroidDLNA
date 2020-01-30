@@ -10,7 +10,6 @@
 **/bin/
 **/gen/
 **/out/
-gradle/
 **/*.iml
 .idea/
 .DS_Store
