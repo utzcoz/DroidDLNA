@@ -32,7 +32,7 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 import java.io.IOException;
 import java.util.Map;
 
-public class ZxtMediaRenderer {
+public class MediaRenderer {
 
     private static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 500;
 
@@ -44,7 +44,7 @@ public class ZxtMediaRenderer {
     private final LastChange renderingControlLastChange =
             new LastChange(new RenderingControlLastChangeParser());
 
-    private final Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> mediaPlayers;
+    private final Map<UnsignedIntegerFourBytes, MediaPlayer> mediaPlayers;
 
     private final LastChangeAwareServiceManager<AVTransportService> avTransport;
     private final LastChangeAwareServiceManager<AudioRenderingControl> renderingControl;
@@ -53,11 +53,11 @@ public class ZxtMediaRenderer {
 
     private Context mContext;
 
-    public ZxtMediaRenderer(int numberOfPlayers, Context context) {
+    public MediaRenderer(int numberOfPlayers, Context context) {
         mContext = context;
 
         // This is the backend which manages the actual player instances
-        mediaPlayers = new ZxtMediaPlayers(
+        mediaPlayers = new MediaPlayers(
                 numberOfPlayers,
                 context,
                 avTransportLastChange,
@@ -65,22 +65,22 @@ public class ZxtMediaRenderer {
         ) {
             // These overrides connect the player instances to the output/display
             @Override
-            protected void onPlay(ZxtMediaPlayer player) {
+            protected void onPlay(MediaPlayer player) {
             }
 
             @Override
-            protected void onStop(ZxtMediaPlayer player) {
+            protected void onStop(MediaPlayer player) {
             }
         };
 
         // The connection manager doesn't have to do much, HTTP is stateless
         LocalServiceBinder binder = new AnnotationLocalServiceBinder();
-        LocalService connectionManagerService = binder.read(ZxtConnectionManagerService.class);
-        ServiceManager<ZxtConnectionManagerService> connectionManager =
+        LocalService connectionManagerService = binder.read(ConnectionManagerService.class);
+        ServiceManager<ConnectionManagerService> connectionManager =
                 new DefaultServiceManager(connectionManagerService) {
                     @Override
                     protected Object createServiceInstance() throws Exception {
-                        return new ZxtConnectionManagerService();
+                        return new ConnectionManagerService();
                     }
                 };
         connectionManagerService.setManager(connectionManager);
@@ -172,7 +172,7 @@ public class ZxtMediaRenderer {
     public LocalDevice getDevice() {
         return device;
     }
-    
+
     private Icon createDefaultDeviceIcon() {
         try {
             return new Icon(

@@ -1,16 +1,15 @@
 package com.github.dlna.dmr;
 
-import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.seamless.util.MimeType;
 
 import java.util.logging.Logger;
 
-class ZxtConnectionManagerService extends ConnectionManagerService {
+class ConnectionManagerService extends org.fourthline.cling.support.connectionmanager.ConnectionManagerService {
 
-    final private static Logger log = Logger.getLogger(ZxtConnectionManagerService.class.getName());
+    final private static Logger log = Logger.getLogger(ConnectionManagerService.class.getName());
 
-    ZxtConnectionManagerService() {
+    ConnectionManagerService() {
         sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/jpeg")));
         sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/png")));
         sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/gif")));

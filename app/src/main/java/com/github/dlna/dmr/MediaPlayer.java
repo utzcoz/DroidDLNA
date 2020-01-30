@@ -28,9 +28,9 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 import java.net.URI;
 import java.util.logging.Logger;
 
-public class ZxtMediaPlayer {
+public class MediaPlayer {
 
-    final private static Logger log = Logger.getLogger(ZxtMediaPlayer.class.getName());
+    final private static Logger log = Logger.getLogger(MediaPlayer.class.getName());
 
     private static final String TAG = "GstMediaPlayer";
 
@@ -46,9 +46,9 @@ public class ZxtMediaPlayer {
 
     private Context mContext;
 
-    ZxtMediaPlayer(UnsignedIntegerFourBytes instanceId, Context context,
-                   LastChange avTransportLastChange,
-                   LastChange renderingControlLastChange) {
+    MediaPlayer(UnsignedIntegerFourBytes instanceId, Context context,
+                LastChange avTransportLastChange,
+                LastChange renderingControlLastChange) {
         super();
         this.instanceId = instanceId;
         this.mContext = context;
@@ -202,7 +202,7 @@ public class ZxtMediaPlayer {
 
         public void positionChanged(int position) {
             log.fine("Position Changed event received: " + position);
-            synchronized (ZxtMediaPlayer.this) {
+            synchronized (MediaPlayer.this) {
                 currentPositionInfo = new PositionInfo(1, currentMediaInfo.getMediaDuration(),
                         currentMediaInfo.getCurrentURI(), ModelUtil.toTimeString(position / 1000),
                         ModelUtil.toTimeString(position / 1000));
@@ -211,7 +211,7 @@ public class ZxtMediaPlayer {
 
         public void durationChanged(int duration) {
             log.fine("Duration Changed event received: " + duration);
-            synchronized (ZxtMediaPlayer.this) {
+            synchronized (MediaPlayer.this) {
                 String newValue = ModelUtil.toTimeString(duration / 1000);
                 currentMediaInfo = new MediaInfo(currentMediaInfo.getCurrentURI(), "",
                         new UnsignedIntegerFourBytes(1), newValue, StorageMedium.NETWORK);

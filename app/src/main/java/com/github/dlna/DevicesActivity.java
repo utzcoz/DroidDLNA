@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dlna.dmp.DeviceItem;
-import com.github.dlna.dmr.ZxtMediaRenderer;
+import com.github.dlna.dmr.MediaRenderer;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
@@ -45,8 +45,8 @@ public class DevicesActivity extends AppCompatActivity {
 
             Log.v(TAG, "Connected to UPnP Service");
 
-            ZxtMediaRenderer mediaRenderer =
-                    new ZxtMediaRenderer(1, DevicesActivity.this);
+            MediaRenderer mediaRenderer =
+                    new MediaRenderer(1, DevicesActivity.this);
             upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
             deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
 

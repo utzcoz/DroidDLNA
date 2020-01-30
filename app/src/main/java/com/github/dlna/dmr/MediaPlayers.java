@@ -9,22 +9,22 @@ import org.fourthline.cling.support.model.TransportState;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-public class ZxtMediaPlayers extends ConcurrentHashMap<UnsignedIntegerFourBytes, ZxtMediaPlayer> {
+public class MediaPlayers extends ConcurrentHashMap<UnsignedIntegerFourBytes, MediaPlayer> {
 
-    final private static Logger log = Logger.getLogger(ZxtMediaPlayers.class.getName());
+    final private static Logger log = Logger.getLogger(MediaPlayers.class.getName());
 
     private Context mContext;
 
-    ZxtMediaPlayers(int numberOfPlayers,
-                    Context context,
-                    LastChange avTransportLastChange,
-                    LastChange renderingControlLastChange) {
+    MediaPlayers(int numberOfPlayers,
+                 Context context,
+                 LastChange avTransportLastChange,
+                 LastChange renderingControlLastChange) {
         super(numberOfPlayers);
         this.mContext = context;
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            ZxtMediaPlayer player =
-                    new ZxtMediaPlayer(
+            MediaPlayer player =
+                    new MediaPlayer(
                             new UnsignedIntegerFourBytes(i),
                             mContext,
                             avTransportLastChange,
@@ -44,11 +44,11 @@ public class ZxtMediaPlayers extends ConcurrentHashMap<UnsignedIntegerFourBytes,
         }
     }
 
-    protected void onPlay(ZxtMediaPlayer player) {
+    protected void onPlay(MediaPlayer player) {
         log.fine("Player is playing: " + player.getInstanceId());
     }
 
-    protected void onStop(ZxtMediaPlayer player) {
+    protected void onStop(MediaPlayer player) {
         log.fine("Player is stopping: " + player.getInstanceId());
     }
 }

@@ -16,21 +16,21 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
 
     final private static Logger log = Logger.getLogger(AudioRenderingControl.class.getName());
 
-    final private Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> players;
+    final private Map<UnsignedIntegerFourBytes, MediaPlayer> players;
 
     AudioRenderingControl(LastChange lastChange,
-                          Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> players) {
+                          Map<UnsignedIntegerFourBytes, MediaPlayer> players) {
         super(lastChange);
         this.players = players;
     }
 
-    private Map<UnsignedIntegerFourBytes, ZxtMediaPlayer> getPlayers() {
+    private Map<UnsignedIntegerFourBytes, MediaPlayer> getPlayers() {
         return players;
     }
 
-    private ZxtMediaPlayer getInstance(UnsignedIntegerFourBytes instanceId)
+    private MediaPlayer getInstance(UnsignedIntegerFourBytes instanceId)
             throws RenderingControlException {
-        ZxtMediaPlayer player = getPlayers().get(instanceId);
+        MediaPlayer player = getPlayers().get(instanceId);
         if (player == null) {
             throw new RenderingControlException(RenderingControlErrorCode.INVALID_INSTANCE_ID);
         }
