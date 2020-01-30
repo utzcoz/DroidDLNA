@@ -5,7 +5,6 @@ public class Utils {
     public static final String MANUFACTURER = android.os.Build.MANUFACTURER;
     public static final String DMR_NAME = "MSI MediaRenderer";
 
-    public static final String DMS_DESC = "MSI MediaServer";
     public static final String DMR_DESC = "MSI MediaRenderer";
     public static final String DMR_MODEL_URL = "http://4thline.org/projects/cling/mediarenderer/";
 
@@ -22,11 +21,11 @@ public class Utils {
     }
 
     public static String secToTime(long paramLong) {
-        int time = new Long(paramLong).intValue();
-        String timeStr = null;
-        int hour = 0;
-        int minute = 0;
-        int second = 0;
+        int time = Long.valueOf(paramLong).intValue();
+        String timeStr;
+        int hour;
+        int minute;
+        int second;
         if (time <= 0)
             return "00:00";
         else {
@@ -48,7 +47,7 @@ public class Utils {
     }
 
     public static String unitFormat(int i) {
-        String retStr = null;
+        String retStr;
         if (i >= 0 && i < 10)
             retStr = "0" + i;
         else

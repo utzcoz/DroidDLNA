@@ -7,10 +7,6 @@ public class Settings {
         return "DroidDLNA Local Render";
     }
 
-    public static int getSlideTime() {
-        return 5;
-    }
-
     public static void setUUID(String uuid) {
         UUID = uuid;
     }

@@ -51,5 +51,4 @@ dependencies {
     implementation files('libs/jetty-util-8.1.9.v20130131.jar')
     implementation files('libs/slf4j-api-1.6.1.jar')
     implementation files('libs/slf4j-jdk14-1.6.1.jar')
-    implementation files('libs/universal-image-loader-1.8.4-with-sources.jar')
 }

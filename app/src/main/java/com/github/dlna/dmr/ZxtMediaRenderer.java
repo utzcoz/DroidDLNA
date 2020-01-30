@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.github.dlna.Settings;
-import com.github.dlna.util.FileUtil;
 import com.github.dlna.util.UpnpUtil;
 import com.github.dlna.util.Utils;
 
@@ -173,8 +172,7 @@ public class ZxtMediaRenderer {
     public LocalDevice getDevice() {
         return device;
     }
-
-
+    
     private Icon createDefaultDeviceIcon() {
         try {
             return new Icon(
@@ -183,7 +181,7 @@ public class ZxtMediaRenderer {
                     48,
                     32,
                     "msi.png",
-                    mContext.getResources().getAssets().open(FileUtil.LOGO)
+                    mContext.getResources().getAssets().open("ic_launcher.png")
             );
         } catch (IOException e) {
             Log.w(TAG, "createDefaultDeviceIcon IOException");
