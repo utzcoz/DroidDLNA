@@ -13,7 +13,6 @@
     <!-- imageDispaly -->
 
     <!-- player -->
-    <string name="player_bt_return">return</string>
     <string name="player_exit">press again to exit player</string>
 
     <!-- setting -->

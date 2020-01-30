@@ -83,15 +83,6 @@
                 android:text="00:00"
                 android:textColor="#ff909090"
                 android:textSize="18.0dip" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20.0dip"
-                android:background="@drawable/button_setting"
-                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
