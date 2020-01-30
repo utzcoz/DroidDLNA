@@ -1,11 +1,3 @@
-/*
- * Copyright (C) 2012 xbk
- * Action.java
- * Description:
- * Author: zxt
- * Date:  2013-4-11 上午10:33:17
- */
-
 package com.github.dlna.util;
 
 public class Action {

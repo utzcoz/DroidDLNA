@@ -1,4 +1,3 @@
-
 package com.github.dlna.dmr;
 
 import android.app.Service;

@@ -1,4 +1,3 @@
-
 package com.github.dlna.dmr;
 
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;

@@ -1,9 +1,3 @@
-/*
- * RenderPlayerService.java
- * Description:
- * Author: zxt
- */
-
 package com.github.dlna.dmr;
 
 import android.app.Service;

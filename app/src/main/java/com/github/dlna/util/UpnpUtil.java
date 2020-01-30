@@ -1,4 +1,3 @@
-
 package com.github.dlna.util;
 
 import android.os.Build;

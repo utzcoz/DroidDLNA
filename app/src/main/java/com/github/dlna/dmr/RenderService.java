@@ -1,11 +1,3 @@
-/*
- * Copyright (C) 2014 zxt
- * RenderService.java
- * Description:
- * Author: zxt
- * Date:  2014-1-23 上午10:30:58
- */
-
 package com.github.dlna.dmr;
 
 import android.app.Service;
