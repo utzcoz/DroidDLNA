@@ -55,7 +55,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private static final int MEDIA_PLAYER_PREPARED = 4005;
     private static final int MEDIA_PLAYER_PROGRESS_UPDATE = 4006;
     private static final int MEDIA_PLAYER_VIDEO_SIZE_CHANGED = 4007;
-    private static final int MEDIA_PLAYER_VOLUME_CHANGED = 4008;
     private static final int MEDIA_PLAYER_HIDDEN_CONTROL = 4009;
 
     private static MediaListener mediaListener;
@@ -225,10 +224,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                 Toast.makeText(this, R.string.player_exit, Toast.LENGTH_SHORT).show();
             }
             return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -584,7 +579,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                             (int) (intent.getDoubleExtra("volume", 0)
                                     * audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-                    mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_VOLUME_CHANGED, 100);
                     break;
                 case Action.STOP:
                     stop();
