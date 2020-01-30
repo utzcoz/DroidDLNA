@@ -14,8 +14,6 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.media.MediaPlayer.OnSeekCompleteListener;
-import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,8 +40,8 @@ import com.github.dlna.util.Utils;
 import java.io.IOException;
 
 public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
-        OnInfoListener, OnPreparedListener, OnSeekCompleteListener, OnVideoSizeChangedListener,
-        SurfaceHolder.Callback, MediaController.MediaPlayerControl {
+        OnInfoListener, OnPreparedListener, SurfaceHolder.Callback,
+        MediaController.MediaPlayerControl {
     private final static String TAG = "GPlayer";
 
     private static final int MEDIA_PLAYER_BUFFERING_UPDATE = 4001;
@@ -108,7 +106,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         surfaceView = findViewById(R.id.gplayer_surfaceview);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         mediaPlayer = new MediaPlayer();
 
@@ -116,8 +113,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         mediaPlayer.setOnErrorListener(this);
         mediaPlayer.setOnInfoListener(this);
         mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnSeekCompleteListener(this);
-        mediaPlayer.setOnVideoSizeChangedListener(this);
 
         initControl();
 
@@ -164,11 +159,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
         setTitle(intent);
         super.onNewIntent(intent);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -236,6 +226,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         return false;
     }
 
+    @Override
     public int getAudioSessionId() {
         return 1;
     }
@@ -262,20 +253,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.v(TAG, "surfaceDestroyed Called");
     }
-
-    @Override
-    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-        Log.v(TAG, "onVideoSizeChanged Called");
-    }
-
-    @Override
-    public void onSeekComplete(MediaPlayer mp) {
-        Log.v(TAG, "onSeekComplete Called");
-        if (null != mediaListener) {
-            mediaListener.endOfMedia();
-        }
-    }
-
+    
     @Override
     public void onPrepared(MediaPlayer mp) {
         Log.v(TAG, "onPrepared Called");
@@ -327,7 +305,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         if (null != mediaListener) {
             mediaListener.endOfMedia();
         }
-
         exit();
     }
 
