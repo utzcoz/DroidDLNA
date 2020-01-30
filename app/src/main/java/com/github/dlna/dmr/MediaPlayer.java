@@ -29,7 +29,6 @@ import java.net.URI;
 import java.util.logging.Logger;
 
 public class MediaPlayer {
-
     final private static Logger log = Logger.getLogger(MediaPlayer.class.getName());
 
     private static final String TAG = "GstMediaPlayer";
@@ -44,14 +43,14 @@ public class MediaPlayer {
     private MediaInfo currentMediaInfo = new MediaInfo();
     private double storedVolume;
 
-    private Context mContext;
+    private Context context;
 
     MediaPlayer(UnsignedIntegerFourBytes instanceId, Context context,
                 LastChange avTransportLastChange,
                 LastChange renderingControlLastChange) {
         super();
         this.instanceId = instanceId;
-        this.mContext = context;
+        this.context = context;
         this.avTransportLastChange = avTransportLastChange;
         this.renderingControlLastChange = renderingControlLastChange;
     }
@@ -95,11 +94,11 @@ public class MediaPlayer {
         GPlayer.setMediaListener(new GstMediaListener());
 
         Intent intent = new Intent();
-        intent.setClass(mContext, RenderPlayerService.class);
+        intent.setClass(context, RenderPlayerService.class);
         intent.putExtra("type", type);
         intent.putExtra("name", name);
         intent.putExtra("playURI", uri.toString());
-        mContext.startService(intent);
+        context.startService(intent);
     }
 
     synchronized void setVolume(double volume) {
@@ -111,7 +110,7 @@ public class MediaPlayer {
         intent.putExtra("helpAction", Action.SET_VOLUME);
         intent.putExtra("volume", volume);
 
-        mContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
 
         ChannelMute switchedMute =
                 (storedVolume == 0 && volume > 0) || (storedVolume > 0 && volume == 0)
@@ -224,7 +223,7 @@ public class MediaPlayer {
     }
 
     double getVolume() {
-        AudioManager audioManager = (AudioManager) mContext.getSystemService(Service.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Service.AUDIO_SERVICE);
         double v = (double) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         Log.i(TAG, "getVolume " + v);
@@ -252,14 +251,14 @@ public class MediaPlayer {
         intent.setAction(Action.DMR);
         intent.putExtra("helpAction", Action.SEEK);
         intent.putExtra("position", position);
-        mContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
     }
 
     private void sendBroadcastAction(String action) {
         Intent intent = new Intent();
         intent.setAction(Action.DMR);
         intent.putExtra("helpAction", action);
-        mContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
     }
 }
 

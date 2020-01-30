@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class AVTransportService extends AbstractAVTransportService {
-
     final private static Logger log = Logger.getLogger(AVTransportService.class.getName());
 
     private static final String TAG = "GstAVTransportService";

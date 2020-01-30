@@ -13,9 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class AudioRenderingControl extends AbstractAudioRenderingControl {
-
     final private static Logger log = Logger.getLogger(AudioRenderingControl.class.getName());
-
     final private Map<UnsignedIntegerFourBytes, MediaPlayer> players;
 
     AudioRenderingControl(LastChange lastChange,

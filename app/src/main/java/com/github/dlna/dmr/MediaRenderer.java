@@ -52,10 +52,10 @@ public class MediaRenderer {
 
     private final LocalDevice device;
 
-    private Context mContext;
+    private Context context;
 
     public MediaRenderer(Context context) {
-        mContext = context;
+        this.context = context;
 
         // This is the backend which manages the actual player instances
         mediaPlayers = new ConcurrentHashMap<>();
@@ -176,7 +176,7 @@ public class MediaRenderer {
                     48,
                     32,
                     "msi.png",
-                    mContext.getResources().getAssets().open("ic_launcher.png")
+                    context.getResources().getAssets().open("ic_launcher.png")
             );
         } catch (IOException e) {
             Log.w(TAG, "createDefaultDeviceIcon IOException");

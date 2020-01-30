@@ -6,7 +6,6 @@ import org.seamless.util.MimeType;
 import java.util.logging.Logger;
 
 class ConnectionManagerService extends org.fourthline.cling.support.connectionmanager.ConnectionManagerService {
-
     final private static Logger log = Logger.getLogger(ConnectionManagerService.class.getName());
 
     ConnectionManagerService() {
