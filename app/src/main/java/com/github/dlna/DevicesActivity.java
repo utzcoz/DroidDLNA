@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.dlna.dmp.DeviceItem;
 import com.github.dlna.dmr.MediaRenderer;
 
 import org.fourthline.cling.android.AndroidUpnpService;
@@ -22,12 +21,8 @@ import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 
-import java.util.ArrayList;
-
 public class DevicesActivity extends AppCompatActivity {
     private final static String TAG = "DevicesActivity";
-
-    private ArrayList<DeviceItem> dmrList = new ArrayList<>();
 
     private long exitTime = 0;
 
@@ -38,8 +33,6 @@ public class DevicesActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
-            dmrList.clear();
-
             upnpService = (AndroidUpnpService) service;
             BaseApplication.upnpService = upnpService;
 
@@ -48,16 +41,11 @@ public class DevicesActivity extends AppCompatActivity {
             MediaRenderer mediaRenderer =
                     new MediaRenderer(DevicesActivity.this);
             upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
-            deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
 
             // Getting ready for future device advertisements
             upnpService.getRegistry().addListener(deviceListRegistryListener);
             // Refresh device list
             upnpService.getControlPoint().search();
-
-            if (dmrList.size() > 0 && null == BaseApplication.dmrDeviceItem) {
-                BaseApplication.dmrDeviceItem = dmrList.get(0);
-            }
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -107,7 +95,7 @@ public class DevicesActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public class DeviceListRegistryListener extends DefaultRegistryListener {
+    public static class DeviceListRegistryListener extends DefaultRegistryListener {
 
         @Override
         public void remoteDeviceDiscoveryStarted(Registry registry,
@@ -120,26 +108,14 @@ public class DevicesActivity extends AppCompatActivity {
                                                 final Exception ex) {
         }
 
-        /**
-         * End of optimization, you can remove the whole block if your Android
-         * handset is fast (>= 600 Mhz)
-         */
         @Override
         public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
             Log.e(TAG, "remoteDeviceAdded:" + device.toString() + device.getType().getType());
-
-            if (device.getType().getNamespace().equals("schemas-upnp-org")
-                    && device.getType().getType().equals("MediaRenderer")) {
-                dmrAdded(new DeviceItem(device));
-            }
         }
 
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
-            if (device.getType().getNamespace().equals("schemas-upnp-org")
-                    && device.getType().getType().equals("MediaRenderer")) {
-                dmrRemoved(new DeviceItem(device));
-            }
+            Log.e(TAG, "remoteDeviceRemoved:" + device.toString() + device.getType().getType());
         }
 
         @Override
@@ -150,24 +126,6 @@ public class DevicesActivity extends AppCompatActivity {
         @Override
         public void localDeviceRemoved(Registry registry, LocalDevice device) {
             Log.e(TAG, "localDeviceRemoved:" + device.toString() + device.getType().getType());
-        }
-
-        void dmrAdded(final DeviceItem di) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    if (!dmrList.contains(di)) {
-                        dmrList.add(di);
-                    }
-                }
-            });
-        }
-
-        void dmrRemoved(final DeviceItem di) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    dmrList.remove(di);
-                }
-            });
         }
     }
 }

@@ -3,8 +3,6 @@ package com.github.dlna;
 import android.app.Application;
 import android.content.Context;
 
-import com.github.dlna.dmp.DeviceItem;
-
 import org.fourthline.cling.android.AndroidUpnpService;
 
 import java.util.UUID;
@@ -12,8 +10,6 @@ import java.util.UUID;
 public class BaseApplication extends Application {
     private static final String SP_NAME_UUID = "sp_name_uuid";
     private static final String SP_KEY_UUID = "uuid";
-
-    public static DeviceItem dmrDeviceItem;
 
     public static AndroidUpnpService upnpService;
 
