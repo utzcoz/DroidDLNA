@@ -31,6 +31,7 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MediaRenderer {
 
@@ -53,25 +54,19 @@ public class MediaRenderer {
 
     private Context mContext;
 
-    public MediaRenderer(int numberOfPlayers, Context context) {
+    public MediaRenderer(Context context) {
         mContext = context;
 
         // This is the backend which manages the actual player instances
-        mediaPlayers = new MediaPlayers(
-                numberOfPlayers,
-                context,
-                avTransportLastChange,
-                renderingControlLastChange
-        ) {
-            // These overrides connect the player instances to the output/display
-            @Override
-            protected void onPlay(MediaPlayer player) {
-            }
-
-            @Override
-            protected void onStop(MediaPlayer player) {
-            }
-        };
+        mediaPlayers = new ConcurrentHashMap<>();
+        MediaPlayer player =
+                new MediaPlayer(
+                        new UnsignedIntegerFourBytes(1),
+                        context,
+                        avTransportLastChange,
+                        renderingControlLastChange
+                );
+        mediaPlayers.put(player.getInstanceId(), player);
 
         // The connection manager doesn't have to do much, HTTP is stateless
         LocalServiceBinder binder = new AnnotationLocalServiceBinder();

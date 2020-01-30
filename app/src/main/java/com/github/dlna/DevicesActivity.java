@@ -46,7 +46,7 @@ public class DevicesActivity extends AppCompatActivity {
             Log.v(TAG, "Connected to UPnP Service");
 
             MediaRenderer mediaRenderer =
-                    new MediaRenderer(1, DevicesActivity.this);
+                    new MediaRenderer(DevicesActivity.this);
             upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
             deviceListRegistryListener.dmrAdded(new DeviceItem(mediaRenderer.getDevice()));
 
