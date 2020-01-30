@@ -40,8 +40,7 @@ import com.github.dlna.util.Utils;
 import java.io.IOException;
 
 public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
-        OnInfoListener, OnPreparedListener, SurfaceHolder.Callback,
-        MediaController.MediaPlayerControl {
+        OnInfoListener, OnPreparedListener, SurfaceHolder.Callback {
     private final static String TAG = "GPlayer";
 
     private static final int MEDIA_PLAYER_BUFFERING_UPDATE = 4001;
@@ -227,11 +226,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     }
 
     @Override
-    public int getAudioSessionId() {
-        return 1;
-    }
-
-    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.v(TAG, "surfaceChanged Called");
     }
@@ -253,7 +247,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.v(TAG, "surfaceDestroyed Called");
     }
-    
+
     @Override
     public void onPrepared(MediaPlayer mp) {
         Log.v(TAG, "onPrepared Called");
@@ -320,41 +314,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         return false;
     }
 
-    @Override
-    public boolean canPause() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return true;
-    }
-
-    @Override
-    public int getBufferPercentage() {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
-    }
-
-    @Override
-    public int getDuration() {
-        return mediaPlayer.getDuration();
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
-    }
-
     public void setUri(String uri) {
         try {
             mediaPlayer.reset();
@@ -365,7 +324,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
     }
 
-    @Override
     public void pause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
@@ -375,15 +333,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
     }
 
-    @Override
-    public void seekTo(int pos) {
-        mediaPlayer.seekTo(pos);
-        if (null != mediaListener) {
-            mediaListener.positionChanged(pos);
-        }
-    }
-
-    @Override
     public void start() {
         try {
             mediaPlayer.start();
@@ -522,5 +471,4 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         void durationChanged(int duration);
     }
-
 }
