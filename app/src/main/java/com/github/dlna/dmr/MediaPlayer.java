@@ -82,9 +82,12 @@ public class MediaPlayer {
         currentMediaInfo = new MediaInfo(uri.toString(), currentURIMetaData);
         currentPositionInfo = new PositionInfo(1, "", uri.toString());
 
-        getAvTransportLastChange().setEventedValue(getInstanceId(),
-                new AVTransportVariable.AVTransportURI(uri),
-                new AVTransportVariable.CurrentTrackURI(uri));
+        getAvTransportLastChange()
+                .setEventedValue(
+                        getInstanceId(),
+                        new AVTransportVariable.AVTransportURI(uri),
+                        new AVTransportVariable.CurrentTrackURI(uri)
+                );
 
         transportStateChanged(TransportState.STOPPED);
 
@@ -94,7 +97,6 @@ public class MediaPlayer {
     }
 
     synchronized void setVolume(double volume) {
-        Log.i(TAG, "setVolume " + volume);
         storedVolume = getVolume();
 
         Intent intent = new Intent();
@@ -160,7 +162,6 @@ public class MediaPlayer {
     }
 
     protected synchronized void transportStateChanged(TransportState newState) {
-        TransportState currentTransportState = currentTransportInfo.getCurrentTransportState();
         currentTransportInfo = new TransportInfo(newState);
 
         getAvTransportLastChange().setEventedValue(
@@ -189,50 +190,57 @@ public class MediaPlayer {
 
         public void positionChanged(int position) {
             synchronized (MediaPlayer.this) {
-                currentPositionInfo = new PositionInfo(1, currentMediaInfo.getMediaDuration(),
-                        currentMediaInfo.getCurrentURI(), ModelUtil.toTimeString(position / 1000),
-                        ModelUtil.toTimeString(position / 1000));
+                currentPositionInfo =
+                        new PositionInfo(
+                                1,
+                                currentMediaInfo.getMediaDuration(),
+                                currentMediaInfo.getCurrentURI(),
+                                ModelUtil.toTimeString(position / 1000),
+                                ModelUtil.toTimeString(position / 1000)
+                        );
             }
         }
 
         public void durationChanged(int duration) {
             synchronized (MediaPlayer.this) {
                 String newValue = ModelUtil.toTimeString(duration / 1000);
-                currentMediaInfo = new MediaInfo(currentMediaInfo.getCurrentURI(), "",
-                        new UnsignedIntegerFourBytes(1), newValue, StorageMedium.NETWORK);
-
-                getAvTransportLastChange().setEventedValue(getInstanceId(),
-                        new AVTransportVariable.CurrentTrackDuration(newValue),
-                        new AVTransportVariable.CurrentMediaDuration(newValue));
+                currentMediaInfo =
+                        new MediaInfo(
+                                currentMediaInfo.getCurrentURI(),
+                                "",
+                                new UnsignedIntegerFourBytes(1),
+                                newValue,
+                                StorageMedium.NETWORK
+                        );
+                getAvTransportLastChange()
+                        .setEventedValue(
+                                getInstanceId(),
+                                new AVTransportVariable.CurrentTrackDuration(newValue),
+                                new AVTransportVariable.CurrentMediaDuration(newValue)
+                        );
             }
         }
     }
 
     double getVolume() {
         AudioManager audioManager = (AudioManager) context.getSystemService(Service.AUDIO_SERVICE);
-        double v = (double) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        return (double) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        Log.i(TAG, "getVolume " + v);
-        return v;
     }
 
     void play() {
-        Log.i(TAG, "play");
         sendBroadcastAction(Action.PLAY);
     }
 
     void pause() {
-        Log.i(TAG, "pause");
         sendBroadcastAction(Action.PAUSE);
     }
 
     void stop() {
-        Log.i(TAG, "stop");
         sendBroadcastAction(Action.STOP);
     }
 
     void seek(int position) {
-        Log.i(TAG, "seek " + position);
         Intent intent = new Intent();
         intent.setAction(Action.DMR);
         intent.putExtra("helpAction", Action.SEEK);

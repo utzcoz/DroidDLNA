@@ -33,7 +33,7 @@ public class DevicesActivity extends AppCompatActivity {
     private DeviceListRegistryListener deviceListRegistryListener;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
-
+        @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             upnpService = (AndroidUpnpService) service;
 

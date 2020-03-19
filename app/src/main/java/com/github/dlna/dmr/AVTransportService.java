@@ -151,10 +151,7 @@ public class AVTransportService extends AbstractAVTransportService {
             }
 
             int pos = Utils.getRealTime(target) * 1000;
-            Log.i(TAG, "### " + unit + " target: " + target + "  pos: " + pos);
-
             getInstance(instanceId).seek(pos);
-
         } catch (IllegalArgumentException ex) {
             throw new AVTransportException(
                     AVTransportErrorCode.SEEKMODE_NOT_SUPPORTED, "Unsupported seek mode: " + unit
