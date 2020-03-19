@@ -1,7 +1,18 @@
 package com.github.dlna.util;
 
-public class Utils {
+import android.os.Build;
+import android.util.Log;
 
+import com.github.dlna.Settings;
+
+import org.fourthline.cling.model.types.UDN;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.UUID;
+
+public class Utils {
+    private static final String TAG = "UpnpUtil";
     public static final String MANUFACTURER = android.os.Build.MANUFACTURER;
     public static final String DMR_NAME = "MSI MediaRenderer";
 
@@ -20,38 +31,18 @@ public class Utils {
         return j;
     }
 
-    public static String secToTime(long paramLong) {
-        int time = Long.valueOf(paramLong).intValue();
-        String timeStr;
-        int hour;
-        int minute;
-        int second;
-        if (time <= 0)
-            return "00:00";
-        else {
-            minute = time / 60;
-            if (minute < 60) {
-                second = time % 60;
-                timeStr = "00:" + unitFormat(minute) + ":" + unitFormat(second);
-            } else {
-                hour = minute / 60;
-                if (hour > 99)
-                    return "99:59:59";
-                minute = minute % 60;
-                second = time - hour * 3600 - minute * 60;
-                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":"
-                        + unitFormat(second);
-            }
-        }
-        return timeStr;
-    }
+    public static UDN uniqueSystemIdentifier(String salt) {
+        StringBuilder systemSalt = new StringBuilder();
+        systemSalt.append(Settings.getUUID());
+        systemSalt.append(Build.MODEL);
+        systemSalt.append(Build.MANUFACTURER);
+        Log.i(TAG, "uniqueSystemIdentifier " + systemSalt.toString());
 
-    public static String unitFormat(int i) {
-        String retStr;
-        if (i >= 0 && i < 10)
-            retStr = "0" + i;
-        else
-            retStr = "" + i;
-        return retStr;
+        try {
+            byte[] hash = MessageDigest.getInstance("MD5").digest(systemSalt.toString().getBytes());
+            return new UDN(new UUID(new BigInteger(-1, hash).longValue(), salt.hashCode()));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

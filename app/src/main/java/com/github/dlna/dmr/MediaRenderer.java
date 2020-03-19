@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.github.dlna.Settings;
-import com.github.dlna.util.UpnpUtil;
 import com.github.dlna.util.Utils;
 
 import org.fourthline.cling.binding.LocalServiceBinder;
@@ -113,7 +112,7 @@ public class MediaRenderer {
         renderingControlService.setManager(renderingControl);
 
         try {
-            UDN udn = UpnpUtil.uniqueSystemIdentifier("msidmr");
+            UDN udn = Utils.uniqueSystemIdentifier("msidmr");
 
             device = new LocalDevice(
                     new DeviceIdentity(udn),
