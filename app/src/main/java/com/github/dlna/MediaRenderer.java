@@ -105,7 +105,7 @@ public class MediaRenderer {
         renderingControlService.setManager(renderingControl);
 
         try {
-            UDN udn = Utils.uniqueSystemIdentifier("msidmr");
+            UDN udn = Utils.uniqueSystemIdentifier();
 
             device = new LocalDevice(
                     new DeviceIdentity(udn),

@@ -4,8 +4,6 @@ import android.os.Build;
 
 import org.fourthline.cling.model.types.UDN;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.UUID;
 
 public class Utils {
@@ -15,18 +13,13 @@ public class Utils {
     public static final String DMR_DESC = "MSI MediaRenderer";
     public static final String DMR_MODEL_URL = "http://4thline.org/projects/cling/mediarenderer/";
 
-    public static UDN uniqueSystemIdentifier(String salt) {
+    public static UDN uniqueSystemIdentifier() {
+        String salt = "msidmr";
         StringBuilder systemSalt = new StringBuilder();
         systemSalt.append(getUUID());
         systemSalt.append(Build.MODEL);
         systemSalt.append(Build.MANUFACTURER);
-
-        try {
-            byte[] hash = MessageDigest.getInstance("MD5").digest(systemSalt.toString().getBytes());
-            return new UDN(new UUID(new BigInteger(-1, hash).longValue(), salt.hashCode()));
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return new UDN(new UUID(Long.MAX_VALUE, salt.hashCode()));
     }
 
     public static String getRenderName() {
