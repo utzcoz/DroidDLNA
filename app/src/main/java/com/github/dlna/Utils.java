@@ -1,4 +1,4 @@
-package com.github.dlna.util;
+package com.github.dlna;
 
 import android.os.Build;
 

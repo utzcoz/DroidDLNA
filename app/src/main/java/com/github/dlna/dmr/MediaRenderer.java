@@ -3,7 +3,7 @@ package com.github.dlna.dmr;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.dlna.util.Utils;
+import com.github.dlna.Utils;
 
 import org.fourthline.cling.binding.LocalServiceBinder;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -60,7 +60,6 @@ public class MediaRenderer {
         MediaPlayer player =
                 new MediaPlayer(
                         new UnsignedIntegerFourBytes(1),
-                        context,
                         avTransportLastChange,
                         renderingControlLastChange
                 );

@@ -1,14 +1,9 @@
 package com.github.dlna.dmr;
 
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.media.AudioManager;
 import android.util.Log;
 
 import com.github.dlna.ClingLocalRenderer;
-import com.github.dlna.MediaListener;
-import com.github.dlna.util.Action;
+import com.github.dlna.IControlPoint;
 
 import org.fourthline.cling.model.ModelUtil;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
@@ -40,14 +35,11 @@ public class MediaPlayer {
     private MediaInfo currentMediaInfo = new MediaInfo();
     private double storedVolume;
 
-    private Context context;
-
-    MediaPlayer(UnsignedIntegerFourBytes instanceId, Context context,
+    MediaPlayer(UnsignedIntegerFourBytes instanceId,
                 LastChange avTransportLastChange,
                 LastChange renderingControlLastChange) {
         super();
         this.instanceId = instanceId;
-        this.context = context;
         this.avTransportLastChange = avTransportLastChange;
         this.renderingControlLastChange = renderingControlLastChange;
     }
@@ -91,20 +83,16 @@ public class MediaPlayer {
 
         transportStateChanged(TransportState.STOPPED);
 
-        ClingLocalRenderer.setMediaListener(new GstMediaListener());
-        // FIXME Add method to pass parameter to DevicesActivity
-        //  include "type", "name", and "playURI"
+        ClingLocalRenderer.setControlPoint(new IControlPointImpl());
+        ClingLocalRenderer.getLocalRender().setType(type);
+        ClingLocalRenderer.getLocalRender().setName(name);
+        ClingLocalRenderer.getLocalRender().setPlayURI(uri.toString());
     }
 
     synchronized void setVolume(double volume) {
         storedVolume = getVolume();
 
-        Intent intent = new Intent();
-        intent.setAction(Action.DMR);
-        intent.putExtra("helpAction", Action.SET_VOLUME);
-        intent.putExtra("volume", volume);
-
-        context.sendBroadcast(intent);
+        ClingLocalRenderer.getLocalRender().setVolume(volume);
 
         ChannelMute switchedMute =
                 (storedVolume == 0 && volume > 0) || (storedVolume > 0 && volume == 0)
@@ -171,7 +159,7 @@ public class MediaPlayer {
         );
     }
 
-    protected class GstMediaListener implements MediaListener {
+    protected class IControlPointImpl implements IControlPoint {
         public void pause() {
             transportStateChanged(TransportState.PAUSED_PLAYBACK);
         }
@@ -223,36 +211,23 @@ public class MediaPlayer {
     }
 
     double getVolume() {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Service.AUDIO_SERVICE);
-        return (double) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        return ClingLocalRenderer.getLocalRender().getVolume();
     }
 
     void play() {
-        sendBroadcastAction(Action.PLAY);
+        ClingLocalRenderer.getLocalRender().play();
     }
 
     void pause() {
-        sendBroadcastAction(Action.PAUSE);
+        ClingLocalRenderer.getLocalRender().pause();
     }
 
     void stop() {
-        sendBroadcastAction(Action.STOP);
+        ClingLocalRenderer.getLocalRender().stop();
     }
 
     void seek(int position) {
-        Intent intent = new Intent();
-        intent.setAction(Action.DMR);
-        intent.putExtra("helpAction", Action.SEEK);
-        intent.putExtra("position", position);
-        context.sendBroadcast(intent);
-    }
-
-    private void sendBroadcastAction(String action) {
-        Intent intent = new Intent();
-        intent.setAction(Action.DMR);
-        intent.putExtra("helpAction", action);
-        context.sendBroadcast(intent);
+        ClingLocalRenderer.getLocalRender().seek(position);
     }
 }
 

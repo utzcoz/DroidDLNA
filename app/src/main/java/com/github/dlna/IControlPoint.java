@@ -1,6 +1,6 @@
 package com.github.dlna;
 
-public interface MediaListener {
+public interface IControlPoint {
     void pause();
 
     void start();

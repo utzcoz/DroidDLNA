@@ -1,13 +1,70 @@
 package com.github.dlna;
 
 public class ClingLocalRenderer {
-    private static MediaListener mediaListener;
+    private static final ILocalRender localRender = new ILocalRenderImpl();
+    private static IControlPoint controlPoint;
 
-    public static void setMediaListener(MediaListener mediaListener) {
-        ClingLocalRenderer.mediaListener = mediaListener;
+    public static void setControlPoint(IControlPoint controlPoint) {
+        ClingLocalRenderer.controlPoint = controlPoint;
     }
 
-    public static MediaListener getMediaListener() {
-        return mediaListener;
+    public static IControlPoint getControlPoint() {
+        return controlPoint;
+    }
+
+    public static ILocalRender getLocalRender() {
+        return localRender;
+    }
+
+    private static final class ILocalRenderImpl implements ILocalRender {
+        private String type;
+        private String name;
+        private String playURI;
+        private double volume;
+
+        @Override
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void setPlayURI(String playURI) {
+            this.playURI = playURI;
+        }
+
+        @Override
+        public void setVolume(double volume) {
+            this.volume = volume;
+        }
+
+        @Override
+        public void play() {
+
+        }
+
+        @Override
+        public void pause() {
+
+        }
+
+        @Override
+        public void stop() {
+
+        }
+
+        @Override
+        public void seek(int position) {
+
+        }
+
+        @Override
+        public double getVolume() {
+            return 0;
+        }
     }
 }
