@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -47,8 +46,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private static final int MEDIA_PLAYER_HIDDEN_CONTROL = 4009;
 
     private static MediaListener mediaListener;
-
-    Display currentDisplay;
 
     SurfaceView surfaceView;
 
@@ -109,7 +106,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
 
         setTitle(intent);
-        currentDisplay = getWindowManager().getDefaultDisplay();
 
         registerBroadcast();
     }
@@ -235,22 +231,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     @Override
     public void onPrepared(MediaPlayer mp) {
         Log.v(TAG, "onPrepared Called");
-        int videoWidth = mp.getVideoWidth();
-        int videoHeight = mp.getVideoHeight();
-        if (videoWidth > currentDisplay.getWidth() || videoHeight > currentDisplay.getHeight()) {
-            float heightRatio = (float) videoHeight / (float) currentDisplay.getHeight();
-            float widthRatio = (float) videoWidth / (float) currentDisplay.getWidth();
-            if (heightRatio > 1 || widthRatio > 1) {
-                if (heightRatio > widthRatio) {
-                    videoHeight = (int) Math.ceil((float) videoHeight / heightRatio);
-                    videoWidth = (int) Math.ceil((float) videoWidth / heightRatio);
-                } else {
-                    videoHeight = (int) Math.ceil((float) videoHeight / widthRatio);
-                    videoWidth = (int) Math.ceil((float) videoWidth / widthRatio);
-                }
-            }
-        }
-        surfaceView.getHolder().setFixedSize(videoWidth, videoHeight);
         mp.start();
         if (null != mediaListener) {
             mediaListener.start();
