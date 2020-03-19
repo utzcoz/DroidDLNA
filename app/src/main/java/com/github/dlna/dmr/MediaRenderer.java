@@ -3,7 +3,6 @@ package com.github.dlna.dmr;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.dlna.Settings;
 import com.github.dlna.util.Utils;
 
 import org.fourthline.cling.binding.LocalServiceBinder;
@@ -118,7 +117,7 @@ public class MediaRenderer {
                     new DeviceIdentity(udn),
                     new UDADeviceType("MediaRenderer", 1),
                     new DeviceDetails(
-                            Settings.getRenderName() + " (" + android.os.Build.MODEL + ")",
+                            Utils.getRenderName() + " (" + android.os.Build.MODEL + ")",
                             new ManufacturerDetails(Utils.MANUFACTURER),
                             new ModelDetails(
                                     Utils.DMR_NAME,

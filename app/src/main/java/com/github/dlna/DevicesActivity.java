@@ -36,7 +36,6 @@ public class DevicesActivity extends AppCompatActivity {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
             upnpService = (AndroidUpnpService) service;
-            BaseApplication.upnpService = upnpService;
 
             Log.v(TAG, "Connected to UPnP Service");
 
