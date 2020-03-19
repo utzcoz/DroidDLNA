@@ -12,7 +12,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +39,7 @@ import com.github.dlna.util.Utils;
 import java.io.IOException;
 
 public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
-        OnInfoListener, OnPreparedListener, SurfaceHolder.Callback {
+        OnPreparedListener, SurfaceHolder.Callback {
     private final static String TAG = "GPlayer";
 
     private static final int MEDIA_PLAYER_PREPARED = 4005;
@@ -99,7 +98,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnErrorListener(this);
-        mediaPlayer.setOnInfoListener(this);
         mediaPlayer.setOnPreparedListener(this);
 
         initControl();
@@ -262,22 +260,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
 
         mHandler.sendEmptyMessage(MEDIA_PLAYER_PROGRESS_UPDATE);
         mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_HIDDEN_CONTROL, 10000);
-    }
-
-    @Override
-    public boolean onInfo(MediaPlayer mp, int whatInfo, int extra) {
-        if (whatInfo == MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING) {
-            Log.v(TAG, "Media Info, Media Info Bad Interleaving " + extra);
-        } else if (whatInfo == MediaPlayer.MEDIA_INFO_NOT_SEEKABLE) {
-            Log.v(TAG, "Media Info, Media Info Not Seekable " + extra);
-        } else if (whatInfo == MediaPlayer.MEDIA_INFO_UNKNOWN) {
-            Log.v(TAG, "Media Info, Media Info Unknown " + extra);
-        } else if (whatInfo == MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING) {
-            Log.v(TAG, "MediaInfo, Media Info Video Track Lagging " + extra);
-        } else if (whatInfo == MediaPlayer.MEDIA_INFO_METADATA_UPDATE) {
-            Log.v(TAG, "MediaInfo, Media Info Metadata Update " + extra);
-        }
-        return false;
     }
 
     @Override
