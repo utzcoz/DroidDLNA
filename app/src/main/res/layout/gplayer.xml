@@ -3,16 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <SurfaceView
-            android:id="@+id/gplayer_surfaceview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </FrameLayout>
-
     <include layout="@layout/player_phone_popup_top" />
 
     <include layout="@layout/player_phone_popup_bottom" />

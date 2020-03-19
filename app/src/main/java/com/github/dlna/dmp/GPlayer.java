@@ -19,8 +19,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -34,8 +32,8 @@ import com.github.dlna.util.Utils;
 
 import java.io.IOException;
 
-public class GPlayer extends Activity implements OnCompletionListener, OnErrorListener,
-        OnPreparedListener, SurfaceHolder.Callback {
+public class GPlayer extends Activity
+        implements OnCompletionListener, OnErrorListener, OnPreparedListener {
     private final static String TAG = "GPlayer";
 
     private static final int MEDIA_PLAYER_PREPARED = 4005;
@@ -43,10 +41,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private static final int MEDIA_PLAYER_HIDDEN_CONTROL = 4009;
 
     private static MediaListener mediaListener;
-
-    SurfaceView surfaceView;
-
-    SurfaceHolder surfaceHolder;
 
     MediaPlayer mediaPlayer;
 
@@ -79,10 +73,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gplayer);
         audioManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
-
-        surfaceView = findViewById(R.id.gplayer_surfaceview);
-        surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(this);
 
         mediaPlayer = new MediaPlayer();
 
@@ -180,29 +170,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         }
 
         return false;
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.v(TAG, "surfaceChanged Called");
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        Log.v(TAG, "surfaceCreated Called");
-        mediaPlayer.setDisplay(holder);
-        try {
-            mediaPlayer.prepare();
-        } catch (IllegalStateException e) {
-            Log.v(TAG, "IllegalStateException", e);
-        } catch (IOException e) {
-            Log.v(TAG, "IOException", e);
-        }
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.v(TAG, "surfaceDestroyed Called");
     }
 
     @Override
