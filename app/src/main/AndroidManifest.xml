@@ -39,7 +39,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="" />
                 <data android:scheme="file" />
                 <data android:scheme="ftp" />
                 <data android:scheme="content" />
