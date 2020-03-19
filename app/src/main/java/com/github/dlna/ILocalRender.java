@@ -1,10 +1,6 @@
 package com.github.dlna;
 
 public interface ILocalRender {
-    void setType(String type);
-
-    void setName(String name);
-
     void setPlayURI(String playURI);
 
     void setVolume(int volume);
@@ -18,4 +14,6 @@ public interface ILocalRender {
     void seek(int position);
 
     int getVolume();
+
+    void setURIMetaData(String currentURIMetaData);
 }

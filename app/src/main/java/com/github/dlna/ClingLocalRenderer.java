@@ -17,20 +17,9 @@ public class ClingLocalRenderer {
     }
 
     private static final class ILocalRenderImpl implements ILocalRender {
-        private String type;
-        private String name;
         private String playURI;
         private int volume;
-
-        @Override
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public void setName(String name) {
-            this.name = name;
-        }
+        private String uriMetaData;
 
         @Override
         public void setPlayURI(String playURI) {
@@ -65,6 +54,11 @@ public class ClingLocalRenderer {
         @Override
         public int getVolume() {
             return 0;
+        }
+
+        @Override
+        public void setURIMetaData(String uriMetaData) {
+            this.uriMetaData = uriMetaData;
         }
     }
 }

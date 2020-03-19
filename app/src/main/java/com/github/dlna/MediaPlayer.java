@@ -1,7 +1,5 @@
 package com.github.dlna;
 
-import android.util.Log;
-
 import org.fourthline.cling.model.ModelUtil;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
@@ -16,8 +14,6 @@ import org.fourthline.cling.support.model.TransportState;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelMute;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
-
-import java.net.URI;
 
 public class MediaPlayer {
     private static final String TAG = "GstMediaPlayer";
@@ -65,25 +61,12 @@ public class MediaPlayer {
         return currentMediaInfo;
     }
 
-    synchronized void setURI(URI uri, String type, String name, String currentURIMetaData) {
-        Log.i(TAG, "setURI " + uri);
-
-        currentMediaInfo = new MediaInfo(uri.toString(), currentURIMetaData);
-        currentPositionInfo = new PositionInfo(1, "", uri.toString());
-
-        getAvTransportLastChange()
-                .setEventedValue(
-                        getInstanceId(),
-                        new AVTransportVariable.AVTransportURI(uri),
-                        new AVTransportVariable.CurrentTrackURI(uri)
-                );
-
+    synchronized void setURI(String uri, String currentURIMetaData) {
         transportStateChanged(TransportState.STOPPED);
 
         ClingLocalRenderer.setControlPoint(new IControlPointImpl());
-        ClingLocalRenderer.getLocalRender().setType(type);
-        ClingLocalRenderer.getLocalRender().setName(name);
-        ClingLocalRenderer.getLocalRender().setPlayURI(uri.toString());
+        ClingLocalRenderer.getLocalRender().setPlayURI(uri);
+        ClingLocalRenderer.getLocalRender().setURIMetaData(currentURIMetaData);
     }
 
     synchronized void setVolume(int volume) {

@@ -1,8 +1,5 @@
 package com.github.dlna;
 
-import android.util.Log;
-
-import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.AVTransportErrorCode;
 import org.fourthline.cling.support.avtransport.AVTransportException;
@@ -17,15 +14,10 @@ import org.fourthline.cling.support.model.StorageMedium;
 import org.fourthline.cling.support.model.TransportAction;
 import org.fourthline.cling.support.model.TransportInfo;
 import org.fourthline.cling.support.model.TransportSettings;
-import org.seamless.http.HttpFetch;
-import org.seamless.util.URIUtil;
 
-import java.net.URI;
 import java.util.Map;
 
 public class AVTransportService extends AbstractAVTransportService {
-    private static final String TAG = "GstAVTransportService";
-
     final private Map<UnsignedIntegerFourBytes, MediaPlayer> players;
 
     AVTransportService(LastChange lastChange,
@@ -51,43 +43,7 @@ public class AVTransportService extends AbstractAVTransportService {
     public void setAVTransportURI(UnsignedIntegerFourBytes instanceId,
                                   String currentURI,
                                   String currentURIMetaData) throws AVTransportException {
-        Log.d(TAG, currentURI + "---" + currentURIMetaData);
-        URI uri;
-        try {
-            uri = new URI(currentURI);
-        } catch (Exception ex) {
-            throw new AVTransportException(
-                    ErrorCode.INVALID_ARGS, "CurrentURI can not be null or malformed"
-            );
-        }
-
-        if (currentURI.startsWith("http:")) {
-            try {
-                HttpFetch.validate(URIUtil.toURL(uri));
-            } catch (Exception ex) {
-                throw new AVTransportException(
-                        AVTransportErrorCode.RESOURCE_NOT_FOUND, ex.getMessage()
-                );
-            }
-        } else if (!currentURI.startsWith("file:")) {
-            throw new AVTransportException(
-                    ErrorCode.INVALID_ARGS, "Only HTTP and file: resource identifiers are supported"
-            );
-        }
-
-        String type;
-        if (currentURIMetaData.contains("object.item.audioItem")) {
-            type = "audio";
-        } else if (currentURIMetaData.contains("object.item.videoItem")) {
-            type = "video";
-        } else if (currentURIMetaData.contains("object.item.imageItem")) {
-            type = "image";
-        } else {
-            throw new AVTransportException(ErrorCode.ILLEGAL_MIME_TYPE, "Don't support type");
-        }
-        String name = currentURIMetaData.substring(currentURIMetaData.indexOf("<dc:title>") + 10,
-                currentURIMetaData.indexOf("</dc:title>"));
-        getInstance(instanceId).setURI(uri, type, name, currentURIMetaData);
+        getInstance(instanceId).setURI(currentURI, currentURIMetaData);
     }
 
     @Override

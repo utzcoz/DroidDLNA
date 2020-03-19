@@ -129,7 +129,6 @@ public class MediaRenderer {
                             avTransportService, renderingControlService, connectionManagerService
                     }
             );
-            Log.i(TAG, "getType: " + device.getType().toString());
         } catch (ValidationException ex) {
             throw new RuntimeException(ex);
         }
