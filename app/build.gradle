@@ -6,8 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.github.dlna"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     android {
@@ -51,4 +53,8 @@ dependencies {
     implementation files('libs/jetty-util-8.1.9.v20130131.jar')
     implementation files('libs/slf4j-api-1.6.1.jar')
     implementation files('libs/slf4j-jdk14-1.6.1.jar')
+
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
