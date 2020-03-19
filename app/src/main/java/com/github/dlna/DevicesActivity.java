@@ -7,8 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,8 +23,6 @@ public class DevicesActivity extends AppCompatActivity {
     private final static String TAG = "DevicesActivity";
 
     private static MediaListener mediaListener;
-
-    private long exitTime = 0;
 
     private AndroidUpnpService upnpService;
 
@@ -81,23 +77,6 @@ public class DevicesActivity extends AppCompatActivity {
             upnpService.getRegistry().removeListener(deviceListRegistryListener);
         }
         getApplicationContext().unbindService(serviceConnection);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), R.string.exit,
-                        Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                finish();
-                System.exit(0);
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     public static class DeviceListRegistryListener extends DefaultRegistryListener {
