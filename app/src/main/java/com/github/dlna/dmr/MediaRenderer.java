@@ -141,30 +141,17 @@ public class MediaRenderer {
         } catch (ValidationException ex) {
             throw new RuntimeException(ex);
         }
-
-        runLastChangePushThread();
     }
 
-    // The backend player instances will fill the LastChange whenever something happens with
-    // whatever event messages are appropriate. This loop will periodically flush these changes
-    // to subscribers of the LastChange state variable of each service.
-    private void runLastChangePushThread() {
-        // TODO: We should only run this if we actually have event subscribers
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        // These operations will NOT block and wait for network responses
-                        avTransport.fireLastChange();
-                        renderingControl.fireLastChange();
-                        Thread.sleep(LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS);
-                    }
-                } catch (Exception ex) {
-                    Log.e(TAG, "runLastChangePushThread ex", ex);
-                }
-            }
-        }.start();
+    /**
+     * Push last change.
+     * <p>
+     * This method will push the last change to cling. And it should be invoked manually, when
+     * user want to push last change to server.
+     */
+    public void pushLastChange() {
+        avTransport.fireLastChange();
+        renderingControl.fireLastChange();
     }
 
     public LocalDevice getDevice() {
