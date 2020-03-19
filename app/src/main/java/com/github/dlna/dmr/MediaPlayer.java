@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.util.Log;
 
-import com.github.dlna.DevicesActivity;
+import com.github.dlna.ClingLocalRenderer;
 import com.github.dlna.MediaListener;
 import com.github.dlna.util.Action;
 
@@ -91,7 +91,7 @@ public class MediaPlayer {
 
         transportStateChanged(TransportState.STOPPED);
 
-        DevicesActivity.setMediaListener(new GstMediaListener());
+        ClingLocalRenderer.setMediaListener(new GstMediaListener());
         // FIXME Add method to pass parameter to DevicesActivity
         //  include "type", "name", and "playURI"
     }
