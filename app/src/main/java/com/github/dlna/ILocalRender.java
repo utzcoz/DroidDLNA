@@ -7,7 +7,7 @@ public interface ILocalRender {
 
     void setPlayURI(String playURI);
 
-    void setVolume(double volume);
+    void setVolume(int volume);
 
     void play();
 
@@ -17,5 +17,5 @@ public interface ILocalRender {
 
     void seek(int position);
 
-    double getVolume();
+    int getVolume();
 }

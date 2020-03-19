@@ -20,7 +20,7 @@ public class ClingLocalRenderer {
         private String type;
         private String name;
         private String playURI;
-        private double volume;
+        private int volume;
 
         @Override
         public void setType(String type) {
@@ -38,7 +38,7 @@ public class ClingLocalRenderer {
         }
 
         @Override
-        public void setVolume(double volume) {
+        public void setVolume(int volume) {
             this.volume = volume;
         }
 
@@ -63,7 +63,7 @@ public class ClingLocalRenderer {
         }
 
         @Override
-        public double getVolume() {
+        public int getVolume() {
             return 0;
         }
     }

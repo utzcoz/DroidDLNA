@@ -61,7 +61,7 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
     public UnsignedIntegerTwoBytes getVolume(UnsignedIntegerFourBytes instanceId,
                                              String channelName) throws RenderingControlException {
         checkChannel(channelName);
-        int vol = (int) (getInstance(instanceId).getVolume() * 100);
+        int vol = getInstance(instanceId).getVolume();
         return new UnsignedIntegerTwoBytes(vol);
     }
 
@@ -70,7 +70,8 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
                           String channelName,
                           UnsignedIntegerTwoBytes desiredVolume) throws RenderingControlException {
         checkChannel(channelName);
-        double vol = desiredVolume.getValue() / 100d;
+        Long desiredValue = desiredVolume.getValue();
+        int vol = desiredValue == null ? 0 : (int) desiredValue.intValue();
         getInstance(instanceId).setVolume(vol);
     }
 

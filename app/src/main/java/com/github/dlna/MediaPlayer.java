@@ -30,7 +30,7 @@ public class MediaPlayer {
     private volatile TransportInfo currentTransportInfo = new TransportInfo();
     private PositionInfo currentPositionInfo = new PositionInfo();
     private MediaInfo currentMediaInfo = new MediaInfo();
-    private double storedVolume;
+    private int storedVolume;
 
     MediaPlayer(UnsignedIntegerFourBytes instanceId,
                 LastChange avTransportLastChange,
@@ -86,7 +86,7 @@ public class MediaPlayer {
         ClingLocalRenderer.getLocalRender().setPlayURI(uri.toString());
     }
 
-    synchronized void setVolume(double volume) {
+    synchronized void setVolume(int volume) {
         storedVolume = getVolume();
 
         ClingLocalRenderer.getLocalRender().setVolume(volume);
@@ -99,7 +99,7 @@ public class MediaPlayer {
         getRenderingControlLastChange().setEventedValue(
                 getInstanceId(),
                 new RenderingControlVariable.Volume(
-                        new ChannelVolume(Channel.Master, (int) (volume * 100))
+                        new ChannelVolume(Channel.Master, volume)
                 ),
                 switchedMute != null
                         ? new RenderingControlVariable.Mute(switchedMute)
@@ -207,7 +207,7 @@ public class MediaPlayer {
         }
     }
 
-    double getVolume() {
+    int getVolume() {
         return ClingLocalRenderer.getLocalRender().getVolume();
     }
 
