@@ -1,8 +1,6 @@
-package com.github.dlna.dmr;
+package com.github.dlna;
 
 import android.util.Log;
-
-import com.github.dlna.Utils;
 
 import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;

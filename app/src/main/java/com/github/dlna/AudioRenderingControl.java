@@ -1,4 +1,4 @@
-package com.github.dlna.dmr;
+package com.github.dlna;
 
 import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;

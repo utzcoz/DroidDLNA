@@ -1,9 +1,7 @@
-package com.github.dlna.dmr;
+package com.github.dlna;
 
 import android.content.Context;
 import android.util.Log;
-
-import com.github.dlna.Utils;
 
 import org.fourthline.cling.binding.LocalServiceBinder;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
