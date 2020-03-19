@@ -95,8 +95,8 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public void record(UnsignedIntegerFourBytes instanceId) {
-        // Not implemented
+    public void record(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
+        getInstance(instanceId).record();
     }
 
     @Override
@@ -120,31 +120,32 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public void next(UnsignedIntegerFourBytes instanceId) {
-        // Not implemented
+    public void next(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
+        getInstance(instanceId).next();
     }
 
     @Override
-    public void previous(UnsignedIntegerFourBytes instanceId) {
-        // Not implemented
+    public void previous(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
+        getInstance(instanceId).previous();
     }
 
     @Override
     public void setNextAVTransportURI(UnsignedIntegerFourBytes instanceId,
                                       String nextURI,
-                                      String nextURIMetaData) {
-        // Not implemented
+                                      String nextURIMetaData) throws AVTransportException {
+        getInstance(instanceId).setNextAVTransportURI(nextURI, nextURIMetaData);
     }
 
     @Override
-    public void setPlayMode(UnsignedIntegerFourBytes instanceId, String newPlayMode) {
-        // Not implemented
+    public void setPlayMode(UnsignedIntegerFourBytes instanceId, String newPlayMode)
+            throws AVTransportException {
+        getInstance(instanceId).setPlayMode(newPlayMode);
     }
 
     @Override
     public void setRecordQualityMode(UnsignedIntegerFourBytes instanceId,
-                                     String newRecordQualityMode) {
-        // Not implemented
+                                     String newRecordQualityMode) throws AVTransportException {
+        getInstance(instanceId).setRecordQualityMode(newRecordQualityMode);
     }
 
     @Override

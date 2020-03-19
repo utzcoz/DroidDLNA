@@ -98,6 +98,31 @@ public class MediaPlayer {
         }
     }
 
+    synchronized void record() {
+        ClingLocalRenderer.getLocalRender().record();
+    }
+
+    synchronized void next() {
+        ClingLocalRenderer.getLocalRender().next();
+    }
+
+    synchronized void previous() {
+        ClingLocalRenderer.getLocalRender().previous();
+    }
+
+    synchronized void setNextAVTransportURI(String nextURI, String nextURIMetaData) {
+        ClingLocalRenderer.getLocalRender().setNextURI(nextURI);
+        ClingLocalRenderer.getLocalRender().setNextURIMetaData(nextURIMetaData);
+    }
+
+    synchronized void setPlayMode(String newPlayMode) {
+        ClingLocalRenderer.getLocalRender().setPlayMode(newPlayMode);
+    }
+
+    synchronized void setRecordQualityMode(String newRecordQualityMode) {
+        ClingLocalRenderer.getLocalRender().setRecordQualityMode(newRecordQualityMode);
+    }
+
     synchronized TransportAction[] getCurrentTransportActions() {
         TransportState state = currentTransportInfo.getCurrentTransportState();
         TransportAction[] actions;

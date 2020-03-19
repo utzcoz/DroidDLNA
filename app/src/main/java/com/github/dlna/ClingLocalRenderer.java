@@ -60,5 +60,40 @@ public class ClingLocalRenderer {
         public void setURIMetaData(String uriMetaData) {
             this.uriMetaData = uriMetaData;
         }
+
+        @Override
+        public void record() {
+
+        }
+
+        @Override
+        public void next() {
+
+        }
+
+        @Override
+        public void previous() {
+
+        }
+
+        @Override
+        public void setNextURI(String nextURI) {
+
+        }
+
+        @Override
+        public void setNextURIMetaData(String nextURI) {
+
+        }
+
+        @Override
+        public void setPlayMode(String newPlayMode) {
+
+        }
+
+        @Override
+        public void setRecordQualityMode(String newRecordQualityMode) {
+
+        }
     }
 }

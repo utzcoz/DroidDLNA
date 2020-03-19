@@ -16,4 +16,18 @@ public interface ILocalRender {
     int getVolume();
 
     void setURIMetaData(String currentURIMetaData);
+
+    void record();
+
+    void next();
+
+    void previous();
+
+    void setNextURI(String nextURI);
+
+    void setNextURIMetaData(String nextURI);
+
+    void setPlayMode(String newPlayMode);
+
+    void setRecordQualityMode(String newRecordQualityMode);
 }
