@@ -75,9 +75,15 @@ public class AVTransportService extends AbstractAVTransportService {
             );
         }
 
-        String type = "audio";
-        if (!currentURIMetaData.contains("object.item.audioItem")) {
-            throw new AVTransportException(ErrorCode.ILLEGAL_MIME_TYPE, "Only support audio type");
+        String type;
+        if (currentURIMetaData.contains("object.item.audioItem")) {
+            type = "audio";
+        } else if (currentURIMetaData.contains("object.item.videoItem")) {
+            type = "video";
+        } else if (currentURIMetaData.contains("object.item.imageItem")) {
+            type = "image";
+        } else {
+            throw new AVTransportException(ErrorCode.ILLEGAL_MIME_TYPE, "Don't support type");
         }
         String name = currentURIMetaData.substring(currentURIMetaData.indexOf("<dc:title>") + 10,
                 currentURIMetaData.indexOf("</dc:title>"));
