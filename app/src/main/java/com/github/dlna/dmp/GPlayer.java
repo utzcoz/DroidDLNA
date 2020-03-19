@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.dlna.R;
 import com.github.dlna.util.Action;
@@ -69,8 +67,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private RelativeLayout layoutTop;
 
     private TextView videoTitle;
-
-    private int backCount;
 
     private PlayBroadcastReceiver playReceiverBroadcast = new PlayBroadcastReceiver();
 
@@ -149,20 +145,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         exit();
         unregisterBroadcast();
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (backCount > 0) {
-                exit();
-            } else {
-                backCount++;
-                Toast.makeText(this, R.string.player_exit, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     private void exit() {

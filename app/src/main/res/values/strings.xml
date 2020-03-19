@@ -2,6 +2,5 @@
 <resources>
     <string name="appName">Cling Test App</string>
     <string name="exit">press again to exit application</string>
-    <string name="player_exit">press again to exit player</string>
     <string name="listening">Listening</string>
 </resources>
