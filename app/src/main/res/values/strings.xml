@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="appName">Droid DLNA</string>
-
-    <!-- tab -->
-
-    <!-- control -->
-
-    <!-- device -->
+    <string name="appName">Cling Test App</string>
     <string name="exit">press again to exit application</string>
-
-    <!-- imageDispaly -->
-
-    <!-- player -->
     <string name="player_exit">press again to exit player</string>
-
-    <!-- setting -->
-
-    <!-- Menu -->
     <string name="listening">Listening</string>
-
 </resources>
