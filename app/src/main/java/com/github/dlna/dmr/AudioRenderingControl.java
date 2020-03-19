@@ -10,10 +10,8 @@ import org.fourthline.cling.support.renderingcontrol.RenderingControlErrorCode;
 import org.fourthline.cling.support.renderingcontrol.RenderingControlException;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class AudioRenderingControl extends AbstractAudioRenderingControl {
-    final private static Logger log = Logger.getLogger(AudioRenderingControl.class.getName());
     final private Map<UnsignedIntegerFourBytes, MediaPlayer> players;
 
     AudioRenderingControl(LastChange lastChange,
@@ -56,7 +54,6 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
                         String channelName,
                         boolean desiredMute) throws RenderingControlException {
         checkChannel(channelName);
-        log.fine("Setting backend mute to: " + desiredMute);
         getInstance(instanceId).setMute(desiredMute);
     }
 
@@ -65,7 +62,6 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
                                              String channelName) throws RenderingControlException {
         checkChannel(channelName);
         int vol = (int) (getInstance(instanceId).getVolume() * 100);
-        log.fine("Getting backend volume: " + vol);
         return new UnsignedIntegerTwoBytes(vol);
     }
 
@@ -75,7 +71,6 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
                           UnsignedIntegerTwoBytes desiredVolume) throws RenderingControlException {
         checkChannel(channelName);
         double vol = desiredVolume.getValue() / 100d;
-        log.fine("Setting backend volume to: " + vol);
         getInstance(instanceId).setVolume(vol);
     }
 

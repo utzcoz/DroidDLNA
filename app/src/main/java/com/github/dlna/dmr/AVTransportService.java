@@ -24,11 +24,8 @@ import org.seamless.util.URIUtil;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class AVTransportService extends AbstractAVTransportService {
-    final private static Logger log = Logger.getLogger(AVTransportService.class.getName());
-
     private static final String TAG = "GstAVTransportService";
 
     final private Map<UnsignedIntegerFourBytes, MediaPlayer> players;
@@ -140,7 +137,6 @@ public class AVTransportService extends AbstractAVTransportService {
     @Override
     public void record(UnsignedIntegerFourBytes instanceId) {
         // Not implemented
-        log.info("### TODO: Not implemented: Record");
     }
 
     @Override
@@ -169,34 +165,29 @@ public class AVTransportService extends AbstractAVTransportService {
     @Override
     public void next(UnsignedIntegerFourBytes instanceId) {
         // Not implemented
-        log.info("### TODO: Not implemented: Next");
     }
 
     @Override
     public void previous(UnsignedIntegerFourBytes instanceId) {
         // Not implemented
-        log.info("### TODO: Not implemented: Previous");
     }
 
     @Override
     public void setNextAVTransportURI(UnsignedIntegerFourBytes instanceId,
                                       String nextURI,
                                       String nextURIMetaData) {
-        log.info("### TODO: Not implemented: SetNextAVTransportURI");
         // Not implemented
     }
 
     @Override
     public void setPlayMode(UnsignedIntegerFourBytes instanceId, String newPlayMode) {
         // Not implemented
-        log.info("### TODO: Not implemented: SetPlayMode");
     }
 
     @Override
     public void setRecordQualityMode(UnsignedIntegerFourBytes instanceId,
                                      String newRecordQualityMode) {
         // Not implemented
-        log.info("### TODO: Not implemented: SetRecordQualityMode");
     }
 
     @Override

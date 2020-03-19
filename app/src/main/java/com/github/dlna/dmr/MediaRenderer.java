@@ -35,9 +35,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MediaRenderer {
-
-    private static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 500;
-
     private static final String TAG = "GstMediaRenderer";
 
     // These are shared between all "logical" player instances of a single service

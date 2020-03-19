@@ -26,11 +26,8 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
 import java.net.URI;
-import java.util.logging.Logger;
 
 public class MediaPlayer {
-    final private static Logger log = Logger.getLogger(MediaPlayer.class.getName());
-
     private static final String TAG = "GstMediaPlayer";
 
     final private UnsignedIntegerFourBytes instanceId;
@@ -125,10 +122,8 @@ public class MediaPlayer {
 
     synchronized void setMute(boolean desiredMute) {
         if (desiredMute && getVolume() > 0) {
-            log.fine("Switching mute ON");
             setVolume(0);
         } else if (!desiredMute && getVolume() == 0) {
-            log.fine("Switching mute OFF, restoring: " + storedVolume);
             setVolume(storedVolume);
         }
     }
@@ -166,7 +161,6 @@ public class MediaPlayer {
 
     protected synchronized void transportStateChanged(TransportState newState) {
         TransportState currentTransportState = currentTransportInfo.getCurrentTransportState();
-        log.fine("Current state is: " + currentTransportState + ", changing to new state: " + newState);
         currentTransportInfo = new TransportInfo(newState);
 
         getAvTransportLastChange().setEventedValue(
@@ -190,12 +184,10 @@ public class MediaPlayer {
         }
 
         public void endOfMedia() {
-            log.fine("End Of Media event received, stopping media player backend");
             transportStateChanged(TransportState.NO_MEDIA_PRESENT);
         }
 
         public void positionChanged(int position) {
-            log.fine("Position Changed event received: " + position);
             synchronized (MediaPlayer.this) {
                 currentPositionInfo = new PositionInfo(1, currentMediaInfo.getMediaDuration(),
                         currentMediaInfo.getCurrentURI(), ModelUtil.toTimeString(position / 1000),
@@ -204,7 +196,6 @@ public class MediaPlayer {
         }
 
         public void durationChanged(int duration) {
-            log.fine("Duration Changed event received: " + duration);
             synchronized (MediaPlayer.this) {
                 String newValue = ModelUtil.toTimeString(duration / 1000);
                 currentMediaInfo = new MediaInfo(currentMediaInfo.getCurrentURI(), "",

@@ -1,7 +1,6 @@
 package com.github.dlna.util;
 
 import android.os.Build;
-import android.util.Log;
 
 import org.fourthline.cling.model.types.UDN;
 
@@ -10,7 +9,6 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 public class Utils {
-    private static final String TAG = "UpnpUtil";
     public static final String MANUFACTURER = android.os.Build.MANUFACTURER;
     public static final String DMR_NAME = "MSI MediaRenderer";
 
@@ -34,7 +32,6 @@ public class Utils {
         systemSalt.append(getUUID());
         systemSalt.append(Build.MODEL);
         systemSalt.append(Build.MANUFACTURER);
-        Log.i(TAG, "uniqueSystemIdentifier " + systemSalt.toString());
 
         try {
             byte[] hash = MessageDigest.getInstance("MD5").digest(systemSalt.toString().getBytes());
