@@ -22,7 +22,7 @@ public class RenderPlayerService extends Service {
         if (type == null) {
             return result;
         }
-        if ("video".equals(type)) {
+        if ("audio".equals(type)) {
             Intent playerIntent = new Intent(this, GPlayer.class);
             playerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             playerIntent.putExtra("name", intent.getStringExtra("name"));
