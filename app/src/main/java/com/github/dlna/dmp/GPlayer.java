@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +59,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
     private AudioManager audioManager;
 
     private TextView textViewTime;
-
-    private SeekBar seekBarProgress;
 
     private TextView textViewLength;
 
@@ -127,8 +124,6 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
         textViewLength = findViewById(R.id.total_time);
         pauseButton = findViewById(R.id.play);
         layoutBottom = findViewById(R.id.layout_control);
-
-        seekBarProgress = findViewById(R.id.seekBar_progress);
     }
 
     @Override
@@ -325,9 +320,7 @@ public class GPlayer extends Activity implements OnCompletionListener, OnErrorLi
                     }
 
                     textViewLength.setText(Utils.secToTime(duration / 1000));
-                    seekBarProgress.setMax(duration);
                     textViewTime.setText(Utils.secToTime(position / 1000));
-                    seekBarProgress.setProgress(position);
                     mHandler.sendEmptyMessageDelayed(MEDIA_PLAYER_PROGRESS_UPDATE, 500);
                     break;
                 }

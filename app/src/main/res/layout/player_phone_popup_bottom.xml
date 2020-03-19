@@ -11,28 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#a52f2f2f">
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24.0dip"
-            android:layout_marginTop="7.0dip"
-            android:layout_marginRight="24.0dip">
-
-            <SeekBar
-                android:id="@+id/seekBar_progress"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:clickable="false"
-                android:maxHeight="10.0dip"
-                android:minHeight="10.0dip"
-                android:progressDrawable="@drawable/player_pad_seekbar_progress"
-                android:thumb="@drawable/player_pad_seekbar_silver_normal"
-                android:thumbOffset="8.0dip" />
-        </RelativeLayout>
-
+        
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="1.0dip"
