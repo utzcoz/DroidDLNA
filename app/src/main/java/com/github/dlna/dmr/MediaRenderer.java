@@ -25,9 +25,12 @@ import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChangeParser;
+import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.lastchange.LastChangeAwareServiceManager;
+import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlLastChangeParser;
+import org.seamless.util.MimeType;
 
 import java.io.IOException;
 import java.util.Map;
@@ -70,12 +73,12 @@ public class MediaRenderer {
 
         // The connection manager doesn't have to do much, HTTP is stateless
         LocalServiceBinder binder = new AnnotationLocalServiceBinder();
-        LocalService connectionManagerService = binder.read(ConnectionManagerService.class);
-        ServiceManager<ConnectionManagerService> connectionManager =
+        LocalService connectionManagerService = binder.read(DLNAConnectionManagerService.class);
+        ServiceManager<DLNAConnectionManagerService> connectionManager =
                 new DefaultServiceManager(connectionManagerService) {
                     @Override
                     protected Object createServiceInstance() throws Exception {
-                        return new ConnectionManagerService();
+                        return new DLNAConnectionManagerService();
                     }
                 };
         connectionManagerService.setManager(connectionManager);
@@ -184,4 +187,39 @@ public class MediaRenderer {
         }
     }
 
+    private static class DLNAConnectionManagerService extends ConnectionManagerService {
+        DLNAConnectionManagerService() {
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/jpeg")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/png")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/gif")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/bmp")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/pjpeg")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/tiff")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("image/x-ms-bmp")));
+
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/3gpp")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/mp4")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/3gp2")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/avi")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/flv")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/mpeg")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/x-mkv")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/x-matroska")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/msvideo")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/quicktime")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/x-msvideo")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("video/x-ms-wmv")));
+
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/aac")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/3gpp")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/amr")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/ogg")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/mpeg")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/midi")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/x-midi")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/x-mid")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/x-wav")));
+            sinkProtocolInfo.add(new ProtocolInfo(MimeType.valueOf("audio/x-ms-wma")));
+        }
+    }
 }
