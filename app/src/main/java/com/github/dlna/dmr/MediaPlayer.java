@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.util.Log;
 
-import com.github.dlna.dmp.GPlayer;
-import com.github.dlna.dmp.GPlayer.MediaListener;
+import com.github.dlna.DevicesActivity;
+import com.github.dlna.MediaListener;
 import com.github.dlna.util.Action;
 
 import org.fourthline.cling.model.ModelUtil;
@@ -91,14 +91,9 @@ public class MediaPlayer {
 
         transportStateChanged(TransportState.STOPPED);
 
-        GPlayer.setMediaListener(new GstMediaListener());
-
-        Intent intent = new Intent();
-        intent.setClass(context, RenderPlayerService.class);
-        intent.putExtra("type", type);
-        intent.putExtra("name", name);
-        intent.putExtra("playURI", uri.toString());
-        context.startService(intent);
+        DevicesActivity.setMediaListener(new GstMediaListener());
+        // FIXME Add method to pass parameter to DevicesActivity
+        //  include "type", "name", and "playURI"
     }
 
     synchronized void setVolume(double volume) {

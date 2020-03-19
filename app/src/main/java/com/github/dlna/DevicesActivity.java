@@ -24,6 +24,8 @@ import org.fourthline.cling.registry.Registry;
 public class DevicesActivity extends AppCompatActivity {
     private final static String TAG = "DevicesActivity";
 
+    private static MediaListener mediaListener;
+
     private long exitTime = 0;
 
     private AndroidUpnpService upnpService;
@@ -52,6 +54,10 @@ public class DevicesActivity extends AppCompatActivity {
             upnpService = null;
         }
     };
+
+    public static void setMediaListener(MediaListener mediaListener) {
+        DevicesActivity.mediaListener = mediaListener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
