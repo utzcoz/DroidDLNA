@@ -47,11 +47,6 @@ public class ClingLocalRenderer {
         }
 
         @Override
-        public void seek(int position) {
-
-        }
-
-        @Override
         public int getVolume() {
             return 0;
         }
@@ -93,6 +88,11 @@ public class ClingLocalRenderer {
 
         @Override
         public void setRecordQualityMode(String newRecordQualityMode) {
+
+        }
+
+        @Override
+        public void seek(String unit, String target) {
 
         }
     }

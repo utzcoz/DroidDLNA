@@ -11,8 +11,6 @@ public interface ILocalRender {
 
     void stop();
 
-    void seek(int position);
-
     int getVolume();
 
     void setURIMetaData(String currentURIMetaData);
@@ -30,4 +28,6 @@ public interface ILocalRender {
     void setPlayMode(String newPlayMode);
 
     void setRecordQualityMode(String newRecordQualityMode);
+
+    void seek(String unit, String target);
 }

@@ -9,7 +9,6 @@ import org.fourthline.cling.support.model.DeviceCapabilities;
 import org.fourthline.cling.support.model.MediaInfo;
 import org.fourthline.cling.support.model.PlayMode;
 import org.fourthline.cling.support.model.PositionInfo;
-import org.fourthline.cling.support.model.SeekMode;
 import org.fourthline.cling.support.model.StorageMedium;
 import org.fourthline.cling.support.model.TransportAction;
 import org.fourthline.cling.support.model.TransportInfo;
@@ -102,21 +101,7 @@ public class AVTransportService extends AbstractAVTransportService {
     @Override
     public void seek(UnsignedIntegerFourBytes instanceId, String unit, String target)
             throws AVTransportException {
-        SeekMode seekMode;
-        try {
-            seekMode = SeekMode.valueOrExceptionOf(unit);
-
-            if (!seekMode.equals(SeekMode.REL_TIME)) {
-                throw new IllegalArgumentException();
-            }
-
-            int pos = Utils.getRealTime(target) * 1000;
-            getInstance(instanceId).seek(pos);
-        } catch (IllegalArgumentException ex) {
-            throw new AVTransportException(
-                    AVTransportErrorCode.SEEKMODE_NOT_SUPPORTED, "Unsupported seek mode: " + unit
-            );
-        }
+        getInstance(instanceId).seek(unit, target);
     }
 
     @Override

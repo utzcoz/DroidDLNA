@@ -231,8 +231,8 @@ public class MediaPlayer {
         ClingLocalRenderer.getLocalRender().stop();
     }
 
-    void seek(int position) {
-        ClingLocalRenderer.getLocalRender().seek(position);
+    void seek(String unit, String target) {
+        ClingLocalRenderer.getLocalRender().seek(unit, target);
     }
 }
 
