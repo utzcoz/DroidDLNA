@@ -1,10 +1,9 @@
 package com.github.dlna.connectionmanager;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.github.dlna.ControlPointUpnpService;
-import com.github.dlna.DevicesActivity;
+import com.github.dlna.TestBase;
 import com.github.dlna.TestHelper;
 import com.github.dlna.Utils;
 
@@ -16,9 +15,6 @@ import org.fourthline.cling.model.meta.RemoteService;
 import org.fourthline.cling.model.types.ServiceId;
 import org.fourthline.cling.model.types.UDAServiceId;
 import org.fourthline.cling.support.model.ProtocolInfo;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,25 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
-public class ConnectionManagerServiceTest {
-    private ControlPointUpnpService upnpService;
-
-    @Rule
-    public ActivityScenarioRule<DevicesActivity> devicesActivityRule =
-            new ActivityScenarioRule<>(DevicesActivity.class);
-
-    @Before
-    public void setUp() {
-        upnpService = new ControlPointUpnpService();
-        assertNotNull(upnpService);
-    }
-
-    @After
-    public void tearDown() {
-        TestHelper.getScenario(devicesActivityRule).close();
-        upnpService.shutdown();
-    }
-
+public class ConnectionManagerServiceTest extends TestBase {
     @Test
     public void testGetConnectivityManagerSinkProtocolInfoSucceed() {
         GetProtocolInfoAction action = executeGetProtocolInfoAction(upnpService);

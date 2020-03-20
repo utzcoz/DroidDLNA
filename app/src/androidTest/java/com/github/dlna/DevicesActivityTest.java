@@ -1,7 +1,6 @@
 package com.github.dlna;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import org.fourthline.cling.model.meta.DeviceDetails;
@@ -9,14 +8,8 @@ import org.fourthline.cling.model.meta.ModelDetails;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.UDADeviceType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static com.github.dlna.TestHelper.getScenario;
 import static org.junit.Assert.assertEquals;
@@ -24,24 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
-public class DevicesActivityTest {
-    private ControlPointUpnpService upnpService;
-    @Rule
-    public ActivityScenarioRule<DevicesActivity> devicesActivityRule =
-            new ActivityScenarioRule<>(DevicesActivity.class);
-
-    @Before
-    public void setUp() {
-        Logger.getLogger("org.fourthline.cling").setLevel(Level.FINEST);
-        upnpService = new ControlPointUpnpService();
-    }
-
-    @After
-    public void tearDown() {
-        getScenario(devicesActivityRule).close();
-        upnpService.shutdown();
-    }
-
+public class DevicesActivityTest extends TestBase {
     @Test
     public void testDevicesActivityInitialization() {
         assertEquals(Lifecycle.State.RESUMED, getScenario(devicesActivityRule).getState());
