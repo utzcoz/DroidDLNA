@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.dlna.connectionmanager;
 
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.meta.RemoteService;
