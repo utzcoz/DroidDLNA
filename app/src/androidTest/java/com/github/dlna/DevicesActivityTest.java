@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class DevicesActivityTest {
@@ -115,11 +114,7 @@ public class DevicesActivityTest {
                 result[0] = -1;
             }
         });
-        while (true) {
-            if (result[0] != 0) {
-                break;
-            }
-        }
+        TestHelper.waitState(() -> result[0] != 0, TestHelper.MAX_WAIT_MILLIS);
         assertEquals(1, result[0]);
         String sinkProtocolInfo = action.getSinkProtocolInfo();
         assertNotNull(sinkProtocolInfo);
