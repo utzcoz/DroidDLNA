@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,7 @@ import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
 
 public class DevicesActivity extends AppCompatActivity {
+    private static final String TAG = "DevicesActivity";
     private AndroidUpnpService upnpService;
     private boolean hasConnected = false;
 
@@ -23,6 +25,7 @@ public class DevicesActivity extends AppCompatActivity {
 
             MediaRenderer mediaRenderer = new MediaRenderer(DevicesActivity.this);
             upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
+            Log.i(TAG, "Add upnp device " + mediaRenderer.getDevice());
 
             // Refresh device list
             upnpService.getControlPoint().search();

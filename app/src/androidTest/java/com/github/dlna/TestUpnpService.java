@@ -1,5 +1,7 @@
 package com.github.dlna;
 
+import android.util.Log;
+
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.fourthline.cling.UpnpServiceImpl;
@@ -11,7 +13,14 @@ import org.fourthline.cling.protocol.ProtocolFactory;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
 import org.fourthline.cling.transport.Router;
+import org.fourthline.cling.transport.impl.AsyncServletStreamServerConfigurationImpl;
+import org.fourthline.cling.transport.impl.AsyncServletStreamServerImpl;
+import org.fourthline.cling.transport.impl.jetty.JettyServletContainer;
+import org.fourthline.cling.transport.spi.NetworkAddressFactory;
+import org.fourthline.cling.transport.spi.StreamServer;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +28,7 @@ public class TestUpnpService extends UpnpServiceImpl {
     private TestRegistryListener registryListener = new TestRegistryListener();
 
     public TestUpnpService() {
-        super(new AndroidUpnpServiceConfiguration());
+        super(new TestUpnpServiceConfiguration());
         getRegistry().addListener(registryListener);
     }
 
@@ -47,9 +56,41 @@ public class TestUpnpService extends UpnpServiceImpl {
         super.shutdown();
     }
 
+    private static final class TestUpnpServiceConfiguration
+            extends AndroidUpnpServiceConfiguration {
+        private static final String TAG = "UpnpServiceConfig";
+
+        @Override
+        public StreamServer createStreamServer(NetworkAddressFactory networkAddressFactory) {
+            JettyServletContainer container = null;
+            try {
+                Constructor<?> constructor = JettyServletContainer.class.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                container = (JettyServletContainer) constructor.newInstance();
+                Log.i(TAG, "Jetty container instance " + container);
+            } catch (NoSuchMethodException
+                    | IllegalAccessException
+                    | InstantiationException
+                    | InvocationTargetException e) {
+                Log.e(TAG, "Failed to initialize jetty container", e);
+            }
+            return new AsyncServletStreamServerImpl(
+                    new AsyncServletStreamServerConfigurationImpl(
+                            container == null ? JettyServletContainer.INSTANCE : container,
+                            networkAddressFactory.getStreamListenPort()
+                    )
+            );
+        }
+    }
+
     private static final class TestRegistryListener implements RegistryListener {
         private List<RemoteDevice> remoteDevices = new ArrayList<>();
         private List<LocalDevice> localDevices = new ArrayList<>();
+        private boolean hasShutdown = false;
+
+        public boolean hasShutdown() {
+            return hasShutdown;
+        }
 
         @Override
         public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
@@ -96,7 +137,7 @@ public class TestUpnpService extends UpnpServiceImpl {
 
         @Override
         public void afterShutdown() {
-            // Do nothing
+            hasShutdown = true;
         }
     }
 }
