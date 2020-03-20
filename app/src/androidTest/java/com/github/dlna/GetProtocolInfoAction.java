@@ -11,4 +11,8 @@ public class GetProtocolInfoAction extends ActionInvocation<RemoteService> {
     public String getSinkProtocolInfo() {
         return (String) getOutput("Sink").getValue();
     }
+
+    public String getSourceProtocolInfo() {
+        return (String) getOutput("Source").getValue();
+    }
 }

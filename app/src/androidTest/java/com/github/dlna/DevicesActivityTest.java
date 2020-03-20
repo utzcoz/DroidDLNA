@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
@@ -94,6 +95,22 @@ public class DevicesActivityTest {
 
     @Test
     public void testGetConnectivityManagerSinkProtocolInfoSucceed() {
+        GetProtocolInfoAction action = executeGetProtocolInfoAction(upnpService);
+        String expectedSinkProtocolInfoList =
+                Utils.generateSinkProtocolInfoList()
+                        .stream()
+                        .map(ProtocolInfo::toString)
+                        .collect(Collectors.joining(","));
+        assertEquals(expectedSinkProtocolInfoList, action.getSinkProtocolInfo());
+    }
+
+    @Test
+    public void testGetConnectivityManagerSourceProtocolInfoSucceed() {
+        GetProtocolInfoAction action = executeGetProtocolInfoAction(upnpService);
+        assertNull(action.getSourceProtocolInfo());
+    }
+
+    private GetProtocolInfoAction executeGetProtocolInfoAction(TestUpnpService upnpService) {
         RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
         assertNotNull(remoteDevice);
         ServiceId serviceId = new UDAServiceId("ConnectionManager");
@@ -116,14 +133,7 @@ public class DevicesActivityTest {
         });
         TestHelper.waitState(() -> result[0] != 0, TestHelper.MAX_WAIT_MILLIS);
         assertEquals(1, result[0]);
-        String sinkProtocolInfo = action.getSinkProtocolInfo();
-        assertNotNull(sinkProtocolInfo);
-        String expectedSinkProtocolInfoList =
-                Utils.generateSinkProtocolInfoList()
-                        .stream()
-                        .map(ProtocolInfo::toString)
-                        .collect(Collectors.joining(","));
-        assertEquals(expectedSinkProtocolInfoList, sinkProtocolInfo);
+        return action;
     }
 
     private ActivityScenario<DevicesActivity> getScenario() {
