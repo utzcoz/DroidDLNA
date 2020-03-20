@@ -24,10 +24,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestUpnpService extends UpnpServiceImpl {
+public class ControlPointUpnpService extends UpnpServiceImpl {
     private TestRegistryListener registryListener = new TestRegistryListener();
 
-    public TestUpnpService() {
+    public ControlPointUpnpService() {
         super(new TestUpnpServiceConfiguration());
         getRegistry().addListener(registryListener);
     }

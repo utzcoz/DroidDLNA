@@ -1,6 +1,10 @@
 package com.github.dlna;
 
+import android.app.Activity;
 import android.util.Log;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.fourthline.cling.model.meta.RemoteDevice;
 
@@ -14,7 +18,7 @@ public class TestHelper {
 
     private static final String TAG = "TesetHelper";
 
-    public static RemoteDevice searchRemoteDevice(TestUpnpService upnpService) {
+    public static RemoteDevice searchRemoteDevice(ControlPointUpnpService upnpService) {
         for (int i = 0; i < 10; i++) {
             Log.e(TAG, "Start to search upnp device, index " + i);
             upnpService.getControlPoint().search();
@@ -38,5 +42,10 @@ public class TestHelper {
                 return;
             }
         }
+    }
+
+    public static <T extends Activity> ActivityScenario<T> getScenario(
+            ActivityScenarioRule<T> activityRule) {
+        return activityRule.getScenario();
     }
 }

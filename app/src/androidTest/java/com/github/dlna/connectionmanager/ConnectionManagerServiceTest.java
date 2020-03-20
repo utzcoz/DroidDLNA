@@ -1,12 +1,11 @@
 package com.github.dlna.connectionmanager;
 
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import com.github.dlna.ControlPointUpnpService;
 import com.github.dlna.DevicesActivity;
 import com.github.dlna.TestHelper;
-import com.github.dlna.TestUpnpService;
 import com.github.dlna.Utils;
 
 import org.fourthline.cling.controlpoint.ActionCallback;
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class ConnectionManagerServiceTest {
-    private TestUpnpService upnpService;
+    private ControlPointUpnpService upnpService;
 
     @Rule
     public ActivityScenarioRule<DevicesActivity> devicesActivityRule =
@@ -39,13 +38,13 @@ public class ConnectionManagerServiceTest {
 
     @Before
     public void setUp() {
-        upnpService = new TestUpnpService();
+        upnpService = new ControlPointUpnpService();
         assertNotNull(upnpService);
     }
 
     @After
     public void tearDown() {
-        getScenario().close();
+        TestHelper.getScenario(devicesActivityRule).close();
         upnpService.shutdown();
     }
 
@@ -66,7 +65,7 @@ public class ConnectionManagerServiceTest {
         assertNull(action.getSourceProtocolInfo());
     }
 
-    private GetProtocolInfoAction executeGetProtocolInfoAction(TestUpnpService upnpService) {
+    private GetProtocolInfoAction executeGetProtocolInfoAction(ControlPointUpnpService upnpService) {
         RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
         assertNotNull(remoteDevice);
         ServiceId serviceId = new UDAServiceId("ConnectionManager");
@@ -90,9 +89,5 @@ public class ConnectionManagerServiceTest {
         TestHelper.waitState(() -> result[0] != 0, TestHelper.MAX_WAIT_MILLIS);
         assertEquals(1, result[0]);
         return action;
-    }
-
-    private ActivityScenario<DevicesActivity> getScenario() {
-        return devicesActivityRule.getScenario();
     }
 }

@@ -1,7 +1,6 @@
 package com.github.dlna;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
@@ -19,13 +18,14 @@ import org.junit.runner.RunWith;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.github.dlna.TestHelper.getScenario;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class DevicesActivityTest {
-    private TestUpnpService upnpService;
+    private ControlPointUpnpService upnpService;
     @Rule
     public ActivityScenarioRule<DevicesActivity> devicesActivityRule =
             new ActivityScenarioRule<>(DevicesActivity.class);
@@ -33,18 +33,18 @@ public class DevicesActivityTest {
     @Before
     public void setUp() {
         Logger.getLogger("org.fourthline.cling").setLevel(Level.FINEST);
-        upnpService = new TestUpnpService();
+        upnpService = new ControlPointUpnpService();
     }
 
     @After
     public void tearDown() {
-        getScenario().close();
+        getScenario(devicesActivityRule).close();
         upnpService.shutdown();
     }
 
     @Test
     public void testDevicesActivityInitialization() {
-        assertEquals(Lifecycle.State.RESUMED, getScenario().getState());
+        assertEquals(Lifecycle.State.RESUMED, getScenario(devicesActivityRule).getState());
     }
 
     @Test
@@ -78,13 +78,9 @@ public class DevicesActivityTest {
         assertEquals(DLNADoc.Version.V1_5.toString(), doc.getVersion());
     }
 
-    private ActivityScenario<DevicesActivity> getScenario() {
-        return devicesActivityRule.getScenario();
-    }
-
     private DevicesActivity getActivity() {
         final DevicesActivity[] activities = new DevicesActivity[1];
-        getScenario().onActivity(activity -> activities[0] = activity);
+        getScenario(devicesActivityRule).onActivity(activity -> activities[0] = activity);
         return activities[0];
     }
 }
