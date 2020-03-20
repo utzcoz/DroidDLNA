@@ -7,11 +7,18 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import org.fourthline.cling.controlpoint.ActionCallback;
+import org.fourthline.cling.model.action.ActionInvocation;
+import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
 import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.meta.RemoteService;
 import org.fourthline.cling.model.types.DLNADoc;
+import org.fourthline.cling.model.types.ServiceId;
 import org.fourthline.cling.model.types.UDADeviceType;
+import org.fourthline.cling.model.types.UDAServiceId;
+import org.fourthline.cling.support.model.ProtocolInfo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,6 +28,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -69,6 +77,7 @@ public class DevicesActivityTest {
     @Test
     public void testTestUpnpServiceSearchDeviceSucceed() {
         RemoteDevice remoteDevice = searchRemoteDevice();
+        assertNotNull(remoteDevice);
         assertEquals(Utils.uniqueSystemIdentifier(), remoteDevice.getIdentity().getUdn());
         assertEquals(UDADeviceType.DEFAULT_NAMESPACE, remoteDevice.getType().getNamespace());
         assertEquals("MediaRenderer", remoteDevice.getType().getType());
@@ -90,8 +99,41 @@ public class DevicesActivityTest {
     }
 
     @Test
-    public void testSendSetURIActionSucceed() {
+    public void testGetConnectivityManagerSinkProtocolInfoSucceed() {
+        RemoteDevice remoteDevice = searchRemoteDevice();
+        assertNotNull(remoteDevice);
+        ServiceId serviceId = new UDAServiceId("ConnectionManager");
+        RemoteService connectionManagerService = remoteDevice.findService(serviceId);
+        assertNotNull(connectionManagerService);
+        GetProtocolInfoAction action = new GetProtocolInfoAction(connectionManagerService);
+        int[] result = new int[1];
+        upnpService.getControlPoint().execute(new ActionCallback(action) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                result[0] = 1;
+            }
 
+            @Override
+            public void failure(ActionInvocation invocation,
+                                UpnpResponse operation,
+                                String defaultMsg) {
+                result[0] = -1;
+            }
+        });
+        while (true) {
+            if (result[0] != 0) {
+                break;
+            }
+        }
+        assertEquals(1, result[0]);
+        String sinkProtocolInfo = action.getSinkProtocolInfo();
+        assertNotNull(sinkProtocolInfo);
+        String expectedSinkProtocolInfoList =
+                Utils.generateSinkProtocolInfoList()
+                        .stream()
+                        .map(ProtocolInfo::toString)
+                        .collect(Collectors.joining(","));
+        assertEquals(expectedSinkProtocolInfoList, sinkProtocolInfo);
     }
 
     private RemoteDevice searchRemoteDevice() {
