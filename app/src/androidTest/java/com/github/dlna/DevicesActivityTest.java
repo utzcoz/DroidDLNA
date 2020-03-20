@@ -1,7 +1,5 @@
 package com.github.dlna;
 
-import android.util.Log;
-
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -25,7 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -42,8 +39,6 @@ public class DevicesActivityTest {
     @Rule
     public ActivityScenarioRule<DevicesActivity> devicesActivityRule =
             new ActivityScenarioRule<>(DevicesActivity.class);
-
-    private static final int MAX_SEARCH_WAIT_SECONDS = 5;
 
     @Before
     public void setUp() {
@@ -76,7 +71,7 @@ public class DevicesActivityTest {
 
     @Test
     public void testTestUpnpServiceSearchDeviceSucceed() {
-        RemoteDevice remoteDevice = searchRemoteDevice();
+        RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
         assertNotNull(remoteDevice);
         assertEquals(Utils.uniqueSystemIdentifier(), remoteDevice.getIdentity().getUdn());
         assertEquals(UDADeviceType.DEFAULT_NAMESPACE, remoteDevice.getType().getNamespace());
@@ -100,7 +95,7 @@ public class DevicesActivityTest {
 
     @Test
     public void testGetConnectivityManagerSinkProtocolInfoSucceed() {
-        RemoteDevice remoteDevice = searchRemoteDevice();
+        RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
         assertNotNull(remoteDevice);
         ServiceId serviceId = new UDAServiceId("ConnectionManager");
         RemoteService connectionManagerService = remoteDevice.findService(serviceId);
@@ -134,25 +129,6 @@ public class DevicesActivityTest {
                         .map(ProtocolInfo::toString)
                         .collect(Collectors.joining(","));
         assertEquals(expectedSinkProtocolInfoList, sinkProtocolInfo);
-    }
-
-    private RemoteDevice searchRemoteDevice() {
-        for (int i = 0; i < 10; i++) {
-            Log.e(TAG, "Start to search upnp device, index " + i);
-            upnpService.getControlPoint().search();
-            long startTimeMillis = System.currentTimeMillis();
-            while (System.currentTimeMillis() - startTimeMillis <= MAX_SEARCH_WAIT_SECONDS * 1000) {
-                if (upnpService.getRemoteDevices().size() > 0) {
-                    break;
-                }
-            }
-            List<RemoteDevice> remoteDevices = upnpService.getRemoteDevices();
-            if (remoteDevices.size() > 0) {
-                return remoteDevices.get(0);
-            }
-        }
-        fail("Failed to search remote devices");
-        return null;
     }
 
     private ActivityScenario<DevicesActivity> getScenario() {
