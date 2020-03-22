@@ -55,7 +55,7 @@ public class MediaRenderer {
         mediaPlayers = new ConcurrentHashMap<>();
         MediaPlayer player =
                 new MediaPlayer(
-                        new UnsignedIntegerFourBytes(1),
+                        Utils.getDefaultInstanceId(),
                         avTransportLastChange,
                         renderingControlLastChange
                 );

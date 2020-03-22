@@ -201,7 +201,7 @@ public class MediaPlayer {
                         new MediaInfo(
                                 currentMediaInfo.getCurrentURI(),
                                 "",
-                                new UnsignedIntegerFourBytes(1),
+                                Utils.getDefaultInstanceId(),
                                 newValue,
                                 StorageMedium.NETWORK
                         );

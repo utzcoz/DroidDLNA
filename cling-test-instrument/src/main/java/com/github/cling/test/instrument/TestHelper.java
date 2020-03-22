@@ -12,13 +12,10 @@ import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.RemoteService;
-import org.fourthline.cling.model.types.ServiceId;
-import org.fourthline.cling.model.types.UDAServiceId;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class TestHelper {
@@ -71,6 +68,12 @@ public class TestHelper {
                                 UpnpResponse operation,
                                 String defaultMsg) {
                 result[0] = -1;
+                Log.e(
+                        TAG,
+                        "Failed to execute " + action
+                                + ", " + defaultMsg
+                                + ", operation " + operation
+                );
             }
         });
         waitState(() -> result[0] != 0, MAX_WAIT_MILLIS);

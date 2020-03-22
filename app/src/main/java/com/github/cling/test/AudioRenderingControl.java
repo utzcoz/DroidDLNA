@@ -1,6 +1,5 @@
 package com.github.cling.test;
 
-import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.lastchange.LastChange;
@@ -33,19 +32,9 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
         return player;
     }
 
-    private void checkChannel(String channelName) throws RenderingControlException {
-        if (!getChannel(channelName).equals(Channel.Master)) {
-            throw new RenderingControlException(
-                    ErrorCode.ARGUMENT_VALUE_INVALID,
-                    "Unsupported audio channel: " + channelName
-            );
-        }
-    }
-
     @Override
     public boolean getMute(UnsignedIntegerFourBytes instanceId, String channelName)
             throws RenderingControlException {
-        checkChannel(channelName);
         return getInstance(instanceId).getVolume() == 0;
     }
 
@@ -53,14 +42,12 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
     public void setMute(UnsignedIntegerFourBytes instanceId,
                         String channelName,
                         boolean desiredMute) throws RenderingControlException {
-        checkChannel(channelName);
         getInstance(instanceId).setMute(desiredMute);
     }
 
     @Override
     public UnsignedIntegerTwoBytes getVolume(UnsignedIntegerFourBytes instanceId,
                                              String channelName) throws RenderingControlException {
-        checkChannel(channelName);
         int vol = getInstance(instanceId).getVolume();
         return new UnsignedIntegerTwoBytes(vol);
     }
@@ -69,25 +56,20 @@ public class AudioRenderingControl extends AbstractAudioRenderingControl {
     public void setVolume(UnsignedIntegerFourBytes instanceId,
                           String channelName,
                           UnsignedIntegerTwoBytes desiredVolume) throws RenderingControlException {
-        checkChannel(channelName);
         Long desiredValue = desiredVolume.getValue();
-        int vol = desiredValue == null ? 0 : (int) desiredValue.intValue();
+        int vol = desiredValue == null ? 0 : desiredValue.intValue();
         getInstance(instanceId).setVolume(vol);
     }
 
     @Override
     protected Channel[] getCurrentChannels() {
-        return new Channel[]{Channel.Master};
+        return Utils.getChannels();
     }
 
     @Override
     public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
-        UnsignedIntegerFourBytes[] ids = new UnsignedIntegerFourBytes[getPlayers().size()];
-        int i = 0;
-        for (UnsignedIntegerFourBytes id : getPlayers().keySet()) {
-            ids[i] = id;
-            i++;
-        }
+        UnsignedIntegerFourBytes[] ids = new UnsignedIntegerFourBytes[1];
+        ids[0] = Utils.getDefaultInstanceId();
         return ids;
     }
 }

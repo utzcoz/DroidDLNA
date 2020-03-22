@@ -21,4 +21,9 @@ public class UpnpServiceFetcher {
     public static RemoteService getConnectionManagerService(ControlPointUpnpService upnpService) {
         return getService(upnpService, "ConnectionManager");
     }
+
+    public static RemoteService getAudioRenderingControl(
+            ControlPointUpnpService upnpService) {
+        return getService(upnpService, "RenderingControl");
+    }
 }

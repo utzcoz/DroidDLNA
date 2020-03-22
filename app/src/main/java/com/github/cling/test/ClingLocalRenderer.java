@@ -48,7 +48,7 @@ public class ClingLocalRenderer {
 
         @Override
         public int getVolume() {
-            return 0;
+            return volume;
         }
 
         @Override
