@@ -5,15 +5,14 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import com.github.cling.test.instrument.ControlPointUpnpService;
 import com.github.cling.test.instrument.TestHelper;
 import com.github.cling.test.instrument.connectionmanager.GetCurrentConnectionIDsAction;
+import com.github.cling.test.instrument.connectionmanager.GetCurrentConnectionInfoAction;
 import com.github.cling.test.instrument.connectionmanager.GetProtocolInfoAction;
 
-import org.fourthline.cling.controlpoint.ActionCallback;
-import org.fourthline.cling.model.action.ActionInvocation;
-import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.RemoteService;
 import org.fourthline.cling.model.types.ServiceId;
 import org.fourthline.cling.model.types.UDAServiceId;
+import org.fourthline.cling.support.model.ConnectionInfo;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,9 +48,53 @@ public class ConnectionManagerServiceTest extends TestBase {
         assertEquals("0", action.getCurrentConnectionIDs());
     }
 
-    private GetProtocolInfoAction executeGetProtocolInfoAction(ControlPointUpnpService upnpService) {
+    @Test
+    public void testGetRcsIDSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertEquals(0, action.getRcsID());
+    }
+
+    @Test
+    public void testGetAVTransportIDSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertEquals(0, action.getAVTransportID());
+    }
+
+    @Test
+    public void testGetPeerConnectionManagerSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+    }
+
+    @Test
+    public void testGetPeerConnectionIDSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertEquals(-1, action.getPeerConnectionID());
+    }
+
+    @Test
+    public void testGetDirectionSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertEquals(ConnectionInfo.Direction.Input, action.getDirection());
+    }
+
+    @Test
+    public void testGetStatusSucceed() {
+        GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertEquals(ConnectionInfo.Status.Unknown, action.getStatus());
+    }
+
+    private GetCurrentConnectionInfoAction executeGetCurrentConnectionInfoAction(
+            ControlPointUpnpService upnpService) {
+        GetCurrentConnectionInfoAction action =
+                new GetCurrentConnectionInfoAction(getConnectionManagerService(), 0);
+        TestHelper.executeAction(upnpService, action);
+        return action;
+    }
+
+    private GetProtocolInfoAction executeGetProtocolInfoAction(
+            ControlPointUpnpService upnpService) {
         GetProtocolInfoAction action = new GetProtocolInfoAction(getConnectionManagerService());
-        executeAction(upnpService, action);
+        TestHelper.executeAction(upnpService, action);
         return action;
     }
 
@@ -59,7 +102,7 @@ public class ConnectionManagerServiceTest extends TestBase {
             ControlPointUpnpService upnpService) {
         GetCurrentConnectionIDsAction action =
                 new GetCurrentConnectionIDsAction(getConnectionManagerService());
-        executeAction(upnpService, action);
+        TestHelper.executeAction(upnpService, action);
         return action;
     }
 
@@ -70,25 +113,5 @@ public class ConnectionManagerServiceTest extends TestBase {
         RemoteService connectionManagerService = remoteDevice.findService(serviceId);
         assertNotNull(connectionManagerService);
         return connectionManagerService;
-    }
-
-    private <T extends ActionInvocation<RemoteService>> void executeAction(
-            ControlPointUpnpService upnpService, T action) {
-        int[] result = new int[1];
-        upnpService.getControlPoint().execute(new ActionCallback(action) {
-            @Override
-            public void success(ActionInvocation invocation) {
-                result[0] = 1;
-            }
-
-            @Override
-            public void failure(ActionInvocation invocation,
-                                UpnpResponse operation,
-                                String defaultMsg) {
-                result[0] = -1;
-            }
-        });
-        TestHelper.waitState(() -> result[0] != 0, TestHelper.MAX_WAIT_MILLIS);
-        assertEquals(1, result[0]);
     }
 }
