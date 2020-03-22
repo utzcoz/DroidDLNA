@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 import android.content.ComponentName;
 import android.content.Context;

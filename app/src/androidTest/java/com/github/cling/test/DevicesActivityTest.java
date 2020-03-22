@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;

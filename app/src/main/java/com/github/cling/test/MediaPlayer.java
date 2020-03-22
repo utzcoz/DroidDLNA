@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 import org.fourthline.cling.model.ModelUtil;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;

@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
@@ -9,6 +9,7 @@ import org.fourthline.cling.model.meta.ModelDetails;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.UDADeviceType;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,7 +22,7 @@ public class UpnpSearchTest extends TestBase {
     public void testTestUpnpServiceSearchDeviceSucceed() {
         RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
         assertNotNull(remoteDevice);
-        assertEquals(Utils.uniqueSystemIdentifier(), remoteDevice.getIdentity().getUdn());
+        Assert.assertEquals(Utils.uniqueSystemIdentifier(), remoteDevice.getIdentity().getUdn());
         assertEquals(UDADeviceType.DEFAULT_NAMESPACE, remoteDevice.getType().getNamespace());
         assertEquals("MediaRenderer", remoteDevice.getType().getType());
         assertEquals(1, remoteDevice.getType().getVersion());

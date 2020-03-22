@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.AVTransportErrorCode;

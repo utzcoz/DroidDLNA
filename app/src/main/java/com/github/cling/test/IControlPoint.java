@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 public interface IControlPoint {
     void pause();

@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 public class ClingLocalRenderer {
     private static final ILocalRender localRender = new ILocalRenderImpl();

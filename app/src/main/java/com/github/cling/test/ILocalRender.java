@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test;
 
 public interface ILocalRender {
     void setPlayURI(String playURI);

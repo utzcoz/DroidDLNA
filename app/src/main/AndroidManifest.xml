@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.dlna"
+    package="com.github.cling.test"
     android:versionCode="1"
     android:versionName="0.0.1">
 
@@ -16,7 +16,7 @@
         android:theme="@style/Theme.AppCompat">
 
         <activity
-            android:name="com.github.dlna.DevicesActivity"
+            android:name="com.github.cling.test.DevicesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat">
