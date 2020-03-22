@@ -5,4 +5,4 @@
 # Run intrumentation unit test
 ./gradlew connectedAndroidTest
 # Show the test summary result
-python3 junit_result_parser.py -d app/build/outputs/androidTest-results/connected/
+python3 junit_result_parser.py -d test-app/build/outputs/androidTest-results/connected/
