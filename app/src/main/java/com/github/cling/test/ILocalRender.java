@@ -3,6 +3,8 @@ package com.github.cling.test;
 public interface ILocalRender {
     void setPlayURI(String playURI);
 
+    String getPlayURI();
+
     void setVolume(int volume);
 
     void play();
@@ -15,19 +17,19 @@ public interface ILocalRender {
 
     void setURIMetaData(String currentURIMetaData);
 
-    void record();
-
-    void next();
-
-    void previous();
+    String getURIMetaData();
 
     void setNextURI(String nextURI);
 
+    String getNextPlayURI();
+
     void setNextURIMetaData(String nextURI);
 
-    void setPlayMode(String newPlayMode);
-
-    void setRecordQualityMode(String newRecordQualityMode);
+    String getNextURIMetaData();
 
     void seek(String unit, String target);
+
+    String getSeekUnit();
+
+    String getSeekTarget();
 }

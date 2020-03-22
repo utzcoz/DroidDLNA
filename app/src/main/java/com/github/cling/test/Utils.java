@@ -45,6 +45,10 @@ public class Utils {
         return new UnsignedIntegerFourBytes(1);
     }
 
+    public static UnsignedIntegerFourBytes getDefaultNumberOfTracks() {
+        return new UnsignedIntegerFourBytes(1);
+    }
+
     public static List<ProtocolInfo> generateSinkProtocolInfoList() {
         List<ProtocolInfo> infoList = new ArrayList<>();
         infoList.add(new ProtocolInfo(MimeType.valueOf("image/jpeg")));

@@ -20,10 +20,19 @@ public class ClingLocalRenderer {
         private String playURI;
         private int volume;
         private String uriMetaData;
+        private String nextPlayURI;
+        private String nextURIMetaData;
+        private String seekUnit;
+        private String seekTarget;
 
         @Override
         public void setPlayURI(String playURI) {
             this.playURI = playURI;
+        }
+
+        @Override
+        public String getPlayURI() {
+            return playURI;
         }
 
         @Override
@@ -33,17 +42,17 @@ public class ClingLocalRenderer {
 
         @Override
         public void play() {
-
+            getControlPoint().start();
         }
 
         @Override
         public void pause() {
-
+            getControlPoint().pause();
         }
 
         @Override
         public void stop() {
-
+            getControlPoint().stop();
         }
 
         @Override
@@ -57,43 +66,44 @@ public class ClingLocalRenderer {
         }
 
         @Override
-        public void record() {
-
-        }
-
-        @Override
-        public void next() {
-
-        }
-
-        @Override
-        public void previous() {
-
+        public String getURIMetaData() {
+            return uriMetaData;
         }
 
         @Override
         public void setNextURI(String nextURI) {
-
+            this.nextPlayURI = nextURI;
         }
 
         @Override
-        public void setNextURIMetaData(String nextURI) {
-
+        public String getNextPlayURI() {
+            return nextPlayURI;
         }
 
         @Override
-        public void setPlayMode(String newPlayMode) {
-
+        public void setNextURIMetaData(String nextURIMetaData) {
+            this.nextURIMetaData = nextURIMetaData;
         }
 
         @Override
-        public void setRecordQualityMode(String newRecordQualityMode) {
-
+        public String getNextURIMetaData() {
+            return nextURIMetaData;
         }
 
         @Override
         public void seek(String unit, String target) {
+            seekUnit = unit;
+            seekTarget = target;
+        }
 
+        @Override
+        public String getSeekUnit() {
+            return seekUnit;
+        }
+
+        @Override
+        public String getSeekTarget() {
+            return seekTarget;
         }
     }
 }

@@ -93,50 +93,51 @@ public class ControlPointUpnpService extends UpnpServiceImpl {
         }
 
         @Override
-        public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+        public synchronized void remoteDeviceDiscoveryStarted(Registry registry,
+                                                              RemoteDevice device) {
             // Do nothing
         }
 
         @Override
-        public void remoteDeviceDiscoveryFailed(Registry registry,
-                                                RemoteDevice device,
-                                                Exception ex) {
+        public synchronized void remoteDeviceDiscoveryFailed(Registry registry,
+                                                             RemoteDevice device,
+                                                             Exception ex) {
             remoteDevices.remove(device);
         }
 
         @Override
-        public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
+        public synchronized void remoteDeviceAdded(Registry registry, RemoteDevice device) {
             remoteDevices.add(device);
         }
 
         @Override
-        public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
+        public synchronized void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
             remoteDevices.remove(device);
             remoteDevices.add(device);
         }
 
         @Override
-        public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
+        public synchronized void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             remoteDevices.remove(device);
         }
 
         @Override
-        public void localDeviceAdded(Registry registry, LocalDevice device) {
+        public synchronized void localDeviceAdded(Registry registry, LocalDevice device) {
             localDevices.add(device);
         }
 
         @Override
-        public void localDeviceRemoved(Registry registry, LocalDevice device) {
+        public synchronized void localDeviceRemoved(Registry registry, LocalDevice device) {
             localDevices.remove(device);
         }
 
         @Override
-        public void beforeShutdown(Registry registry) {
+        public synchronized void beforeShutdown(Registry registry) {
             // Do nothing
         }
 
         @Override
-        public void afterShutdown() {
+        public synchronized void afterShutdown() {
             hasShutdown = true;
         }
     }

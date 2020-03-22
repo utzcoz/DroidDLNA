@@ -98,29 +98,9 @@ public class MediaPlayer {
         }
     }
 
-    synchronized void record() {
-        ClingLocalRenderer.getLocalRender().record();
-    }
-
-    synchronized void next() {
-        ClingLocalRenderer.getLocalRender().next();
-    }
-
-    synchronized void previous() {
-        ClingLocalRenderer.getLocalRender().previous();
-    }
-
     synchronized void setNextAVTransportURI(String nextURI, String nextURIMetaData) {
         ClingLocalRenderer.getLocalRender().setNextURI(nextURI);
         ClingLocalRenderer.getLocalRender().setNextURIMetaData(nextURIMetaData);
-    }
-
-    synchronized void setPlayMode(String newPlayMode) {
-        ClingLocalRenderer.getLocalRender().setPlayMode(newPlayMode);
-    }
-
-    synchronized void setRecordQualityMode(String newRecordQualityMode) {
-        ClingLocalRenderer.getLocalRender().setRecordQualityMode(newRecordQualityMode);
     }
 
     synchronized TransportAction[] getCurrentTransportActions() {
@@ -154,67 +134,6 @@ public class MediaPlayer {
         return actions;
     }
 
-    protected synchronized void transportStateChanged(TransportState newState) {
-        currentTransportInfo = new TransportInfo(newState);
-
-        getAvTransportLastChange().setEventedValue(
-                getInstanceId(),
-                new AVTransportVariable.TransportState(newState),
-                new AVTransportVariable.CurrentTransportActions(getCurrentTransportActions())
-        );
-    }
-
-    protected class IControlPointImpl implements IControlPoint {
-        public void pause() {
-            transportStateChanged(TransportState.PAUSED_PLAYBACK);
-        }
-
-        public void start() {
-            transportStateChanged(TransportState.PLAYING);
-        }
-
-        public void stop() {
-            transportStateChanged(TransportState.STOPPED);
-        }
-
-        public void endOfMedia() {
-            transportStateChanged(TransportState.NO_MEDIA_PRESENT);
-        }
-
-        public void positionChanged(int position) {
-            synchronized (MediaPlayer.this) {
-                currentPositionInfo =
-                        new PositionInfo(
-                                1,
-                                currentMediaInfo.getMediaDuration(),
-                                currentMediaInfo.getCurrentURI(),
-                                ModelUtil.toTimeString(position / 1000),
-                                ModelUtil.toTimeString(position / 1000)
-                        );
-            }
-        }
-
-        public void durationChanged(int duration) {
-            synchronized (MediaPlayer.this) {
-                String newValue = ModelUtil.toTimeString(duration / 1000);
-                currentMediaInfo =
-                        new MediaInfo(
-                                currentMediaInfo.getCurrentURI(),
-                                "",
-                                Utils.getDefaultInstanceId(),
-                                newValue,
-                                StorageMedium.NETWORK
-                        );
-                getAvTransportLastChange()
-                        .setEventedValue(
-                                getInstanceId(),
-                                new AVTransportVariable.CurrentTrackDuration(newValue),
-                                new AVTransportVariable.CurrentMediaDuration(newValue)
-                        );
-            }
-        }
-    }
-
     int getVolume() {
         return ClingLocalRenderer.getLocalRender().getVolume();
     }
@@ -233,6 +152,78 @@ public class MediaPlayer {
 
     void seek(String unit, String target) {
         ClingLocalRenderer.getLocalRender().seek(unit, target);
+    }
+
+    protected synchronized void transportStateChanged(TransportState newState) {
+        currentTransportInfo = new TransportInfo(newState);
+
+        getAvTransportLastChange().setEventedValue(
+                getInstanceId(),
+                new AVTransportVariable.TransportState(newState),
+                new AVTransportVariable.CurrentTransportActions(getCurrentTransportActions())
+        );
+    }
+
+    protected class IControlPointImpl implements IControlPoint {
+        @Override
+        public void pause() {
+            transportStateChanged(TransportState.PAUSED_PLAYBACK);
+        }
+
+        @Override
+        public void start() {
+            transportStateChanged(TransportState.PLAYING);
+        }
+
+        @Override
+        public void stop() {
+            transportStateChanged(TransportState.STOPPED);
+        }
+
+        @Override
+        public void endOfMedia() {
+            transportStateChanged(TransportState.NO_MEDIA_PRESENT);
+        }
+
+        @Override
+        public void positionChanged(int position) {
+            synchronized (MediaPlayer.this) {
+                currentPositionInfo =
+                        new PositionInfo(
+                                1,
+                                currentMediaInfo.getMediaDuration(),
+                                currentMediaInfo.getCurrentURI(),
+                                ModelUtil.toTimeString(position / 1000),
+                                ModelUtil.toTimeString(position / 1000)
+                        );
+            }
+        }
+
+        @Override
+        public void durationChanged(int duration) {
+            synchronized (MediaPlayer.this) {
+                String newValue = ModelUtil.toTimeString(duration / 1000);
+                currentMediaInfo =
+                        new MediaInfo(
+                                currentMediaInfo.getCurrentURI(),
+                                currentMediaInfo.getCurrentURIMetaData(),
+                                Utils.getDefaultNumberOfTracks(),
+                                newValue,
+                                StorageMedium.NETWORK
+                        );
+                getAvTransportLastChange()
+                        .setEventedValue(
+                                getInstanceId(),
+                                new AVTransportVariable.CurrentTrackDuration(newValue),
+                                new AVTransportVariable.CurrentMediaDuration(newValue)
+                        );
+            }
+        }
+
+        @Override
+        public void record() {
+            transportStateChanged(TransportState.RECORDING);
+        }
     }
 }
 

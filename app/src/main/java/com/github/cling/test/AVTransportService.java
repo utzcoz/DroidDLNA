@@ -64,16 +64,12 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public DeviceCapabilities getDeviceCapabilities(UnsignedIntegerFourBytes instanceId)
-            throws AVTransportException {
-        getInstance(instanceId);
+    public DeviceCapabilities getDeviceCapabilities(UnsignedIntegerFourBytes instanceId) {
         return new DeviceCapabilities(new StorageMedium[]{StorageMedium.NETWORK});
     }
 
     @Override
-    public TransportSettings getTransportSettings(UnsignedIntegerFourBytes instanceId)
-            throws AVTransportException {
-        getInstance(instanceId);
+    public TransportSettings getTransportSettings(UnsignedIntegerFourBytes instanceId) {
         return new TransportSettings(PlayMode.NORMAL);
     }
 
@@ -94,8 +90,8 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public void record(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
-        getInstance(instanceId).record();
+    public void record(UnsignedIntegerFourBytes instanceId) {
+        // Do nothing
     }
 
     @Override
@@ -105,13 +101,13 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public void next(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
-        getInstance(instanceId).next();
+    public void next(UnsignedIntegerFourBytes instanceId) {
+        // Do nothing
     }
 
     @Override
-    public void previous(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
-        getInstance(instanceId).previous();
+    public void previous(UnsignedIntegerFourBytes instanceId) {
+        // Do nothing
     }
 
     @Override
@@ -122,15 +118,14 @@ public class AVTransportService extends AbstractAVTransportService {
     }
 
     @Override
-    public void setPlayMode(UnsignedIntegerFourBytes instanceId, String newPlayMode)
-            throws AVTransportException {
-        getInstance(instanceId).setPlayMode(newPlayMode);
+    public void setPlayMode(UnsignedIntegerFourBytes instanceId, String newPlayMode) {
+        // Do nothing
     }
 
     @Override
     public void setRecordQualityMode(UnsignedIntegerFourBytes instanceId,
-                                     String newRecordQualityMode) throws AVTransportException {
-        getInstance(instanceId).setRecordQualityMode(newRecordQualityMode);
+                                     String newRecordQualityMode) {
+        // Do nothing
     }
 
     @Override

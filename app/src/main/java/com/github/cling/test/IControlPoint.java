@@ -12,4 +12,6 @@ public interface IControlPoint {
     void positionChanged(int position);
 
     void durationChanged(int duration);
+
+    void record();
 }

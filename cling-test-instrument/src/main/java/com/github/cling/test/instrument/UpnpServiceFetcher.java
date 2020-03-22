@@ -26,4 +26,8 @@ public class UpnpServiceFetcher {
             ControlPointUpnpService upnpService) {
         return getService(upnpService, "RenderingControl");
     }
+
+    public static RemoteService getAVTransportService(ControlPointUpnpService upnpService) {
+        return getService(upnpService, "AVTransport");
+    }
 }
