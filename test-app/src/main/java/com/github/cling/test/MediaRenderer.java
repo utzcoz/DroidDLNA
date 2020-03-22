@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MediaRenderer {
-    private static final String TAG = "GstMediaRenderer";
+    private static final String TAG = "MediaRenderer";
 
     // These are shared between all "logical" player instances of a single service
     private final LastChange avTransportLastChange =

@@ -16,8 +16,6 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
 public class MediaPlayer {
-    private static final String TAG = "GstMediaPlayer";
-
     final private UnsignedIntegerFourBytes instanceId;
     final private LastChange avTransportLastChange;
     final private LastChange renderingControlLastChange;
@@ -220,10 +218,6 @@ public class MediaPlayer {
             }
         }
 
-        @Override
-        public void record() {
-            transportStateChanged(TransportState.RECORDING);
-        }
     }
 }
 
