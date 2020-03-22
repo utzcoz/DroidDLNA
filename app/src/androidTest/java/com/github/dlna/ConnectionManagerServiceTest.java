@@ -1,10 +1,11 @@
-package com.github.dlna.connectionmanager;
+package com.github.dlna;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.github.dlna.ControlPointUpnpService;
+import com.github.cling.test.instrument.ControlPointUpnpService;
+import com.github.cling.test.instrument.connectionmanager.GetProtocolInfoAction;
 import com.github.dlna.TestBase;
-import com.github.dlna.TestHelper;
+import com.github.cling.test.instrument.TestHelper;
 import com.github.dlna.Utils;
 
 import org.fourthline.cling.controlpoint.ActionCallback;

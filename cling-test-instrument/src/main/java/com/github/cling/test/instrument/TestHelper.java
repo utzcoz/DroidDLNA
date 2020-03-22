@@ -1,10 +1,12 @@
-package com.github.dlna;
+package com.github.cling.test.instrument;
 
 import android.app.Activity;
 import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+
+import com.github.cling.test.instrument.ControlPointUpnpService;
 
 import org.fourthline.cling.model.meta.RemoteDevice;
 

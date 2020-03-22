@@ -1,1 +1,2 @@
+include ':cling-test-instrument'
 include ':app'

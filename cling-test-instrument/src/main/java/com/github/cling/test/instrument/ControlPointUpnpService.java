@@ -1,4 +1,4 @@
-package com.github.dlna;
+package com.github.cling.test.instrument;
 
 import android.util.Log;
 

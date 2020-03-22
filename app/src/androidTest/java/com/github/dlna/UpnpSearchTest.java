@@ -2,6 +2,8 @@ package com.github.dlna;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import com.github.cling.test.instrument.TestHelper;
+
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
 import org.fourthline.cling.model.meta.RemoteDevice;

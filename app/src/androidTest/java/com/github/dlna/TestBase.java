@@ -2,6 +2,8 @@ package com.github.dlna;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.github.cling.test.instrument.ControlPointUpnpService;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,7 +11,7 @@ import org.junit.Rule;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.github.dlna.TestHelper.getScenario;
+import static com.github.cling.test.instrument.TestHelper.getScenario;
 
 public class TestBase {
     protected ControlPointUpnpService upnpService;
