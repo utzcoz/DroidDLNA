@@ -4,14 +4,11 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.github.cling.test.instrument.ControlPointUpnpService;
 import com.github.cling.test.instrument.TestHelper;
+import com.github.cling.test.instrument.UpnpServiceFetcher;
 import com.github.cling.test.instrument.connectionmanager.GetCurrentConnectionIDsAction;
 import com.github.cling.test.instrument.connectionmanager.GetCurrentConnectionInfoAction;
 import com.github.cling.test.instrument.connectionmanager.GetProtocolInfoAction;
 
-import org.fourthline.cling.model.meta.RemoteDevice;
-import org.fourthline.cling.model.meta.RemoteService;
-import org.fourthline.cling.model.types.ServiceId;
-import org.fourthline.cling.model.types.UDAServiceId;
 import org.fourthline.cling.support.model.ConnectionInfo;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.junit.Test;
@@ -63,6 +60,7 @@ public class ConnectionManagerServiceTest extends TestBase {
     @Test
     public void testGetPeerConnectionManagerSucceed() {
         GetCurrentConnectionInfoAction action = executeGetCurrentConnectionInfoAction(upnpService);
+        assertNotNull(action.getPeerConnectionManager());
     }
 
     @Test
@@ -86,14 +84,14 @@ public class ConnectionManagerServiceTest extends TestBase {
     private GetCurrentConnectionInfoAction executeGetCurrentConnectionInfoAction(
             ControlPointUpnpService upnpService) {
         GetCurrentConnectionInfoAction action =
-                new GetCurrentConnectionInfoAction(getConnectionManagerService(), 0);
+                new GetCurrentConnectionInfoAction(UpnpServiceFetcher.getConnectionManagerService(upnpService), 0);
         TestHelper.executeAction(upnpService, action);
         return action;
     }
 
     private GetProtocolInfoAction executeGetProtocolInfoAction(
             ControlPointUpnpService upnpService) {
-        GetProtocolInfoAction action = new GetProtocolInfoAction(getConnectionManagerService());
+        GetProtocolInfoAction action = new GetProtocolInfoAction(UpnpServiceFetcher.getConnectionManagerService(upnpService));
         TestHelper.executeAction(upnpService, action);
         return action;
     }
@@ -101,17 +99,9 @@ public class ConnectionManagerServiceTest extends TestBase {
     private GetCurrentConnectionIDsAction executeGetCurrentConnectionIDsAction(
             ControlPointUpnpService upnpService) {
         GetCurrentConnectionIDsAction action =
-                new GetCurrentConnectionIDsAction(getConnectionManagerService());
+                new GetCurrentConnectionIDsAction(UpnpServiceFetcher.getConnectionManagerService(upnpService));
         TestHelper.executeAction(upnpService, action);
         return action;
     }
 
-    private RemoteService getConnectionManagerService() {
-        RemoteDevice remoteDevice = TestHelper.searchRemoteDevice(upnpService);
-        assertNotNull(remoteDevice);
-        ServiceId serviceId = new UDAServiceId("ConnectionManager");
-        RemoteService connectionManagerService = remoteDevice.findService(serviceId);
-        assertNotNull(connectionManagerService);
-        return connectionManagerService;
-    }
 }
