@@ -36,4 +36,7 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'org.fourthline.cling:cling-core:2.1.2-SNAPSHOT'
     implementation 'org.fourthline.cling:cling-support:2.1.2-SNAPSHOT'
+    implementation 'org.eclipse.jetty:jetty-client:8.1.8.v20121106'
+    implementation 'org.eclipse.jetty:jetty-servlet:8.1.8.v20121106'
+    implementation 'org.eclipse.jetty:jetty-server:8.1.8.v20121106'
 }

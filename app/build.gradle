@@ -39,25 +39,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'org.fourthline.cling:cling-core:2.1.2-SNAPSHOT'
-    implementation 'org.fourthline.cling:cling-support:2.1.2-SNAPSHOT'
-    implementation files('libs/cdi-api.jar')
-    implementation files('libs/http-2.2.1.jar')
-    implementation files('libs/httpclient-4.2.2.jar')
-    implementation files('libs/httpcore-4.2.3.jar')
-    implementation files('libs/javax.annotation_1.0.jar')
-    implementation files('libs/javax.inject.jar')
-    implementation files('libs/javax.servlet-3.0.0.v201103241009.jar')
-    implementation files('libs/jetty-client-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-continuation-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-http-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-io-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-security-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-server-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-servlet-8.1.9.v20130131.jar')
-    implementation files('libs/jetty-util-8.1.9.v20130131.jar')
-    implementation files('libs/slf4j-api-1.6.1.jar')
-    implementation files('libs/slf4j-jdk14-1.6.1.jar')
+    implementation 'org.fourthline.cling:cling-core:2.1.1'
+    implementation 'org.fourthline.cling:cling-support:2.1.1'
+    implementation 'org.eclipse.jetty:jetty-client:8.1.8.v20121106'
+    implementation 'org.eclipse.jetty:jetty-servlet:8.1.8.v20121106'
+    implementation 'org.eclipse.jetty:jetty-server:8.1.8.v20121106'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
