@@ -1,0 +1,4 @@
+[submodule "python-junit-result-parser"]
+	path = python-junit-result-parser
+	url = https://github.com/utzcoz/python-junit-result-parser.git
+	branch = master
