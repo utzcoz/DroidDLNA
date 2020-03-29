@@ -16,3 +16,7 @@
 bin/
 **/build/
 release
+.settings
+*/.project
+*/.classpath
+.project
